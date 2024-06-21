@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 
 import {
-    BrowserRouter as Router,
     Routes,
     Route,
     Navigate,
+    HashRouter,
 } from "react-router-dom";
 import Home from "./home.tsx";
 import Page1 from "./page1.tsx";
@@ -12,14 +12,14 @@ function App() {
     return (
         <>
         {/* This is the alias of BrowserRouter i.e. Router */}
-        <Router>
+        <HashRouter>
             <Routes>
                 <Route
                     path="/"
                     element={<Home />}
                 />
                 <Route
-                    path="Page1"
+                    path="/Page1"
                     element={<Page1 />}
                 />
 
@@ -32,7 +32,7 @@ function App() {
                     element={<Navigate to="/" />}
                 />
             </Routes>
-        </Router>
+        </HashRouter>
     </>
     )
 
