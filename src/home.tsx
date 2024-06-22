@@ -10,10 +10,10 @@ function Home() {
   return (  
     <>
       <Container className="sidebar">
-        <a className="active" href="/">Home</a>
-        <a href="/Page1">Page 1</a>
-        <a href="/pg2">Page 2</a>
-        <a href="/pg3">Page 3</a>
+        <a className="active" href="#/">Home</a>
+        <a href="#/page1">Page 1</a>
+        <a href="#/pg2">Page 2</a>
+        <a href="#/pg3">Page 3</a>
         <Nav>
             <NavDropdown
               id="nav-dropdown-dark-example"

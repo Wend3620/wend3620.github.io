@@ -2,7 +2,7 @@
   "name": "lab",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://Wend3620.github.io",
+  "homepage": "https://Wend3620.github.io/",
   "type": "module",
   "scripts": {
     "dev": "vite",
