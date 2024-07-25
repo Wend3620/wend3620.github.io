@@ -7,16 +7,20 @@
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b react -d dist",
+    "deploy": "gh-pages -d dist",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "framer-motion": "^11.2.11",
+    "konva": "^9.3.14",
+    "motion": "^10.18.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
+    "react-konva": "^18.2.10",
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {

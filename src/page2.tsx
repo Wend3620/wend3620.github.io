@@ -1,41 +1,98 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
-import {Nav, NavDropdown, Container} from 'react-bootstrap';  
-import './helper.css';
+import {Container, Button} from 'react-bootstrap';  
+import './decor/helper.css';
+import test1 from './compo/1.jpg';
+import test2 from './compo/2.jpg';
+import test3 from './compo/3.jpg';
+import test4 from './compo/4.gif';
+import test5 from './compo/5.gif';
+import test6 from './compo/6.gif';
+import { useState} from 'react';
+import { motion } from "framer-motion"
+import General from './general';
 
-function Page2() {  
-    //   const [show, setShow] = useState(false);  
-      return (  
-        <>
-          <Container className="sidebar">
-            <a href="#/">Home</a>
-            <a href="#/page1">Page 1</a>
-            <a className="active" href="#/pg2">Page 2</a>
-            <a href="#/pg3">Page 3</a>
-            <Nav>
-                <NavDropdown
-                  id="nav-dropdown-dark-example"
-                  title="More"
-                  menuVariant="dark"
-                  drop ="end"
-                >
-                  <NavDropdown.Item href="#action/3.1">Eat</NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
-                    Drink
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.3">Sleep</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#action/3.4">
-                    Separated link
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </Nav>
-          </Container>
-    
-          <Container className="content">
-            <h2>Page2</h2>
-            <img src="/compo/Aurora1.png" width="300" alt="Aurora on 5.10"/>
-          </Container>
-        </>
-      );  
+export function Page({src, isVisible, isDown, onWheel}:any){
+
+  return(
+    <motion.div
+      style={{ 
+        height: '100vh',
+        width: "100%",
+        position: 'absolute',
+        overflow: 'hidden',
+      }}
+      animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
+      //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
+      onWheel={onWheel}
+    >
+      <img src={src} width='200' alt="example" className="d-block mx-auto"/>
+    </motion.div>
+  )
+}
+function Page2() {
+    //Function for switching back and forth
+    const [currentPage, setCurrentPage] = useState(0);
+    const [isScrollDirectionUp, setIsScrollDirectionUp] = useState(true);
+    //const [scrollDelta, setScrollDelta] = useState(0);
+    function next(){
+      document.body.style.overflow='hidden'
+      let newPage = (+(currentPage)+1) % pagesArr.length;
+      setIsScrollDirectionUp(false);
+      setCurrentPage(newPage);
+    }
+  
+    function prev(){
+      document.body.style.overflow='hidden'
+      let newPage = +(currentPage) - 1;
+  
+      if (newPage<0) {
+        newPage = pagesArr.length - 1;
+      }
+  
+      setIsScrollDirectionUp(true);
+      setCurrentPage(newPage);
+      
+    }
+    /**
+   * @param event {Event}
+   */
+    function onWheel(event:any) {
+
+      const THRESHOLD = 55;
+      if (event.deltaY > THRESHOLD) {
+        next();
+        //document.body.style.overflow='auto'
+      }
+      
+      if (event.deltaY < -THRESHOLD) {
+        prev();
+        //document.body.style.overflow='auto'
+      }
+    }
+    const pagesArr = [
+      <Page key={0} src={test1} isVisible={currentPage===0} isDown={isScrollDirectionUp} onWheel={onWheel}/>,
+      <Page key={1} src={test2} isVisible={currentPage===1} isDown={isScrollDirectionUp} onWheel={onWheel}/>,
+      <Page key={2} src={test3} isVisible={currentPage===2} isDown={isScrollDirectionUp} onWheel={onWheel}/>,
+      <Page key={3} src={test4} isVisible={currentPage===3} isDown={isScrollDirectionUp} onWheel={onWheel}/>,
+      <Page key={4} src={test5} isVisible={currentPage===4} isDown={isScrollDirectionUp} onWheel={onWheel}/>,
+      <Page key={5} src={test6} isVisible={currentPage===5} isDown={isScrollDirectionUp} onWheel={onWheel}/>,
+    ]
+      
+    return (
+      <>  
+        <General currentPage='/pg2'/>
+        <Container className="content" >
+          <p></p>
+          <h1><b>Page2!!!</b></h1>
+          <Button variant="light" onClick={next} className="first">Next</Button>
+          <Button variant="dark" onClick={prev} className="second">prev</Button>
+          <div>
+            {pagesArr.map((Page) => {
+              return Page
+            })}
+          </div>
+        </Container>
+      </>
+    );  
     }  
     export default Page2;  

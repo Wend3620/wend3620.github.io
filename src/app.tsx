@@ -3,12 +3,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     Routes,
     Route,
-    Navigate,
+    // Navigate,
     HashRouter,
 } from "react-router-dom";
 import Home from "./home.tsx";
 import Page1 from "./page1.tsx";
 import Page2 from "./page2.tsx";
+import Page3 from "./page3.tsx";
+import Buggy from "./buggy.tsx";
 function App() {  
     return (
         <>
@@ -17,15 +19,17 @@ function App() {
         <HashRouter>
             <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/page1" element={<Page1/>}/>
+                <Route path="/pg1" element={<Page1/>}/>
                 <Route path="/pg2" element={<Page2/>}/>
+                <Route path="/pg3" element={<Page3/>}/>
                 {/* If any route mismatches the upper 
       route endpoints then, redirect triggers 
       and redirects app to home component with to="/" */}
                 {/* <Redirect to="/" /> */}
                 <Route
                     path="*"
-                    element={<Navigate to="/page1" />}
+                    // element={<Navigate to="/" />}
+                    element={<Buggy/>}
                 />
             </Routes>
         </HashRouter>

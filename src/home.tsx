@@ -1,19 +1,40 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import {Nav, NavDropdown, Container} from 'react-bootstrap';  
-// import {useState} from 'react';
-import './helper.css';
-function Home() {  
-  // const [show, setShow] = useState(false);  
-  // const closeSidebar = () => setShow(false);  
-  // const showSidebar = () => setShow(true);  
-  
-  return (  
-    <>
-      <Container className="sidebar">
-        <a className="active" href="#/">Home</a>
-        <a href="#/page1">Page 1</a>
-        <a href="#/pg2">Page 2</a>
-        <a href="#/pg3">Page 3</a>
+import './decor/helper.css';
+import { useState } from 'react';
+import { motion} from "framer-motion";
+
+
+export interface GeneralProps {
+  currentPage: string,
+}
+export const General:React.FC<GeneralProps>=({currentPage}: {readonly currentPage:string})=>{
+  document.body.classList.add('front');
+  const [isOpen, setIsOpen] = useState(false);
+  if(!isOpen){
+    document.documentElement.style.setProperty('--modify', '100px')
+    
+  }else{
+    document.documentElement.style.setProperty('--modify', '135px')
+  }
+  return(
+        <motion.div 
+          className={'sidebar'}
+          initial={false}
+          animate={{
+            width: isOpen ? '135px' : '100px',
+            // onAnimationEnd: end,
+            transition: {
+              duration: 0.3,
+            },
+          }}
+        >
+          
+        <p></p>
+        <a className={currentPage==='/'? 'active' : ' '} href="/">Home</a>
+        <a className={currentPage==='/pg1'? "active" : ' '} href="#/pg1">Page 1</a>
+        <a className={currentPage==='/pg2'? "active" : ' '} href="#/pg2">Page 2</a>
+        <a className={currentPage==='/pg3'? "active" : ' '} href="#/pg3">Page 3</a>
         <Nav>
             <NavDropdown
               id="nav-dropdown-dark-example"
@@ -32,9 +53,31 @@ function Home() {
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-      </Container>
+          <button style={{border:'none', width:'0', margin: '0px'}} //Need change later
+                  onClick={() => setIsOpen(!isOpen)}>
+            <motion.div 
+            className={'button'}
+            initial={false}
+            animate={{
+              width: isOpen ? '135px' : '100px',
+              transition: {
+                duration: 0.3,
+              },
+              }}
+            >
+            Control</motion.div>
+        </button>
+      </motion.div>  
+  )
+}
+function Home() {  
+  
+  return (  
+    <>
+      <General currentPage='/'/>
 
       <Container className="content">
+        <p></p>
         <h2>Practice 2</h2>
         <p>I am getting better at this!</p>
         <p>Hope there could be a major update soon!</p>
