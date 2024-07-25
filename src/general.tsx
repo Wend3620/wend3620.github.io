@@ -53,10 +53,10 @@ export default function General({currentPage}: {readonly currentPage:string}){
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <button style={{}} //Need change later
+          <button //Need change later
                   onClick={() => setIsOpen(!isOpen)}>
             <motion.div 
-            className={'sidebar button'}
+            className={'button'}
             initial={false}
             animate={{
               width: isOpen ? '135px' : '100px',

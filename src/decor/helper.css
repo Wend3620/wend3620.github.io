@@ -46,7 +46,7 @@ div.content {
 
 .sidebar button {
   display: block;
-  /* width: var(--modify);  */
+  width: var(--modify); 
   border: none;
   padding: 0px ;
   height:30px;
