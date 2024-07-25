@@ -16,16 +16,17 @@ export function Page({src, isVisible, isDown, onWheel}:any){
   return(
     <motion.div
       style={{ 
-        height: '100vh',
-        width: "100%",
+        height: '400px',
+        width: "200px",
         position: 'absolute',
+        
         overflow: 'hidden',
       }}
       animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
       //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
       onWheel={onWheel}
     >
-      <img src={src} width='200' alt="example" className="d-block mx-auto"/>
+      <img src={src} width='200px' alt="example" className="d-block mx-auto"/>
     </motion.div>
   )
 }
@@ -84,12 +85,14 @@ function Page2() {
         <Container className="content" >
           <p></p>
           <h1><b>Page2!!!</b></h1>
-          <Button variant="light" onClick={next} className="first">Next</Button>
-          <Button variant="dark" onClick={prev} className="second">prev</Button>
+          
           <div>
+          <Button variant="light" onClick={next} className="first">Next</Button>
+          
             {pagesArr.map((Page) => {
               return Page
             })}
+          <Button variant="dark" onClick={prev} className="second">prev</Button>
           </div>
         </Container>
       </>

@@ -8,15 +8,16 @@ import { motion} from "framer-motion";
 export interface GeneralProps {
   currentPage: string,
 }
+//Fancy constant, but how good is it?
 export const General:React.FC<GeneralProps>=({currentPage}: {readonly currentPage:string})=>{
   document.body.classList.add('front');
   const [isOpen, setIsOpen] = useState(false);
-  if(!isOpen){
-    document.documentElement.style.setProperty('--modify', '100px')
+  // if(!isOpen){
+  //   document.documentElement.style.setProperty('--modify', '100px')
     
-  }else{
-    document.documentElement.style.setProperty('--modify', '135px')
-  }
+  // }else{
+  //   document.documentElement.style.setProperty('--modify', '135px')
+  // }
   return(
         <motion.div 
           className={'sidebar'}
@@ -53,7 +54,7 @@ export const General:React.FC<GeneralProps>=({currentPage}: {readonly currentPag
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <button style={{border:'none', width:'0', margin: '0px'}} //Need change later
+          <button //Need change later
                   onClick={() => setIsOpen(!isOpen)}>
             <motion.div 
             className={'button'}

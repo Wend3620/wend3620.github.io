@@ -3,7 +3,7 @@ body {
     font-family: "Lato", sans-serif;
   }
 :root{
-  --modify:100px;
+  --modify:135px;
 }
 
 
@@ -14,7 +14,7 @@ body {
   border-radius: 15px;
   background-color: #f1f1f1;
   position: fixed;
-  height: 70%;
+  height: 360px;
   overflow: over;
   animation: temp 1100ms;
   
@@ -46,12 +46,12 @@ div.content {
 
 .sidebar button {
   display: block;
-  width: var(--modify); 
+  /* width: var(--modify);  */
   border: none;
-  padding: 0;
+  padding: 0px ;
   height:30px;
-  margin-top: -25px;
-  position: absolute;
+  margin-top: 0;
+  position: fixed;
 }
   
 .sidebar button.active {
