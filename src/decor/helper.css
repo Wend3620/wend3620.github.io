@@ -10,7 +10,7 @@ body {
 .sidebar {
   margin-top: 40px;
   padding:0;
-  width: var(--modify); 
+  /* width: var(--modify);  */
   border-radius: 15px;
   background-color: #f1f1f1;
   position: fixed;
@@ -46,7 +46,7 @@ div.content {
 
 .sidebar button {
   display: block;
-  width: var(--modify); 
+  /* width: var(--modify);  */
   border: none;
   padding: 0px ;
   height:30px;

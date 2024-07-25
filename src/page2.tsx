@@ -19,7 +19,6 @@ export function Page({src, isVisible, isDown, onWheel}:any){
         height: '400px',
         width: "200px",
         position: 'absolute',
-        
         overflow: 'hidden',
       }}
       animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
@@ -82,17 +81,30 @@ function Page2() {
     return (
       <>  
         <General currentPage='/pg2'/>
-        <Container className="content" >
+        
+        <Container className='content'>
+          
           <p></p>
           <h1><b>Page2!!!</b></h1>
-          
-          <div>
-          <Button variant="light" onClick={next} className="first">Next</Button>
-          
+          <p></p>
+          <Button variant="secondary" onClick={prev} 
+                  style={{marginLeft:'36%', marginTop:'0px'}}>prev</Button>
+          <div style={{display: 'block',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                      width: '50%'}}>
+          <div style={{marginBottom:'0px'}}>
             {pagesArr.map((Page) => {
               return Page
             })}
-          <Button variant="dark" onClick={prev} className="second">prev</Button>
+          </div>
+          <Button variant="light" onClick={next} 
+                  style={{marginLeft:'-60px', marginTop:'100px'}}>Next</Button>
+          <Button variant="dark" onClick={prev} 
+                  style={{marginLeft:'200px', marginTop:'100px'}}>prev</Button>
+          
+          <Button variant="info" onClick={prev} 
+                  style={{marginLeft:'70px', marginTop:'100px'}}>prev</Button>
           </div>
         </Container>
       </>
