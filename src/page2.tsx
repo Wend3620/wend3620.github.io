@@ -88,12 +88,9 @@ function Page2() {
           <h1><b>Page2!!!</b></h1>
           <p></p>
           <Button variant="secondary" onClick={prev} 
-                  style={{marginLeft:'36%', marginTop:'0px'}}>prev</Button>
-          <div style={{display: 'block',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      width: '50%'}}>
-          <div style={{marginBottom:'0px'}}>
+                  style={{marginLeft:'50%', marginTop:'0px'}}>prev</Button>
+          <div style={{marginLeft: '45%', marginTop:'0px'}}>
+          <div style={{}}>
             {pagesArr.map((Page) => {
               return Page
             })}
@@ -103,9 +100,10 @@ function Page2() {
           <Button variant="dark" onClick={prev} 
                   style={{marginLeft:'200px', marginTop:'100px'}}>prev</Button>
           
-          <Button variant="info" onClick={prev} 
-                  style={{marginLeft:'70px', marginTop:'100px'}}>prev</Button>
+          
           </div>
+          <Button variant="info" onClick={prev} 
+                  style={{marginLeft:'50%', marginTop:'200px'}}>prev</Button>
         </Container>
       </>
     );  
