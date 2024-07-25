@@ -1,0 +1,15 @@
+body.back {
+    background-image: url('../compo/fun.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 100vh;
+    width: 100vw;
+  }
+
+.space{
+    
+    margin-left: 50px;
+    max-width: 500px;
+}
