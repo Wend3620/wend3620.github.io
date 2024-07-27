@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
-import {Container, Button} from 'react-bootstrap';  
+import {Container} from 'react-bootstrap';  
 import './decor/helper.css';
 import test1 from './compo/1.jpg';
 import test2 from './compo/2.jpg';
@@ -11,7 +11,8 @@ import { useState} from 'react';
 import { motion } from "framer-motion"
 import General from './general';
 
-export function Page({src, isVisible, isDown, onWheel}:any){
+
+function Page({src, isVisible, isDown, onWheel}:any){
 
   return(
     <motion.div
@@ -19,7 +20,7 @@ export function Page({src, isVisible, isDown, onWheel}:any){
         height: '400px',
         width: "200px",
         position: 'absolute',
-        overflow: 'hidden',
+        borderStyle: 'dashed'
       }}
       animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
       //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
@@ -30,10 +31,13 @@ export function Page({src, isVisible, isDown, onWheel}:any){
   )
 }
 function Page2() {
+    const [isMouseOver, setIsMouseOver] = useState(false);
     //Function for switching back and forth
     const [currentPage, setCurrentPage] = useState(0);
     const [isScrollDirectionUp, setIsScrollDirectionUp] = useState(true);
     //const [scrollDelta, setScrollDelta] = useState(0);
+    document.body.style.overflow = isMouseOver? "hidden" : "scroll";
+    
     function next(){
       document.body.style.overflow='hidden'
       let newPage = (+(currentPage)+1) % pagesArr.length;
@@ -87,23 +91,24 @@ function Page2() {
           <p></p>
           <h1><b>Page2!!!</b></h1>
           <p></p>
-          <Button variant="secondary" onClick={prev} 
-                  style={{marginLeft:'50%', marginTop:'0px'}}>prev</Button>
-          <div style={{marginLeft: '45%', marginTop:'0px'}}>
-          <div style={{}}>
-            {pagesArr.map((Page) => {
-              return Page
-            })}
+          <button type="button" onClick={prev} 
+                  style={{marginLeft:'50%', marginTop:'0px', color:'red'}}>prev</button>
+          <div style={{marginLeft: '45%', marginTop:'0px', 
+                      borderStyle: 'dashed', height:"200px", width:"400px"}}
+                      onMouseEnter={()=>setIsMouseOver(true)}
+                      onMouseLeave={()=>setIsMouseOver(false)}>
+                  
+          <button type="button" onClick={next} 
+                  style={{marginLeft:'-60px', marginTop:'100px', color:'gold'}}>Next</button>
+          <div> {pagesArr.map((Page) => {
+                return Page  })}
           </div>
-          <Button variant="light" onClick={next} 
-                  style={{marginLeft:'-60px', marginTop:'100px'}}>Next</Button>
-          <Button variant="dark" onClick={prev} 
-                  style={{marginLeft:'200px', marginTop:'100px'}}>prev</Button>
-          
+          <button type="button" onClick={prev} 
+                  style={{marginLeft:'200px', marginTop:'100px', color:'silver'}}>prev</button>
           
           </div>
-          <Button variant="info" onClick={prev} 
-                  style={{marginLeft:'50%', marginTop:'200px'}}>prev</Button>
+          <button onClick={prev} 
+                  style={{marginLeft:'50%', marginTop:'200px', color:'teal'}}>prev</button>
         </Container>
       </>
     );  

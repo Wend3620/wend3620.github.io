@@ -1,28 +1,39 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 import {Container} from 'react-bootstrap';  
 import './decor/helper.css';
-
+import { useState } from 'react';
 import General from './general.tsx';
 
 function Page1() {  
+  const [isMouseOver, setIsMouseOver] = useState(false);
 
+  document.body.style.overflow = isMouseOver? "hidden" : "scroll";
   return (  
-    <>
+    <div style={{overflowY: isMouseOver? 'hidden' : 'auto'}}>
+      
       <General currentPage='/pg1'/>
       
       <Container className="content">
         <h2>Page1</h2>
         <p>If you see this then I hope you have a great day</p>
+        <div style={{borderStyle:'dashed', width:'200px', 
+                    height:'200px', textAlign:'center',
+                    color: isMouseOver? 'black': 'white',
+                    }}
+              onMouseEnter={()=>setIsMouseOver(true)}
+              onMouseLeave={()=>setIsMouseOver(false)}>
+          Danger zone
+        </div>
       </Container>
-    </>
+    </div>
      
   );  
 }  
 export default Page1;  
 
-export interface GeneralProps extends React.PropsWithChildren<{}> {
-  currentPage: string;
-}
+// export interface GeneralProps extends React.PropsWithChildren<{}> {
+//   currentPage: string;
+// }
   /* old page1:
     let open=true;
     function change() {
