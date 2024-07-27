@@ -2,15 +2,16 @@ body {
     margin: 0;
     font-family: "Lato", sans-serif;
   }
-:root{
+/* :root{
   --modify:135px;
-}
+} */
 
 
 .sidebar {
   margin-top: 40px;
   padding:0;
   /* width: var(--modify);  */
+  display: block;
   border-radius: 15px;
   background-color: #f1f1f1;
   position: fixed;

@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
-import {Nav, NavDropdown} from 'react-bootstrap';  
+import {NavDropdown} from 'react-bootstrap';  
 import './decor/helper.css';
-import { useState, useEffect} from 'react';
+import { useState} from 'react';
 import { motion} from "framer-motion";
 import {useMediaQuery} from 'react-responsive'
 
