@@ -12,24 +12,7 @@ import { motion } from "framer-motion"
 import General from './general';
 
 
-function Page({src, isVisible, isDown, onWheel}:any){
 
-  return(
-    <motion.div
-      style={{ 
-        height: '400px',
-        width: "200px",
-        position: 'absolute',
-        borderStyle: 'dashed'
-      }}
-      animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
-      //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
-      onWheel={onWheel}
-    >
-      <img src={src} width='200px' alt="example" className="d-block mx-auto"/>
-    </motion.div>
-  )
-}
 function Page2() {
     const [isMouseOver, setIsMouseOver] = useState(false);
     //Function for switching back and forth
@@ -38,15 +21,32 @@ function Page2() {
     //const [scrollDelta, setScrollDelta] = useState(0);
     document.body.style.overflow = isMouseOver? "hidden" : "scroll";
     
+    function Page({src, isVisible, isDown, onWheel}:any){
+
+      return(
+        <motion.div
+          style={{ 
+            height: '400px',
+            width: "200px",
+            position: 'absolute',
+          }}
+          onMouseEnter={()=>setIsMouseOver(true)}
+          onMouseLeave={()=>setIsMouseOver(false)}
+          animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
+          //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
+          onWheel={onWheel}
+        >
+          <img src={src} width='200px' alt="example" className="d-block mx-auto"/>
+        </motion.div>
+      )
+    }
     function next(){
-      document.body.style.overflow='hidden'
       let newPage = (+(currentPage)+1) % pagesArr.length;
       setIsScrollDirectionUp(false);
       setCurrentPage(newPage);
     }
   
     function prev(){
-      document.body.style.overflow='hidden'
       let newPage = +(currentPage) - 1;
   
       if (newPage<0) {
@@ -94,9 +94,7 @@ function Page2() {
           <button type="button" onClick={prev} 
                   style={{marginLeft:'50%', marginTop:'0px', color:'red'}}>prev</button>
           <div style={{marginLeft: '45%', marginTop:'0px', 
-                      borderStyle: 'dashed', height:"200px", width:"400px"}}
-                      onMouseEnter={()=>setIsMouseOver(true)}
-                      onMouseLeave={()=>setIsMouseOver(false)}>
+                      borderStyle: 'dashed', height:"200px", width:"400px"}}>
                   
           <button type="button" onClick={next} 
                   style={{marginLeft:'-60px', marginTop:'100px', color:'gold'}}>Next</button>

@@ -10,7 +10,7 @@ body {
 .sidebar {
   margin-top: 40px;
   padding:0;
-  /* width: var(--modify);  */
+  /* width: var(--modify);*/
   display: block;
   border-radius: 15px;
   background-color: #f1f1f1;
@@ -69,12 +69,14 @@ div.content {
 
 @media screen and (max-width: 700px) {
   .sidebar {
+    display: block;
     width: 100%;
     height: 360px;
     position: relative;
     border-radius: 15px;
+    
   }
-  .sidebar a {float: left;}
+  .sidebar a {display: block;}
   div.content {margin-left: 0;}
 }
 

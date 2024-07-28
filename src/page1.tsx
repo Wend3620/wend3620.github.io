@@ -9,11 +9,12 @@ function Page1() {
 
   document.body.style.overflow = isMouseOver? "hidden" : "scroll";
   return (  
-    <div style={{overflowY: isMouseOver? 'hidden' : 'auto'}}>
+    <div>
       
       <General currentPage='/pg1'/>
       
       <Container className="content">
+        <p></p>
         <h2>Page1</h2>
         <p>If you see this then I hope you have a great day</p>
         <div style={{borderStyle:'dashed', width:'200px', 
