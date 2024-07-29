@@ -3,10 +3,11 @@ import {Container} from 'react-bootstrap';
 import './decor/helper.css';
 import { useState } from 'react';
 import General from './general.tsx';
+import test1 from './compo/6.gif';
+
 
 function Page1() {  
   const [isMouseOver, setIsMouseOver] = useState(false);
-
   document.body.style.overflow = isMouseOver? "hidden" : "scroll";
   return (  
     <div>
@@ -16,15 +17,24 @@ function Page1() {
       <Container className="content">
         <p></p>
         <h2>Page1</h2>
+        
         <p>If you see this then I hope you have a great day</p>
         <div style={{borderStyle:'dashed', width:'200px', 
-                    height:'200px', textAlign:'center',
+                    height:'400px', textAlign:'center',
                     color: isMouseOver? 'black': 'white',
+                    position:'absolute',left:'50%'
                     }}
               onMouseEnter={()=>setIsMouseOver(true)}
               onMouseLeave={()=>setIsMouseOver(false)}>
           Danger zone
+          <img src={test1} width='200px' 
+            style={{top:'50%', left:'50%', position:'absolute', 
+            transform: 'translate(-50%, -50%)'}} className='img'/>
         </div>
+        <button style={{left:'44%', top:'40%', position:'absolute'}}>What</button>
+        <button style={{left:'74%', top:'40%', position:'absolute'}}>Wow</button>
+        <button style={{left:'58%', top:'60%', position:'absolute'}}>But</button>
+        <button style={{left:'58%', top:'15%', position:'absolute'}}>Know</button>
       </Container>
     </div>
      

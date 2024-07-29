@@ -19,10 +19,10 @@ function Page2() {
     const [currentPage, setCurrentPage] = useState(0);
     const [isScrollDirectionUp, setIsScrollDirectionUp] = useState(true);
     //const [scrollDelta, setScrollDelta] = useState(0);
-    document.body.style.overflow = isMouseOver? "hidden" : "scroll";
+    
     
     function Page({src, isVisible, isDown, onWheel}:any){
-
+      
       return(
         <motion.div
           style={{ 
@@ -36,10 +36,11 @@ function Page2() {
           //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
           onWheel={onWheel}
         >
-          <img src={src} width='200px' alt="example" className="d-block mx-auto"/>
+          <img src={src} width='200px' style={{display:'inline-block', verticalAlign:'middle'}}/>   {/* className="d-block mx-auto" */}
         </motion.div>
       )
     }
+    document.body.style.overflow = isMouseOver? "hidden" : "scroll";
     function next(){
       let newPage = (+(currentPage)+1) % pagesArr.length;
       setIsScrollDirectionUp(false);
@@ -91,24 +92,29 @@ function Page2() {
           <p></p>
           <h1><b>Page2!!!</b></h1>
           <p></p>
-          <button type="button" onClick={prev} 
-                  style={{marginLeft:'50%', marginTop:'0px', color:'red'}}>prev</button>
-          <div style={{marginLeft: '45%', marginTop:'0px', 
-                      borderStyle: 'dashed', height:"200px", width:"400px"}}>
-                  
-          <button type="button" onClick={next} 
-                  style={{marginLeft:'-60px', marginTop:'100px', color:'gold'}}>Next</button>
-          <div> {pagesArr.map((Page) => {
-                return Page  })}
-          </div>
-          <button type="button" onClick={prev} 
-                  style={{marginLeft:'200px', marginTop:'100px', color:'silver'}}>prev</button>
-          
-          </div>
-          <button onClick={prev} 
-                  style={{marginLeft:'50%', marginTop:'200px', color:'teal'}}>prev</button>
+          <div style={{
+                     borderStyle: 'dashed', height:"400px", width:"206px"
+                     }}> {pagesArr.map((Page) => {return Page })}</div>
         </Container>
       </>
     );  
     }  
     export default Page2;  
+
+
+    // <button type="button" onClick={prev} 
+    //               style={{marginLeft:'50%', marginTop:'0px', color:'red'}}>prev</button>
+    //       <div style={{marginLeft: '45%', marginTop:'0px', 
+    //                   borderStyle: 'dashed', height:"400px", width:"206px"}}>
+                  
+    //       <button type="button" onClick={next} 
+    //               style={{marginLeft:'-60px', marginTop:'100px', color:'gold'}}>Next</button>
+    //       <div> {pagesArr.map((Page) => {
+    //             return Page  })}
+    //       </div>
+    //       <button type="button" onClick={prev} 
+    //               style={{marginLeft:'200px', marginTop:'100px', color:'silver'}}>prev</button>
+          
+    //       </div>
+    //       <button onClick={prev} 
+    //               style={{marginLeft:'50%', marginTop:'200px', color:'teal'}}>prev</button>
