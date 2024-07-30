@@ -108,7 +108,7 @@ function Page2() {
           <p></p>
           <h1><b>Page2!!!</b></h1>
           <p>Current page is: {currentPage}</p>
-          <div style={{borderStyle: 'dashed', height:"400px", width:"206px",
+          <div style={{borderStyle: 'dashed', maxHeight:"400px" , height:"400px", width:"206px",
                       position:'absolute',left:'50%', top:'200px'
           }}
           onMouseEnter={()=>setIsMouseOver(true)}
@@ -132,7 +132,7 @@ function Page2() {
                   border:'none',padding:'6px 12px', borderRadius:'5px', fontSize:'20px'
                   }}>Next</button>
           <button type="button" onClick={jumpDown} 
-                  style={{
+                  style={{ zIndex:1, 
                   bottom:'-18%', left:'50%', transform: 'translate(-50%, -50%)', 
                   position:'absolute', backgroundColor:'gold', color:'black', 
                   border:'none', padding:'6px 12px', borderRadius:'5px', fontSize:'20px'
