@@ -19,22 +19,27 @@ function Page1() {
         <h2>Page1</h2>
         
         <p>If you see this then I hope you have a great day</p>
+        
         <div style={{borderStyle:'dashed', width:'200px', 
                     height:'400px', textAlign:'center',
-                    color: isMouseOver? 'black': 'white',
-                    position:'absolute',left:'50%'
+                    color: isMouseOver? 'black': 'darkred',
+                    position:'absolute',left:'50%', top:'200px',
                     }}
               onMouseEnter={()=>setIsMouseOver(true)}
               onMouseLeave={()=>setIsMouseOver(false)}>
-          Danger zone
+          <p>Danger zone</p>
           <img src={test1} width='200px' 
             style={{top:'50%', left:'50%', position:'absolute', 
             transform: 'translate(-50%, -50%)'}} className='img'/>
+          <button style={{top:'-5%', transform: 'translate(-50%, -50%)', position:'absolute'}}>What</button>
+          <button style={{left:'-15%', top:'50%', transform: 'translate(-50%, -50%)', position:'absolute'}}>Wow</button>
+          <button style={{right:'-30%', top:'50%', transform: 'translate(-50%, -50%)', position:'absolute'}}>But</button>
+          <button style={{bottom:'-12%', transform: 'translate(-50%, -50%)', position:'absolute'}}>Know</button>
         </div>
-        <button style={{left:'44%', top:'40%', position:'absolute'}}>What</button>
-        <button style={{left:'74%', top:'40%', position:'absolute'}}>Wow</button>
-        <button style={{left:'58%', top:'60%', position:'absolute'}}>But</button>
-        <button style={{left:'58%', top:'15%', position:'absolute'}}>Know</button>
+      
+        
+        
+        
       </Container>
     </div>
      

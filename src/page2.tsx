@@ -17,7 +17,7 @@ function Page2() {
     const [isMouseOver, setIsMouseOver] = useState(false);
     //Function for switching back and forth
     const [currentPage, setCurrentPage] = useState(0);
-    const [isScrollDirectionUp, setIsScrollDirectionUp] = useState(true);
+    const [isScrollDirectionUp, setIsScrollDirectionUp] = useState(false);
     //const [scrollDelta, setScrollDelta] = useState(0);
     
     
@@ -30,13 +30,13 @@ function Page2() {
             width: "200px",
             position: 'absolute',
           }}
-          onMouseEnter={()=>setIsMouseOver(true)}
-          onMouseLeave={()=>setIsMouseOver(false)}
-          animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown?[0,90, 180, 0]:[0,-90,-180, 0]}}
-          //transition={{delay: isVisible ? 0.15 : 0, duration: 0.5}}
+          initial={false}
+          animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown? [0,90, 180, 0]:[0,-90, -180, 0]}}
+          transition={{delay: isVisible ? 0.15 : 0, duration: 1}}
           onWheel={onWheel}
         >
-          <img src={src} width='200px' style={{display:'inline-block', verticalAlign:'middle'}}/>   {/* className="d-block mx-auto" */}
+          <img alt='images' src={src} width='200px' 
+            style={{top:'50%', left:'100%', transform: 'translate(0%, 50%)'}}/>   {/* className="d-block mx-auto" */}
         </motion.div>
       )
     }
@@ -91,10 +91,38 @@ function Page2() {
           
           <p></p>
           <h1><b>Page2!!!</b></h1>
-          <p></p>
-          <div style={{
-                     borderStyle: 'dashed', height:"400px", width:"206px"
-                     }}> {pagesArr.map((Page) => {return Page })}</div>
+          <p>Current page is: {currentPage}</p>
+          <div style={{borderStyle: 'dashed', height:"400px", width:"206px",
+                      position:'absolute',left:'50%', top:'200px'
+          }}
+          onMouseEnter={()=>setIsMouseOver(true)}
+          onMouseLeave={()=>setIsMouseOver(false)}>
+          <button type="button" onClick={prev} 
+                  style={{
+                    top:'-8%', left:'50%', transform: 'translate(-50%, -50%)', 
+                    position:'absolute', backgroundColor:'teal', color:'white',
+                    border:'none',padding:'12px 24px', borderRadius:'5px',
+                    }}>Jump</button>
+          <button type="button" onClick={prev} 
+                  style={{width:'80px',
+                    left:'-22%', top:'50%', transform: 'translate(-50%, -50%)', 
+                  position:'absolute',backgroundColor:'grey', color:'white',
+                  border:'none',padding:'6px 4px', borderRadius:'5px',fontSize:'18px'
+                  }}>Previous</button>
+          <button type="button" onClick={next} 
+                  style={{ width:'80px',
+                  right:'-62%', top:'50%', transform: 'translate(-50%, -50%)', 
+                  position:'absolute', backgroundColor:'darkred', color:'white',
+                  border:'none',padding:'6px 12px', borderRadius:'5px', fontSize:'20px'
+                  }}>Next</button>
+          <button type="button" onClick={prev} 
+                  style={{
+                  bottom:'-18%', left:'50%', transform: 'translate(-50%, -50%)', 
+                  position:'absolute', backgroundColor:'gold', color:'black', 
+                  border:'none', padding:'6px 12px', borderRadius:'5px', fontSize:'20px'
+                  }}>Jump</button>
+            <div>{pagesArr.map((Page) => {return Page })}</div>
+            </div>
         </Container>
       </>
     );  
