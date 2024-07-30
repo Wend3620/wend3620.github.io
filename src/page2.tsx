@@ -32,23 +32,29 @@ function Page2() {
           }}
           initial={false}
           animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown? [0,90, 180, 0]:[0,-90, -180, 0]}}
-          transition={{delay: isVisible ? 0.15 : 0, duration: 1}}
+          // transition={{delay: isVisible ? 0.15 : 0, duration: 1}}
           onWheel={onWheel}
         >
-          <img alt='images' src={src} width='200px' 
-            style={{top:'50%', left:'100%', transform: 'translate(0%, 50%)'}}/>   {/* className="d-block mx-auto" */}
+          <img alt='images' src={src} width='200px' //Different height leads to different margin
+            style={{top:'50%', transform: 'translate(0%, 50%)'}}/>   {/* className="d-block mx-auto" */}
         </motion.div>
       )
     }
     document.body.style.overflow = isMouseOver? "hidden" : "scroll";
     function next(){
-      let newPage = (+(currentPage)+1) % pagesArr.length;
+      let newPage = ((currentPage)+1) % pagesArr.length;
+      setIsScrollDirectionUp(false);
+      setCurrentPage(newPage);
+    }
+
+    function jumpDown(){
+      let newPage = ((currentPage)+3) % pagesArr.length;
       setIsScrollDirectionUp(false);
       setCurrentPage(newPage);
     }
   
     function prev(){
-      let newPage = +(currentPage) - 1;
+      let newPage = (currentPage) - 1;
   
       if (newPage<0) {
         newPage = pagesArr.length - 1;
@@ -56,7 +62,17 @@ function Page2() {
   
       setIsScrollDirectionUp(true);
       setCurrentPage(newPage);
-      
+    }
+
+    function jumpUp(){
+      let newPage = (currentPage) - 3;
+  
+      if (newPage<0) {
+        newPage = pagesArr.length - 3;
+      }
+  
+      setIsScrollDirectionUp(true);
+      setCurrentPage(newPage);
     }
     /**
    * @param event {Event}
@@ -97,7 +113,7 @@ function Page2() {
           }}
           onMouseEnter={()=>setIsMouseOver(true)}
           onMouseLeave={()=>setIsMouseOver(false)}>
-          <button type="button" onClick={prev} 
+          <button type="button" onClick={jumpUp} 
                   style={{
                     top:'-8%', left:'50%', transform: 'translate(-50%, -50%)', 
                     position:'absolute', backgroundColor:'teal', color:'white',
@@ -115,7 +131,7 @@ function Page2() {
                   position:'absolute', backgroundColor:'darkred', color:'white',
                   border:'none',padding:'6px 12px', borderRadius:'5px', fontSize:'20px'
                   }}>Next</button>
-          <button type="button" onClick={prev} 
+          <button type="button" onClick={jumpDown} 
                   style={{
                   bottom:'-18%', left:'50%', transform: 'translate(-50%, -50%)', 
                   position:'absolute', backgroundColor:'gold', color:'black', 
