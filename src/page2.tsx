@@ -29,6 +29,8 @@ function Page2() {
             height: '400px',
             width: "200px",
             position: 'absolute',
+            marginLeft:'-50%', 
+            backgroundPositionY:'center',
           }}
           initial={false}
           animate={{opacity: isVisible ? 1 : 0, y: isVisible ? 0 : isDown? [0,90, 180, 0]:[0,-90, -180, 0]}}
@@ -36,7 +38,7 @@ function Page2() {
           onWheel={onWheel}
         >
           <img alt='images' src={src} width='200px' //Different height leads to different margin
-            style={{top:'50%', transform: 'translate(0%, 50%)'}}/>   {/* className="d-block mx-auto" */}
+            style={{}}/>   {/* className="d-block mx-auto" */}
         </motion.div>
       )
     }
@@ -68,7 +70,7 @@ function Page2() {
       let newPage = (currentPage) - 3;
   
       if (newPage<0) {
-        newPage = pagesArr.length - 3;
+        newPage = pagesArr.length + newPage;
       }
   
       setIsScrollDirectionUp(true);
@@ -104,13 +106,13 @@ function Page2() {
         <General currentPage='/pg2'/>
         
         <Container className='content'>
-          
+          <div>
           <p></p>
           <h1><b>Page2!!!</b></h1>
           <p>Current page is: {currentPage}</p>
-          <div style={{borderStyle: 'dashed', maxHeight:"400px" , height:"400px", width:"206px",
-                      position:'absolute',left:'50%', top:'200px'
-          }}
+          </div>
+          <div style={{borderStyle: 'dashed', maxHeight:"400px" , height:"400px", width:"206px", flexWrap: 'wrap',
+                      position:'absolute', left:'50%', top:'50%', display: "flex", justifyContent: "center"}}
           onMouseEnter={()=>setIsMouseOver(true)}
           onMouseLeave={()=>setIsMouseOver(false)}>
           <button type="button" onClick={jumpUp} 
@@ -126,7 +128,7 @@ function Page2() {
                   border:'none',padding:'6px 4px', borderRadius:'5px',fontSize:'18px'
                   }}>Previous</button>
           <button type="button" onClick={next} 
-                  style={{ width:'80px',
+                  style={{ width:'80px',zIndex:1, 
                   right:'-62%', top:'50%', transform: 'translate(-50%, -50%)', 
                   position:'absolute', backgroundColor:'darkred', color:'white',
                   border:'none',padding:'6px 12px', borderRadius:'5px', fontSize:'20px'

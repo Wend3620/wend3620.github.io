@@ -76,7 +76,7 @@ div.content {
     border-radius: 15px;
     
   }
-  .sidebar a {display: block;}
+  .sidebar a {display: block; width: 100%;}
   div.content {margin-left: 0;}
 }
 
