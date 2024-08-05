@@ -16,14 +16,17 @@ function Page1() {
       
       <Container className="content">
         <p></p>
-        <h2>Page1</h2>
-        
+        <h2>A title</h2>
+        <p>So this exercise is almost completed... but I don't know how long does it take for the last part to be done...
+          <br/>
+            Good luck to myself...!
+        </p>
         <p>If you see this then I hope you have a great day</p>
         
         <div style={{borderStyle:'dashed', width:'200px', 
                     height:'400px', textAlign:'center',
                     color: isMouseOver? 'black': 'darkred',
-                    position:'absolute',left:'50%', top:'200px',
+                    position:'absolute',left:'50%', top:'40%',
                     }}
               onMouseEnter={()=>setIsMouseOver(true)}
               onMouseLeave={()=>setIsMouseOver(false)}>
