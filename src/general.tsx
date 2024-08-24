@@ -43,7 +43,7 @@ export default function General({currentPage}: {readonly currentPage:string}){
         <a className={currentPage==='/pg3'? "active" : ' '} href="#/pg3">Page 3</a>
         <NavDropdown
           id="nav-dropdown"
-          title="More"
+          title="Chaos"
           menuVariant="dark"
           drop={isDesktopOrLaptop ? "end" : 'down-centered'}
         >
@@ -54,7 +54,7 @@ export default function General({currentPage}: {readonly currentPage:string}){
           <NavDropdown.Item href="#action/3.3">Sleep</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item href="#action/3.4">
-            Separated link
+            锟斤拷
           </NavDropdown.Item>
         </NavDropdown>
           
