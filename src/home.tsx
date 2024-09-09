@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container} from 'react-bootstrap';  
 import './decor/helper.css';
 import General from './general';
-
+import { Component  } from './trial';
 export interface GeneralProps {
   currentPage: string,
 }
@@ -20,7 +20,10 @@ function Home() {
         <p>I am getting better at this!</p>
         <p>Hope there could be a major update soon!</p>
         <h3>CAPITALIZED</h3>
+        <Component/>
       </Container>
+      <h1>A new age has come!</h1>
+      <h1>BARE WITNESS!!!!</h1>
     </>
     // <>  
     // <Container className='p-4'>  

@@ -53,7 +53,7 @@ export default function General({currentPage}: {readonly currentPage:string}){
           </NavDropdown.Item>
           <NavDropdown.Item href="#action/3.3">Sleep</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href="#action/3.4">
+          <NavDropdown.Item href="https://34.162.230.12:8000/">
             锟斤拷
           </NavDropdown.Item>
         </NavDropdown>

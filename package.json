@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "homepage": "https://Wend3620.github.io/",
   "type": "module",
+  "proxy": "https://34.162.230.12:5000/",
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",

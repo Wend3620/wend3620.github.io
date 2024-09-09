@@ -7,6 +7,8 @@ import { useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
 import General from './general';
 
+// let [mark, setMark]= useState<{ x: number; y: number; width: number; height: number; key: string }[]>([]);
+let mark: number[] = [0, 0, 0, 0];
 const DrawAnnotations = () => {
   const [annotations, setAnnotations] = useState<{ x: number; y: number; width: number; height: number; key: string }[]>([]);
   const [newAnnotation, setNewAnnotation] = useState<{ x: number; y: number; width: number; height: number; key: string }[]>([]);
@@ -54,6 +56,19 @@ const DrawAnnotations = () => {
   };
 
   const annotationsToDraw = [...annotations, ...newAnnotation];
+  // annotationsToDraw.map(value => {
+  //   setMark([{
+  //       x: value.x,
+  //       y: value.y,
+  //       width: value.width,
+  //       height: value.height,
+  //       key: value.key
+  //   }])
+  // }) 
+  mark[0] = annotationsToDraw[0].x;
+  mark[1] = annotationsToDraw[0].y;
+  mark[2] = annotationsToDraw[0].width;
+  mark[3] = annotationsToDraw[0].height;
   return (
     <Stage
       onMouseDown={handleMouseDown}
@@ -81,6 +96,62 @@ const DrawAnnotations = () => {
   );
 };
 
+function Trigger() {
+      const jsonData = {
+        "Values": [
+            {
+                "x": mark[0], 
+                "width": mark[2]
+            },
+            {
+                "y": mark[1], 
+                "height": mark[3]
+            }
+        ]
+      }
+
+  
+    function handleClick() {
+      
+      // Send data to the backend via POST
+      fetch('https://34.162.230.12:5000/', {  // Enter your IP address here
+  
+        method: 'POST', 
+        mode: 'cors', 
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':'*'
+        },
+        
+        body: JSON.stringify(jsonData) // body data type must match "Content-Type" header
+  
+      }).then((response) => response.json())
+      .then((data) => {
+         console.log(data);
+         // Handle data
+      })
+      .catch((err) => {
+         console.log(JSON.stringify(err));
+      });
+      
+    }
+  
+    return (
+      <button onClick={handleClick} tabIndex={0} style={{
+        textAlign: 'center',
+        width: '100px',
+        border: '1px solid gray',
+        borderRadius: '5px'
+      }}>
+        Send data to backend
+      </button>
+    );
+  
+  }
+  
+  export { Trigger };
+
 export default function Page3() {
   return (  
     <>
@@ -92,7 +163,7 @@ export default function Page3() {
       <h2>Cursor practice</h2>
       <p style={{textAlign: 'center',}}><h3>Press and drag!</h3></p>
       <DrawAnnotations />
-      
+      <Trigger/>
       </Container>
     </>
   );  

@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';  
 
-import {Routes,Route, HashRouter,Navigate} 
+import {Routes,Route, HashRouter} 
 from "react-router-dom";
 import Home from "./home.tsx";
 import Page1 from "./page1.tsx";
@@ -18,7 +18,7 @@ function App() {
                 <Route path="/pg1" element={<Page1/>}/>
                 <Route path="/pg2" element={<Page2/>}/>
                 <Route path="/pg3" element={<Page3/>}/>
-                <Route path="/#action/3.4" element={<Navigate to='http://34.162.230.12:8000/'/>}/>
+                {/* <Route path="/action/3.4" element={<a href='http://34.162.230.12:8000/'/>}/> */}
                 
                 {/* If any route mismatches the upper 
       route endpoints then, redirect triggers 
