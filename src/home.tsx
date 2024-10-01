@@ -3,27 +3,35 @@ import {Container} from 'react-bootstrap';
 import './decor/helper.css';
 import General from './general';
 import { Component  } from './trial';
+import { useState } from 'react';
 export interface GeneralProps {
   currentPage: string,
 }
 //Fancy constant, but how good is it?
 // 
 function Home() {  
-  
+  const [isOpen, setIsOpen] = useState(false);
+  if (isOpen){
+    document.documentElement.style.setProperty('--unlockChoices', 'auto')
+    document.documentElement.style.setProperty('--unlock', '0')
+  }else{
+    document.documentElement.style.setProperty('--unlockChoices', 'none')
+    document.documentElement.style.setProperty('--unlock', 'blur(0.6rem)')
+  }
   return (  
     <>
       <General currentPage='/'/>
-
+      
       <Container className="content">
         <p></p>
-        <h2>Practice 2</h2>
-        <p>I am getting better at this!</p>
-        <p>Hope there could be a major update soon!</p>
-        <h3>CAPITALIZED</h3>
+        <h2>Practice 3</h2>
+        <p>Guys, sorry for the delay, I am working on the update!!!</p>
         <Component/>
+        <div style={{pointerEvents:'auto', padding:'60px'}}>
+          <button className='fool' onClick={() => setIsOpen(!isOpen)}>Log in?</button> 
+        </div>
       </Container>
-      <h1>A new age has come!</h1>
-      <h1>BARE WITNESS!!!!</h1>
+      
     </>
     // <>  
     // <Container className='p-4'>  
