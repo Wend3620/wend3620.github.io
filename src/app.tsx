@@ -2,11 +2,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {Routes,Route, HashRouter} 
 from "react-router-dom";
-import Home from "./home.tsx";
-import Page1 from "./page1.tsx";
-import Page2 from "./page2.tsx";
-import Page3 from "./page3.tsx";
-import Buggy from "./buggy.tsx";
+// import Home from "./home.tsx";
+import Page1 from "./pg1.tsx";
+import Buggy from './buggy.tsx';
+import About from './about.tsx';
 function App() {  
     return (
         <>
@@ -14,10 +13,11 @@ function App() {
         Seems like we need to use hash router as gitpages support it more*/}
         <HashRouter>
             <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/pg1" element={<Page1/>}/>
-                <Route path="/pg2" element={<Page2/>}/>
-                <Route path="/pg3" element={<Page3/>}/>
+                <Route path="/" element={<Page1/>}/>
+                <Route path="/Model1" element={<Page1/>}/>
+                <Route path="/Model2" element={<Page1/>}/>
+                <Route path="/Model3" element={<Page1/>}/>
+                <Route path="/About" element={<About/>}/>
                 {/* <Route path="/action/3.4" element={<a href='http://34.162.230.12:8000/'/>}/> */}
                 
                 {/* If any route mismatches the upper 

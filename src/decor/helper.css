@@ -12,14 +12,15 @@ body{
 }
 .fool {
 
-  width: 200px;
+  width: 100px;
   height: 200px;
   position: absolute;
   pointer-events: true;
   z-index:5;
-  border: 0px;
-  background-color:#FFFFF1;
-  color:#FFFFFF
+  border: 10px;
+  opacity: 0.1;
+  background-color:#e9e8e0;
+  color:transparent;
 }
 
 .sidebar {

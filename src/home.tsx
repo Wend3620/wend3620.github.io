@@ -1,16 +1,24 @@
-import 'bootstrap/dist/css/bootstrap.min.css';  
-import {Container} from 'react-bootstrap';  
-import './decor/helper.css';
-import General from './general';
-import { Component  } from './trial';
-import { useState } from 'react';
-export interface GeneralProps {
-  currentPage: string,
-}
-//Fancy constant, but how good is it?
-// 
-function Home() {  
-  const [isOpen, setIsOpen] = useState(false);
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+
+export default function Home() {
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  const [isOpen, setIsOpen] = React.useState(false);
   if (isOpen){
     document.documentElement.style.setProperty('--unlockChoices', 'auto')
     document.documentElement.style.setProperty('--unlock', '0')
@@ -18,37 +26,45 @@ function Home() {
     document.documentElement.style.setProperty('--unlockChoices', 'none')
     document.documentElement.style.setProperty('--unlock', 'blur(0.6rem)')
   }
-  return (  
-    <>
-      <General currentPage='/'/>
-      
-      <Container className="content">
-        <p></p>
-        <h2>Practice 3</h2>
-        <p>Guys, sorry for the delay, I am working on the update!!!</p>
-        <Component/>
-        <div style={{pointerEvents:'auto', padding:'60px'}}>
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        {['', 'pg1', 'pg2', 'pg3'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton href= {"#/"+text} >
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text}/>
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
+
+  return (
+    <div>
+      <Button onClick={toggleDrawer(true)}>Open drawer</Button>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+      <div style={{pointerEvents:'auto', padding:'60px'}}>
           <button className='fool' onClick={() => setIsOpen(!isOpen)}>Log in?</button> 
-        </div>
-      </Container>
-      
-    </>
-    // <>  
-    // <Container className='p-4'>  
-    //   <Button variant="light" onClick={showSidebar}>  
-    //     Launch Sidebar  
-    //   </Button>  
-    //   <Offcanvas placement='start' show={show} onHide={closeSidebar}>  
-    //     <Offcanvas.Header closeButton>  
-    //       <Offcanvas.Title>Sidebar Title</Offcanvas.Title>  
-    //     </Offcanvas.Header>  
-    //     <Offcanvas.Body>  
-    //       <p>Images</p>
-    //       <p>Some dummy text, we can have any text or element at this place. </p> 
-    //     </Offcanvas.Body>  
-    //   </Offcanvas>  
-    //   </Container>  
-    // </>  
-  );  
-}  
-export default Home;  
+      </div>
+    </div>
+  );
+}
