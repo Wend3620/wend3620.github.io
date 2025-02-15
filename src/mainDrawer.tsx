@@ -210,15 +210,19 @@ export default function MiniDrawer() {
           (element as HTMLElement).style.display = isVisible ? 'block' : 'none';
         });
       });
-        svgDoc.documentElement.style.width='95vw';
-        svgDoc.documentElement.style.height='95vh';
+        svgDoc.documentElement.style.width='105vw';
+        svgDoc.documentElement.style.height='100vh';
         svgDoc.documentElement.style.marginRight = '0px';
-        svgDoc.documentElement.style.paddingRight = '150px';
-        svgDoc.documentElement.style.marginLeft = '-180px';
-        svgDoc.documentElement.style.paddingLeft = '10px';
+        svgDoc.documentElement.style.paddingRight = '160px';
+        svgDoc.documentElement.style.marginLeft = '-220px';
+        svgDoc.documentElement.style.paddingLeft = '40px';
+        svgDoc.documentElement.style.paddingBottom = '20px';
+        svgDoc.documentElement.style.paddingTop = '10px';
         // svgDoc.documentElement.style.backgroundColor = 'black';
         return svgDoc.documentElement.outerHTML;
       };
+  
+  // Setting up time for buttons
   const times0 = [];
 
   for (let hour = -24; hour <0; hour+=6) {
