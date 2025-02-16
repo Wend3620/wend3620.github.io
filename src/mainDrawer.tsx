@@ -29,8 +29,8 @@ import ComputerIcon from '@mui/icons-material/Computer';
 
 import Collapse from '@mui/material/Collapse';
 
-import {PanelBar, SliderControl, LayerSelect, LocationSelect} from './panelbar.tsx'
-import test1 from './compo/testing.svg'
+import {PanelBar, SliderControl, LayerSelect, LocationSelect, PressureControl} from './panelbar.tsx'
+import test1 from './compo/testing1.svg'
 
 const drawerWidth = 240;
 const panelWidth = 300;
@@ -153,6 +153,7 @@ export default function MiniDrawer() {
     // const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(initialValue);
+    const [pValue, setPValue] = React.useState(initialValue+500);
     const [drag, setDrag] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -169,9 +170,11 @@ export default function MiniDrawer() {
     const sampleSVG = test1;
 
     const layerSelectors = {
-        'Vorticity': '#GeoContourSet_1',
-        'GPH': '#GeoContourSet_2',
-        'Pot.Temp': '#GeoContourSet_3',
+        'Vorticity(Filled)': '#GeoContourSet_1',
+        'W(Filled)': '#GeoContourSet_2',
+        'GPH(Black)': '#GeoContourSet_3',
+        'Pot. Temp(Red)': '#GeoContourSet_4',
+        'Thickness(Dark Orange)': '#GeoContourSet_5',
       };
       React.useEffect(() => {
         fetch(sampleSVG)
@@ -210,14 +213,14 @@ export default function MiniDrawer() {
           (element as HTMLElement).style.display = isVisible ? 'block' : 'none';
         });
       });
-        svgDoc.documentElement.style.width='105vw';
-        svgDoc.documentElement.style.height='100vh';
-        svgDoc.documentElement.style.marginRight = '0px';
-        svgDoc.documentElement.style.paddingRight = '160px';
-        svgDoc.documentElement.style.marginLeft = '-220px';
-        svgDoc.documentElement.style.paddingLeft = '40px';
-        svgDoc.documentElement.style.paddingBottom = '20px';
-        svgDoc.documentElement.style.paddingTop = '10px';
+        svgDoc.documentElement.style.width='100vw';
+        svgDoc.documentElement.style.height='95vh';
+        // svgDoc.documentElement.style.marginRight = '0px';
+        // svgDoc.documentElement.style.paddingRight = '160px';
+        // svgDoc.documentElement.style.marginLeft = '-220px';
+        // svgDoc.documentElement.style.paddingLeft = '40px';
+        // svgDoc.documentElement.style.paddingBottom = '20px';
+        // svgDoc.documentElement.style.paddingTop = '10px';
         // svgDoc.documentElement.style.backgroundColor = 'black';
         return svgDoc.documentElement.outerHTML;
       };
@@ -293,7 +296,8 @@ export default function MiniDrawer() {
       </AppBar>
       {/* Core Left panel */}
       <PanelBar position='fixed' open={open} sx={{left:0}}>
-        <Box sx={[{pt:11, pb:1 ,maxWidth: panelWidth},{ 
+        <PressureControl value={pValue} setValue={setPValue}/>
+        <Box sx={[{mt:-65, pb:1 ,maxWidth: panelWidth},{ 
           '&:hover': {bgcolor: 'primary.light', }, }]}>
         <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly',  alignContent: 'space-around',
              }, {height:225, pb:0}]}   > 
@@ -378,7 +382,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List sx={{mt:1}}>
-          {['Model1', 'Model2', 'Model3'].map((text) => (
+          {['EC-AIFS', 'Model2(GFS?)', 'Model3(TBD)'].map((text) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' ,}}>
               <ListItemButton href= {"#/"+text}
                 sx={[ {minHeight: 48, px: 2.5},
@@ -440,7 +444,7 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-      <Container sx={{mt:6, ml:50, height: '90vh', width: '200vw', position: 'fixed'
+      <Container sx={{mt:6, ml:4, position: 'fixed'
           // ,border: 2
       }}
         dangerouslySetInnerHTML={{ __html: getProcessedSVG()}}/>

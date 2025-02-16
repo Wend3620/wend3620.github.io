@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import Divider from '@mui/material/Divider';
 import { styled, createTheme} from '@mui/material/styles';
 import { Slider, Stack,  Button, Box, } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -393,3 +393,92 @@ export function LocationSelect() {
     );
   }
 
+  export const PressureControl: React.FC<SliderControlProps> = ({
+    value,
+    setValue,
+    min = 100,
+    max = 1000,
+  }) => {
+
+  const handleSliderChange = (event:any) => {
+    setValue(Number(event.target.value));
+  }; 
+
+
+  const increment1 = (value: any) => {
+    if (value > 800)
+    setValue((value: number) => Math.min(value + 50, max));
+    else if (value == 250)
+      setValue((value: number) => Math.min(value + 150, max));
+    else if (value < 250)
+      setValue((value: number) => Math.min(value + 75, max));
+    else
+      setValue((value: number) => Math.min(value + 100, max));
+    };
+
+    const decrement1 = (value: any) => {
+      if (value > 800)
+      setValue((value: number) => Math.min(value - 50, max));
+      else if (value == 400)
+        setValue((value: number) => Math.min(value - 150, max));
+      else if (value < 300)
+        setValue((value: number) => Math.min(value - 75, max));
+      else
+        setValue((value: number) => Math.min(value - 100, max));
+      };
+
+    // For the Slider module ---------------------------
+    const marks = [{value: 100, label: '1000',},
+    {value: 175, label: '925',},
+    {value: 250, label: '850',},
+    {value: 400, label: '700',},
+    {value: 500, label: '600',},
+    {value: 600, label: '500',},
+    {value: 700, label: '400',},
+    {value: 800, label: '300',},
+    {value: 850, label: '250',},
+    {value: 900, label: '200',},
+    {value: 950, label: '150',},
+    {value: 1000, label: '100',},];
+
+    function valuetext(label: number) {
+      return `${label}h`;
+    }
+    return ( 
+  <Stack direction="row"
+          sx={{ ml:40, mt:12, height: 500, width: 100, zIndex:10,}}> 
+          {/* borderRadius: '50%' */}
+    <Slider
+      aria-label="Time"
+      value={value}
+      defaultValue={500}
+      valueLabelDisplay="off"
+      getAriaValueText={valuetext}
+      step={null}
+      marks={marks}
+      orientation = "vertical"
+      min={min}
+      max={max}
+      color='secondary'
+      onChange={handleSliderChange}
+
+      sx={{'& .MuiSlider-thumb': {
+          borderRadius: '0px',
+          width:0.8,
+          height: 0.02
+        },ml:-2, mt:2,width: 7,height: 300}}
+    />
+
+    <Button variant="contained" size="small" 
+    endIcon={<ArrowBackIosNewIcon sx={{ml:-1.5, width: 20, transform: 'rotate(-90deg)'}}/>} 
+    onClick={() => decrement1(value)}
+    sx={{ml: 3, height: 30, minWidth:30,px:0, mr:0}}></Button>
+    
+    <Button variant="contained" size="small" 
+    startIcon={<ArrowForwardIosIcon sx={{ml:1, width: 20,transform: 'rotate(-90deg)'}}/>} 
+    onClick={() => increment1(value)}
+    sx={{ml: 1, height:30, minWidth:30, px:0}}> </Button>
+    <Box sx = {{fontSize:20, ml:3}}>Pressure Control</Box>
+    <Divider/>
+  </Stack>
+  )};
