@@ -250,6 +250,7 @@ const data = [
 export function LayerSelect ({children}: {children?: React.ReactNode}){
     const [open, setOpen] = React.useState(true);
     const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+    const isMobile = useMediaQuery(dayTheme.breakpoints.down('sm'));
     let panelWidth = isTablet?200:300;
     // Animation
     const underlining = {
@@ -260,7 +261,7 @@ export function LayerSelect ({children}: {children?: React.ReactNode}){
         '&:before': {
           content: "''",
           position: 'absolute',
-          width: open ? panelWidth : '60%',
+          width: open ? isMobile? '100%': panelWidth : '60%',
           height: '3px',
           bottom: '-5px',
           left: '-48px',
@@ -272,13 +273,13 @@ export function LayerSelect ({children}: {children?: React.ReactNode}){
         },
         '&:hover:before': {
           visibility: 'visible',
-          width: panelWidth,
+          width: isMobile? '100%': panelWidth,
         },
         
       },
     }
     return (
-      <Box sx={{width: panelWidth}} >
+      <Box sx={{width: isMobile? '100%': panelWidth}} >
         {/* [{width: panelWidth, mt:5}, open 
             ? {bgcolor: 'rgba(225, 160, 0, 1)',}
             : {bgcolor: 'rgba(225, 170, 0, 1)',},
@@ -330,6 +331,7 @@ export function LocationSelect() {
     const [open, setOpen] = React.useState(true);
     // Animation
     const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+    const isMobile = useMediaQuery(dayTheme.breakpoints.down('sm'));
     let panelWidth = isTablet ? 200 : 300;
     const underlining = {
       link: {
@@ -339,7 +341,7 @@ export function LocationSelect() {
         '&:before': {
           content: "''",
           position: 'absolute',
-          width: open ? panelWidth : '85%',
+          width: open ? isMobile? '100%': panelWidth : '85%',
           height: '3px',
           bottom: '-5px',
           left: '-48px',
@@ -351,13 +353,13 @@ export function LocationSelect() {
         },
         '&:hover:before': {
           visibility: 'visible',
-          width: panelWidth,
+          width: isMobile? '100%': panelWidth,
         },
         
       },
     }
     return (
-      <Box sx={{width: panelWidth, mt:5}} >
+      <Box sx={{width: isMobile? '100%': panelWidth, mt:0}} >
         {/* [{width: panelWidth, mt:5}, open 
             ? {bgcolor: 'rgba(225, 160, 0, 1)',}
             : {bgcolor: 'rgba(225, 170, 0, 1)',},
@@ -575,15 +577,15 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
   <Stack direction="row"
           sx={sx}> 
           {/* borderRadius: '50%' */}
-    <Box sx = {[{fontSize:15, maxWidth:90, pl:1, height:30, 
+    <Box sx = {[{fontSize:15, width:100, pl:0, height:30, 
         display: '-webkit-box', WebkitLineClamp: 2,         // Exactly 2 lines
         WebkitBoxOrient: 'vertical'}]} >
       {/* <Divider /> */}
-      Pressure <br/>Control</Box>
+      Pressure <br/>Control(hPa)</Box>
     <Button variant="contained" size="small" 
     endIcon={<ArrowBackIosNewIcon  sx={{mr: -0.5}}/>} 
     onClick={() => decrement1(value)}
-    sx={{mt: 0.2, height: 30, px:3, ml:2}}>Lower</Button>
+    sx={{mt: 0.2, height: 30, px:3, ml:0}}>Lower</Button>
 
     <Slider
       aria-label="Time"
