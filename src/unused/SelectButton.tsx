@@ -87,106 +87,159 @@
 //   );
 // }
 
-// import React from 'react'
-
-// import makeStyles from "@mui/styled-engine-sc"
-
-// import ArrowDropDownIcon from '@mui/base'
-// import Button from '@mui/material'
-// import ButtonGroup from '@mui/material'
-// import Menu from '@mui/material'
-
-// const useStyles = makeStyles({
-//   button: {},
-//   buttonDropdown: {},
-// })
-
-// type SelectButtonProps = {
-//   textPrefix?: string
-//   onChange?: (event: React.ChangeEvent<{ name?: string; value?: unknown }>) => void
-//   onClick?: (event: React.ChangeEvent<{ name?: string; value?: unknown }>) => void
-//   value?: string
-//   children: React.ReactNode
-//   classes?: any
+// import { useState } from 'react';
+// import tres1 from '../compo/CONUS500.svg'
+// import tres2 from '../compo/CONUS500_vo.svg'
+// const LayerToggleDemo = () => {
+//   // Track visibility state for multiple layers
+//   const [layersVisible, setLayersVisible] = useState({
+//     layer1: true,
+//     layer2: true,
+//     layer3: true
+//   });
+  
+//   // Debug information to see current state
+//   const [debugInfo, setDebugInfo] = useState("");
+  
+//   // Toggle function with logging
+// interface LayerState {
+//     layer1: boolean;
+//     layer2: boolean;
+//     layer3: boolean;
 // }
 
-// const SelectButton = React.forwardRef<HTMLDivElement, SelectButtonProps>((
-//   props: SelectButtonProps,
-//   ref: React.Ref<HTMLDivElement>,
-// ) => {
-//   const { textPrefix, onChange = () => {}, onClick = () => {}, value: initialValue, children } = props
-//   const classes = useStyles(props)
-//   const anchorRef = (ref as React.RefObject<HTMLDivElement>) || React.useRef<HTMLDivElement>(null)
-//   const [isOpen, setOpen] = React.useState(false)
-//   const valueRef = React.useRef(initialValue)
-//   valueRef.current = initialValue
+// type LayerName = keyof LayerState;
 
-//   const handleItemClick = (value: string) => (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-//     setOpen(false)
-//     Object.defineProperty(e, 'target', { writable: true, value: { value } })
-//     valueRef.current = value
-//     onChange(e)
-//   }
+// const toggleLayer = (layerName: LayerName): void => {
+//     console.log(`Toggling ${layerName} from ${layersVisible[layerName]} to ${!layersVisible[layerName]}`);
+    
+//     setLayersVisible((prev: LayerState) => {
+//         const newState: LayerState = {
+//             ...prev,
+//             [layerName]: !prev[layerName]
+//         };
+        
+//         // Update debug info
+//         setDebugInfo(`${layerName} set to: ${!prev[layerName]}`);
+        
+//         return newState;
+//     });
+// };
+  
+//   // Styling
+//   const buttonStyle = (layerName: LayerName) => ({
+//     padding: '10px 15px',
+//     margin: '0 10px 10px 0',
+//     backgroundColor: layersVisible[layerName] ? '#4CAF50' : '#f44336',
+//     color: 'white',
+//     border: 'none',
+//     borderRadius: '4px',
+//     cursor: 'pointer',
+//     zIndex: 100, // Ensure button is above layers
+//     position: 'relative' // Needed for z-index to work
+//   });
+  
+//   const layerStyle = {
+//     width: '100%',
+//     height: '100px',
+//     margin: '10px 0',
+//     display: 'flex',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     color: 'white',
+//     fontWeight: 'bold',
+//     position: 'relative' as const, // Normal positioning for layers
+//     pointerEvents: 'none' as const // Make sure layers don't block button clicks
+//   };
 
-//   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-//     const value = valueRef.current
-//     Object.defineProperty(e, 'target', { writable: true, value: { value } })
-//     valueRef.current = value
-//     onClick(e)
-//   }
+//   return (
+//     <div className="p-6 bg-white rounded-lg shadow-lg">
+//       <h1 className="text-2xl font-bold mb-4">Layer Visibility Toggle Demo</h1>
+      
+//       {/* Debug Panel */}
+//       <div className="bg-gray-100 p-3 mb-4 rounded">
+//         <h3 className="font-bold">Debug Info:</h3>
+//         <pre>{JSON.stringify(layersVisible, null, 2)}</pre>
+//         {debugInfo && <p className="text-blue-600">{debugInfo}</p>}
+//       </div>
+      
+//       {/* Buttons - in their own container above layers */}
+//       <div className="mb-4 relative z-10">
+//         <h2 className="text-xl mb-2">Control Buttons</h2>
+//         <button 
+//           onClick={() => toggleLayer('layer1')}
+//         >
+//           {layersVisible.layer1 ? "Hide" : "Show"} Layer 1
+//         </button>
+        
+//         <button 
+//           onClick={() => toggleLayer('layer2')}
+//         >
+//           {layersVisible.layer2 ? "Hide" : "Show"} Layer 2
+//         </button>
+        
+//         <button 
+//           onClick={() => toggleLayer('layer3')}
+//         >
+//           {layersVisible.layer3 ? "Hide" : "Show"} Layer 3
+//         </button>
+//       </div>
+      
+//       {/* Layer Container */}
+//       <div className="relative">
+//         <h2 className="text-xl mb-2">Layers</h2>
+        
+//         {/* Using display property to toggle visibility */}
+//         <div 
+//         >
+//           Layer 1
+//         </div>
+        
+//         <div 
+//         >
+//           Layer 2
+//         </div>
+        
+//         <div 
+//         >
+//           Layer 3
+//         </div>
+//       </div>
+      
+//       {/* Alternative implementation using conditional rendering */}
+//       <div className="mt-8">
+//         <h2 className="text-xl mb-2">Alternative: Conditional Rendering</h2>
+        
+//         {layersVisible.layer1 && (
+//           <div 
+//           >
+//             Layer 1 (Conditional Render)
+//             <img 
+//             src={tres1}
+//             alt="Second image" 
+//             style = {{position: 'absolute',left: 30, top: 50, zIndex:-2
+//             //   visibility: visibleLayers.layer1 ? 'hidden' : 'visible'
+//             }}
+//           />
+//           </div>
+//         )}
+        
+//         {layersVisible.layer2 && (
+//           <div 
+//           >
+//             Layer 2 (Conditional Render)
+//           </div>
+//         )}
+        
+//         {layersVisible.layer3 && (
+//           <div 
+//           >
+//             Layer 3 (Conditional Render)
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
 
-//   const items = React.Children
-//     .map(children as React.ReactElement, child => {
-//       if (!child) {
-//         return null
-//       }
-//       const selected = valueRef.current === child.props.value
-//       const valueReadable = child.props.children
-//       const item = React.cloneElement(child, {
-//         'aria-selected': selected ? 'true' : undefined,
-//         onClick: handleItemClick(child.props.value),
-//         role: 'option',
-//         selected,
-//         value: undefined, // The value is most likely not a valid HTML attribute.
-//         'data-value': child.props.value, // Instead, we provide it as a data attribute.
-//         'data-value-readable': valueReadable,
-//       })
-//       return item
-//     })
-//     .filter(item => item !== null)
-
-//   const displayName = (value: any) =>
-//     (items.find(item => item!.props['data-value'] === value)!).props['data-value-readable']
-
-//   return <>
-//     <ButtonGroup variant='contained' ref={anchorRef}>
-//       <Button
-//         className={classes.button}
-//         onClick={handleButtonClick}
-//       >
-//         { textPrefix }{ displayName(valueRef.current) }
-//       </Button>
-//       <Button
-//         className={classes.buttonDropdown}
-//         size='small'
-//         onClick={() => setOpen(true)}
-//       >
-//         <ArrowDropDownIcon />
-//       </Button>
-//     </ButtonGroup>
-//     <Menu
-//       open={isOpen}
-//       onClose={() => setOpen(false)}
-//       getContentAnchorEl={null} // needed for anchorOrigin to work
-//       anchorEl={anchorRef.current}
-//       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-//       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-//     >
-//       { items }
-//     </Menu>
-//   </>
-// })
-
-// SelectButton.displayName = 'SelectButton'
-
-// export default SelectButton
+// export default LayerToggleDemo;

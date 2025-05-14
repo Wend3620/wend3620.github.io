@@ -23,5 +23,5 @@ flask
 *.njsproj
 *.sln
 *.sw?
-
+src/unused/*
 old

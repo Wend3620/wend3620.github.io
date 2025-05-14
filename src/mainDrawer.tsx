@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { styled, Theme, CSSObject,createTheme, ThemeProvider} from '@mui/material/styles';
-import {Toolbar, Button, Box, FormGroup, FormControlLabel,
+import {Toolbar, Button, Box, FormControlLabel, FormGroup,
   Checkbox,
-  Container} from '@mui/material';
+  Stack
+} from '@mui/material';
 import MuiDrawer  from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 // useTheme,
@@ -26,14 +27,25 @@ import ArticleIcon from '@mui/icons-material/Article';
 import ScienceIcon from '@mui/icons-material/Science';
 import ComputerIcon from '@mui/icons-material/Computer';
 // import { positions } from '@mui/system';
-
+import bk1 from './compo/CONUS250.svg'
+import bk2 from './compo/CONUS500.svg'
+import bk4 from './compo/CONUS850.svg'
+import tres1 from './compo/CONUS500_gph.svg'
+import tres2 from './compo/CONUS500_vo.svg'
+import tres3 from './compo/CONUS500_w.svg'
+import tres4 from './compo/CONUS500_thta.svg'
+import tres5 from './compo/CONUS500_tkns.svg'
+import cmap1 from './compo/vo_cmap.svg'
+import cmap2 from './compo/w_cmap.svg'
+import blankSvg from './compo/blank.svg'
 import Collapse from '@mui/material/Collapse';
 
 import {PanelBar, SliderControl, LayerSelect, LocationSelect, PressureControl} from './panelbar.tsx'
-import test1 from './compo/testing1.svg'
+// import test1 from './compo/testing1.svg' 
 
 const drawerWidth = 240;
 const panelWidth = 300;
+const selectorWidth = 80;
 
 const dayTheme = createTheme({
   palette: {
@@ -144,87 +156,63 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
+export default function MainDrawer() {
+  interface LayerState {
+    layer1: boolean;
+    layer2: boolean;
+    layer3: boolean;
+    layer4: boolean;
+    layer5: boolean;
 
-
-
-
-export default function MiniDrawer() {
+  }
+  type LayerName = keyof LayerState;
     const initialValue = 0;
+    const initVal = 500;
     // const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(initialValue);
-    const [pValue, setPValue] = React.useState(initialValue+500);
+    const [pValue, setPValue] = React.useState(initVal);
     const [drag, setDrag] = React.useState(false);
-
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-      setOpen(false);
-    };
-
-     //SVG Process
-    const [svgContent, setSvgContent] = React.useState<string | null>(null);
-    const [layers, setLayers] = React.useState<{ [key: string]: boolean }>({});
-    const sampleSVG = test1;
-
-    const layerSelectors = {
-        'Vorticity(Filled)': '#GeoContourSet_1',
-        'W(Filled)': '#GeoContourSet_2',
-        'GPH(Black)': '#GeoContourSet_3',
-        'Pot. Temp(Red)': '#GeoContourSet_4',
-        'Thickness(Dark Orange)': '#GeoContourSet_5',
-      };
-      React.useEffect(() => {
-        fetch(sampleSVG)
-          .then(res => res.text())
-          .then(text => setSvgContent(text));
-        initializeLayers();
-      }, []);
+    const [visibleLayers, setVisibleLayers] = React.useState({
+        layer1: false,
+        layer2: false,
+        layer3: false,
+        layer4: false,
+        layer5: false,
+    });
     
-    
-      const initializeLayers = () => {
-        const initialLayers: { [key: string]: boolean } = {};
-        Object.keys(layerSelectors).forEach(name => {
-          initialLayers[name] = true;
-        });
-        setLayers(initialLayers);
-      };
-      
-      const toggleLayer = (layerName: keyof typeof layerSelectors): void => {
-        setLayers((prev: { [key: string]: boolean }) => ({
-          ...prev,
-          [layerName]: !prev[layerName]
-        }));
-      };
-      
-      const getProcessedSVG = () => {
-        if (!svgContent) return '';
-        
-        const parser = new DOMParser();
-        const svgDoc = parser.parseFromString(svgContent, 'image/svg+xml');
-        
-        // Apply visibility to each layer using its corresponding selector
-        Object.entries(layers).forEach(([layerName, isVisible]) => {
-          const selector = layerSelectors[layerName as keyof typeof layerSelectors];
-        const elements = svgDoc.querySelectorAll(selector);
-        elements.forEach(element => {
-          (element as HTMLElement).style.display = isVisible ? 'block' : 'none';
-        });
-      });
-        svgDoc.documentElement.style.width='100vw';
-        svgDoc.documentElement.style.height='95vh';
-        // svgDoc.documentElement.style.marginRight = '0px';
-        // svgDoc.documentElement.style.paddingRight = '160px';
-        // svgDoc.documentElement.style.marginLeft = '-220px';
-        // svgDoc.documentElement.style.paddingLeft = '40px';
-        // svgDoc.documentElement.style.paddingBottom = '20px';
-        // svgDoc.documentElement.style.paddingTop = '10px';
-        // svgDoc.documentElement.style.backgroundColor = 'black';
-        return svgDoc.documentElement.outerHTML;
-      };
-  
+  const layerSelectors: Array<{id: LayerName, name: string, plot:string, type:string, cmap:string, seqCmap: number}> = [
+    {id: 'layer1', name: 'GPH(Dam, Black)', plot: tres1, type: 'None', cmap: blankSvg, seqCmap: -1},
+    {id: 'layer2', name:'Vorticity(Filled)', plot: tres2, type: 'Filled', cmap: cmap1, seqCmap: 0},
+    {id: 'layer3', name:'W(Filled)', plot: tres3, type: 'Filled', cmap: cmap2, seqCmap: 0},
+    {id: 'layer4', name:'Pot. Temp(K, Red)', plot: tres4, type: 'None', cmap: blankSvg, seqCmap: -1},
+    {id: 'layer5', name:'Thickness(Dam, Dark Orange)', plot: tres5, type: 'None', cmap: blankSvg, seqCmap: -1},
+  ];
+
+
+  const pLayers = [
+    { back: bk2, idLayers: layerSelectors }
+  ];
+  if (pValue == 850){ pLayers[0].back= bk1;}
+  if (pValue == 500){ pLayers[0].back= bk2;}
+  if (pValue == 250){ pLayers[0].back= bk4;}
+  const toggleLayer = (layerName: LayerName): void => {
+    setVisibleLayers((prev) => ({
+      ...prev,
+      [layerName]: !prev[layerName]
+    }));
+  };
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const initBoarder = 186;
+  const numCmap = 1;
+
   // Setting up time for buttons
   const times0 = [];
 
@@ -270,7 +258,7 @@ export default function MiniDrawer() {
       {/* Top line, could be removed */}
       <ThemeProvider theme={dayTheme}>
       <AppBar position="fixed" open={open} 
-        sx={{borderBottom: 3, 
+        sx={{borderBottom: 4, 
           borderColor: 'black', color: "primary", }}>
         <Toolbar>
           <IconButton
@@ -295,29 +283,30 @@ export default function MiniDrawer() {
         </Toolbar>
       </AppBar>
       {/* Core Left panel */}
-      <PanelBar position='fixed' open={open} sx={{left:0}}>
+      
+      <PanelBar position='fixed' open={open} sx={{left:0, mt: 0, maxWidth:panelWidth+selectorWidth}} >
         <PressureControl value={pValue} setValue={setPValue}/>
-        <Box sx={[{mt:-65, pb:1 ,maxWidth: panelWidth},{ 
-          '&:hover': {bgcolor: 'primary.light', }, }]}>
-        <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly',  alignContent: 'space-around',
-             }, {height:225, pb:0}]}   > 
+        <Box sx={[{mt:-60, pt: 2,pb:1 , width:'100%', maxWidth: panelWidth},
+        { '&:hover': {bgcolor: 'primary.light', }, }]}>
+        <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', 
+             }, {height:'100%',maxHeight:225, pb:0}]}   > 
         {/**/}
         {times0.map((item, index) => (
           <Button variant="contained" size="small" 
-          key={index} sx={{height: 35, my:0.5}} onClick={() => setValue(-24+(index)*6)}>
+          key={index} sx={{maxHeight: 35, my:0.5}} onClick={() => setValue(-24+(index)*6)}>
             <ListItemText primary={item.time} />
           </Button>
         ))}
 
         <Button variant="contained" size="small" 
-        sx={{height: 35, width: panelWidth-16, my:0.5}} onClick={() => setValue(0)} >
+        sx={{height: 35, width: '100%', maxWidth: panelWidth-16, my:0.5}} onClick={() => setValue(0)} >
         <ListItemText primary = 'Initialization time' /></Button>
         
         
         
         {times1.map((item, index) => (
           <Button variant="contained" size="small" 
-          key={index} sx={{height: 35, my:0.5}} onClick={() => setValue((index+1)*6)}>
+          key={index} sx={{maxHeight: 35, my:0.5}} onClick={() => setValue((index+1)*6)}>
             <ListItemText primary={item.time} />
           </Button>
         ))}
@@ -328,12 +317,12 @@ export default function MiniDrawer() {
         </Box>
         <Collapse in={drag}>
         <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly',  
-        alignContent: 'space-around',maxWidth: panelWidth, 
+        alignContent: 'space-around',
         transition: '0.8s'}]} >
         
           { times2.map((item, index) => (
           <Button variant="contained" size="small" 
-          key={index} sx={{height: 35, my:0.5}} onClick={() => setValue((index+13)*6)}>
+          key={index} sx={{maxHeight: 35, my:0.5}} onClick={() => setValue((index+13)*6)}>
             <ListItemText primary={item.time} />
           </Button>
         ))}
@@ -346,34 +335,56 @@ export default function MiniDrawer() {
             '&:hover': {bgcolor: 'primary.light', }, }]}> */}
           
         {/* </Box> */}
-        <IconButton  sx={{mx:'auto', mt:-2}} onClick={() => setDrag(!drag)}>
+        <IconButton  sx={{mx:'auto', mt:-2, right:selectorWidth/2}} onClick={() => setDrag(!drag)}>
           <ExpandCircleDownIcon sx={[{transition: '0.5s', },
               drag ? {  transform: 'rotate(-180deg)',}
                 : { transform: 'rotate(0)', }]}/>
         </IconButton>
         <Box sx={{bgcolor: 'primary.light', my: -3, height:8, width:panelWidth}} onClick={() => setDrag(!drag)}/>
+        <Box sx={{position:'flex', mt:0, overflowY:'scroll'}}>
         <LocationSelect/>
         {
         // TODO This changes the layers
         }
         <LayerSelect>
           <FormGroup sx={{flexDirection: 'row', ml: 2}}>
-            {Object.entries(layers).map(([layerName]) => (
-              <FormControlLabel
-              control={<Checkbox defaultChecked color='secondary'/>}
-                key={layerName}
-                onClick={() => toggleLayer(layerName as keyof typeof layerSelectors)}
-              label = {layerName}/>
-                
+            {layerSelectors.map(layer=> (
+                <FormControlLabel
+                  key={layer.name}
+                  control={<Checkbox color='secondary'/>}
+                  onClick={() => toggleLayer(layer.id)}
+                  label={layer.name}  />
             ))}
           </FormGroup>
         </LayerSelect>
-        
+        </Box>
         {/* <Typography variant="h6" >
           False
         </Typography> */}
       </PanelBar>
       </ThemeProvider>
+      <Box sx={{ml: 26, mt:2, width: '90%', maxWidth: 20000,position: 'absolute',}}>
+      <img src={pLayers[0].back} alt="first image" 
+          style = {{position: 'absolute', width: '100%',zIndex:0}}/>
+          
+      {layerSelectors.map(layer => (
+            visibleLayers[layer.id] && (
+              <Stack direction = 'row' sx = {{ width: '100%', maxWidth: 20000}}>
+              <Box component = 'img' src={layer.plot} alt="image" 
+                sx={{position: 'absolute', zIndex:1, width: '100%'}}
+              />
+              <Box component = 'img' src={layer.cmap} 
+              sx={{ 
+                position: 'absolute',
+                mt: 15, zIndex:1, 
+                ml: initBoarder,
+                maxHeight: 500, 
+                maxWidth:90,
+              }}/>
+              </Stack>
+              )))}
+      </Box>
+     
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           {/* <IconButton onClick={handleDrawerClose}>
@@ -385,7 +396,7 @@ export default function MiniDrawer() {
           {['EC-AIFS', 'Model2(GFS?)', 'Model3(TBD)'].map((text) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' ,}}>
               <ListItemButton href= {"#/"+text}
-                sx={[ {minHeight: 48, px: 2.5},
+                sx={[ {maxHeight: 48, px: 2.5},
                 open ? { justifyContent: 'initial',  }: {  justifyContent: 'center', },]}
               >
                 <ListItemIcon
@@ -444,10 +455,10 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-      <Container sx={{mt:6, ml:4, position: 'fixed'
+      {/* <Container sx={{mt:10, ml:20, position: 'absolute'
           // ,border: 2
-      }}
-        dangerouslySetInnerHTML={{ __html: getProcessedSVG()}}/>
+      }} Old Layer select
+        dangerouslySetInnerHTML={{ __html: getProcessedSVG()}}/> */}
     </Box>
   );
 }

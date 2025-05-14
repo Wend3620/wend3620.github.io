@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Divider from '@mui/material/Divider';
 import { styled, createTheme} from '@mui/material/styles';
-import { Slider, Stack,  Button, Box, } from '@mui/material';
+import { Slider, Stack,  Button, Box, Collapse, useMediaQuery, Skeleton,
+  SwipeableDrawer, CssBaseline,} from '@mui/material';
+import { Global } from '@emotion/react';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -18,17 +19,18 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const drawerWidth = 240;
-const panelWidth = 300;
+
+const tabletDrawerWidth = 200;
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
-export const dayTheme = createTheme({
+const dayTheme = createTheme({
   palette: {
     primary: {
       main: '#FFFFFF',
       light: '#F1F1F1',
     },
-    secondary:{
+    secondary: {
       main: "#111111",
     },
   },
@@ -38,27 +40,40 @@ export const dayTheme = createTheme({
         disableElevation: true
       }
     }
-
-  }
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 800,
+      md: 1000,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
 });
-
+let panelWidth = 300;
 export const PanelBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
     })<AppBarProps>(({ theme }) => ({
       marginLeft: `calc(${theme.spacing(7)} + 6px)`,
-      width: panelWidth,
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
+      },
+      maxWidth: panelWidth,
       height: '100vh',
       boxShadow: "none",
       flexShrink: 0,
-      whiteSpace: 'nowrap',
       variants: [
         {props: ({ open }) => open,
           style: {
+            [theme.breakpoints.between('sm', 'md')]: {
+              marginLeft: `calc(-3px + ${tabletDrawerWidth}px)`,
+            },
             marginLeft: `calc(-3px + ${drawerWidth}px)`,
             transition: theme.transitions.create(['width', 'margin'], {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.enteringScreen,
-            }),
+        }),
           },
         },
         {
@@ -79,6 +94,7 @@ interface SliderControlProps {
   min?: number;
   max?: number;
   step?: number;
+  sx?: any;
   // initialValue?: number;
 }
 export const SliderControl: React.FC<SliderControlProps> = ({
@@ -87,7 +103,7 @@ export const SliderControl: React.FC<SliderControlProps> = ({
     min = -24,
     max = 144,
     step = 6,
-    
+    sx
   }) => {
   const [isRunning, setIsRunning] = React.useState(false);
   const directionRef = React.useRef<"back" | "forward">("back");
@@ -155,7 +171,7 @@ export const SliderControl: React.FC<SliderControlProps> = ({
     }
     return ( 
   <Stack direction="row"
-          sx={{ ml:16, mt:1.5, py: 1.5, pr:-30, width: 600}}> 
+          sx = {sx}> 
           {/* borderRadius: '50%' */}
     <IconButton
       //"inherit"
@@ -231,11 +247,10 @@ const data = [
     ];
     
 
-
-
 export function LayerSelect ({children}: {children?: React.ReactNode}){
     const [open, setOpen] = React.useState(true);
-
+    const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+    let panelWidth = isTablet?200:300;
     // Animation
     const underlining = {
       link: {
@@ -314,6 +329,8 @@ export function LayerSelect ({children}: {children?: React.ReactNode}){
 export function LocationSelect() {
     const [open, setOpen] = React.useState(true);
     // Animation
+    const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+    let panelWidth = isTablet ? 200 : 300;
     const underlining = {
       link: {
         color: 'primary.main',
@@ -351,10 +368,11 @@ export function LocationSelect() {
           sx={[{px: 3,
                 pt: 1.5,},
             // open? {  pb: 0.8,}: { pb: 0.8,  },
-            open ? {'&:hover, &:focus'
-                : {'& svg': {opacity:1},}}
-              : {'&:hover, &:focus': 
-                {'& svg': {opacity: 1}},}]} >
+            // open ? {'&:hover, &:focus'
+            //   : {'& svg': {opacity:1},}}
+            // : {'&:hover, &:focus': 
+            //   {'& svg': {opacity: 1}},}
+            ]} >
             <KeyboardArrowDown
             sx={[{ ml: -2,
                 opacity: 1,
@@ -393,20 +411,24 @@ export function LocationSelect() {
     );
   }
 
-  export const PressureControl: React.FC<SliderControlProps> = ({
+export const PressureControl: React.FC<SliderControlProps> = ({
     value,
     setValue,
     min = 100,
     max = 1000,
   }) => {
-
+  const [open, setOpen] = React.useState(true);
+  const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+  const handleToggle = (): void => {
+    setOpen((prev) => !prev);
+  };
   const handleSliderChange = (event:any) => {
     setValue(Number(event.target.value));
   }; 
 
 
   const increment1 = (value: any) => {
-    if (value > 800)
+    if (value > 700)
     setValue((value: number) => Math.min(value + 50, max));
     else if (value == 250)
       setValue((value: number) => Math.min(value + 150, max));
@@ -445,9 +467,15 @@ export function LocationSelect() {
       return `${label}h`;
     }
     return ( 
-  <Stack direction="row"
-          sx={{ ml:40, mt:12, height: 500, width: 100, zIndex:10,}}> 
+  <Stack direction="column"
+          sx={[{ ml: 37, height: 460, width:80, mt: 10,
+          zIndex:10,backgroundColor:'transparent',},
+          isTablet&& {ml:25, height: 460,}]}> 
           {/* borderRadius: '50%' */}
+    <Collapse in={open} timeout={300}>
+    <Stack direction="column" sx = {{maxHeight: 400, width: 80,
+    pr: 4,borderLeft:3, pt:2,borderColor:'secondary', backgroundColor:'white'}}>
+    
     <Slider
       aria-label="Time"
       value={value}
@@ -461,24 +489,223 @@ export function LocationSelect() {
       max={max}
       color='secondary'
       onChange={handleSliderChange}
-
       sx={{'& .MuiSlider-thumb': {
           borderRadius: '0px',
           width:0.8,
           height: 0.02
-        },ml:-2, mt:2,width: 7,height: 300}}
+        },ml:0, mt:0,width: 7,height: isTablet ? 240: 300}}
     />
-
-    <Button variant="contained" size="small" 
-    endIcon={<ArrowBackIosNewIcon sx={{ml:-1.5, width: 20, transform: 'rotate(-90deg)'}}/>} 
-    onClick={() => decrement1(value)}
-    sx={{ml: 3, height: 30, minWidth:30,px:0, mr:0}}></Button>
     
+
     <Button variant="contained" size="small" 
     startIcon={<ArrowForwardIosIcon sx={{ml:1, width: 20,transform: 'rotate(-90deg)'}}/>} 
     onClick={() => increment1(value)}
-    sx={{ml: 1, height:30, minWidth:30, px:0}}> </Button>
-    <Box sx = {{fontSize:20, ml:3}}>Pressure Control</Box>
-    <Divider/>
+    sx={{ml: 1, height:30, minWidth:10, mt:2}}> </Button>
+    <Button variant="contained" size="small" 
+    endIcon={<ArrowBackIosNewIcon sx={{ml:-1.5, width: 20, transform: 'rotate(-90deg)'}}/>} 
+    onClick={() => decrement1(value)}
+    sx={{ml: 1, height: 30, minWidth:10}}></Button>
+    </Stack>
+    </Collapse>
+    <Box sx = {[{fontSize:15, maxWidth:90, pl:1, 
+        display: '-webkit-box', backgroundColor:'white',
+        WebkitLineClamp: 2,         // Exactly 2 lines
+        WebkitBoxOrient: 'vertical',borderLeft:3, borderColor:'secondary' }, { 
+          '&:hover': {bgcolor: 'primary.light'}, }]} onClick = {handleToggle}>
+      {/* <Divider /> */}
+      Pressure <br/>Control</Box>
+
   </Stack>
   )};
+
+
+export const PressureControlH: React.FC<SliderControlProps> = ({
+    value,
+    setValue,
+    min = 100,
+    max = 1000,
+    sx
+  }) => {
+  const [open, setOpen] = React.useState(true);
+  const handleSliderChange = (event:any) => {
+    setValue(Number(event.target.value));
+  }; 
+
+
+  const increment1 = (value: any) => {
+    if (value > 700)
+    setValue((value: number) => Math.min(value + 50, max));
+    else if (value == 250)
+      setValue((value: number) => Math.min(value + 150, max));
+    else if (value < 250)
+      setValue((value: number) => Math.min(value + 75, max));
+    else
+      setValue((value: number) => Math.min(value + 100, max));
+    };
+
+    const decrement1 = (value: any) => {
+      if (value > 800)
+      setValue((value: number) => Math.min(value - 50, max));
+      else if (value == 400)
+        setValue((value: number) => Math.min(value - 150, max));
+      else if (value < 300)
+        setValue((value: number) => Math.min(value - 75, max));
+      else
+        setValue((value: number) => Math.min(value - 100, max));
+      };
+
+    // For the Slider module ---------------------------
+    const marks = [{value: 100, label: '1000',},
+    {value: 175, label: '',},
+    {value: 250, label: '850',},
+    {value: 400, label: '700',},
+    {value: 500, label: '600',},
+    {value: 600, label: '500',},
+    {value: 700, label: '400',},
+    {value: 800, label: '300',},
+    {value: 850, label: '',},
+    {value: 900, label: '200',},
+    {value: 950, label: '',},
+    {value: 1000, label: '100',},];
+
+    function valuetext(label: number) {
+      return `${label}h`;
+    }
+    return ( 
+  <Stack direction="row"
+          sx={sx}> 
+          {/* borderRadius: '50%' */}
+    <Box sx = {[{fontSize:15, maxWidth:90, pl:1, height:30, 
+        display: '-webkit-box', WebkitLineClamp: 2,         // Exactly 2 lines
+        WebkitBoxOrient: 'vertical'}]} >
+      {/* <Divider /> */}
+      Pressure <br/>Control</Box>
+    <Button variant="contained" size="small" 
+    endIcon={<ArrowBackIosNewIcon  sx={{mr: -0.5}}/>} 
+    onClick={() => decrement1(value)}
+    sx={{mt: 0.2, height: 30, px:3, ml:2}}>Lower</Button>
+
+    <Slider
+      aria-label="Time"
+      value={value}
+      defaultValue={500}
+      valueLabelDisplay="off"
+      getAriaValueText={valuetext}
+      step={null}
+      marks={marks}
+      orientation = "horizontal"
+      min={min}
+      max={max}
+      color='secondary'
+      onChange={handleSliderChange}
+      sx={{'& .MuiSlider-thumb': {
+          borderRadius: '0px',
+          width:0.02,
+          height: 0.1
+      },ml:1}}
+    />
+    
+    <Button variant="contained" size="small" 
+    startIcon={<ArrowForwardIosIcon sx={{mx: -0.5}}/>} 
+    onClick={() => increment1(value)}
+    sx={{mt: 0.2, height: 30, px:3, ml:1}}> Higher</Button>
+
+
+
+  </Stack>
+  )};
+
+const drawerBleeding = 56;
+interface Props {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window?: () => Window;
+}
+
+const Root = styled('div')(({ theme }) => ({
+  height: '100%',
+  backgroundColor: 'grey',
+  ...theme.applyStyles('dark', {
+    backgroundColor: theme.palette.background.default,
+  }),
+}));
+
+export const StyledBox = styled('div')(({ theme }) => ({
+  backgroundColor: '#fff',
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'grey',
+  }),
+}));
+
+export const Puller = styled('div')(({ theme }) => ({
+  width: 30,
+  height: 6,
+  backgroundColor: 'grey',
+  borderRadius: 3,
+  position: 'absolute',
+  top: 12,
+  left: 'calc(50% - 15px)',
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'grey',
+  '&:hover': {bgcolor: 'white'}
+  }),
+}));
+
+export default function SwipeableEdgeDrawer(props: Props) {
+  const { window } = props;
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  // This is used only for the example
+  const container = window !== undefined ? () => window().document.body : undefined;
+
+  return (
+    <Root>
+      <CssBaseline />
+      <Global
+        styles={{
+          '.MuiDrawer-root > .MuiPaper-root': {
+            height: `calc(50% - ${drawerBleeding}px)`,
+            overflow: 'visible',
+          },
+        }}
+      />
+      <Box sx={{ textAlign: 'center', pt: 1 }}>
+        <Button onClick={toggleDrawer(true)}>Open</Button>
+      </Box>
+      <SwipeableDrawer
+        container={container}
+        anchor="bottom"
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+        swipeAreaWidth={drawerBleeding}
+        disableSwipeToOpen={false}
+        keepMounted
+      >
+        <StyledBox
+          sx={{
+            position: 'absolute',
+            top: -drawerBleeding,
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            visibility: 'visible',
+            right: 0,
+            left: 0,
+          }}
+        >
+          <Puller />
+          <Typography sx={{ p: 2, color: 'text.secondary' }}>51 results</Typography>
+        </StyledBox>
+        <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
+          <Skeleton variant="rectangular" height="100%" />
+        </StyledBox>
+      </SwipeableDrawer>
+    </Root>
+  );
+}

@@ -65,9 +65,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   overflowX: 'hidden',
   // borderRight: 'solid gray', //Change the border appearance
   // width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
+  width: `calc(${theme.spacing(8)} + 1px)`
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -88,7 +86,7 @@ const AppBar = styled(MuiAppBar, {
   })<AppBarProps>(({ theme }) => ({
     zIndex: theme.zIndex.drawer + 1,
     left: 0,
-    width:900,
+    width:240,
     height: 70,
     boxShadow: "none",
     transition: theme.transitions.create(['width', 'margin'], {
@@ -146,30 +144,6 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
-  const times1 = [];
-
-  for (let hour = 6; hour <= 72; hour+=6) {
-    // Then the code pushes each time it loops to the empty array I initiated.
-    let attn = '';
-    if (hour < 10) attn='00'+hour.toString();
-    else if (hour < 100) attn='0'+hour.toString();
-    else attn=hour.toString();
-    times1.push(
-        {time: attn, timeValue: hour}
-       );
-    }
-
-  const times2 = [];
-  for (let hour = 78; hour <= 144; hour+=6) {
-    // Then the code pushes each time it loops to the empty array I initiated.
-    let attn = '';
-    if (hour < 10) attn='00'+hour.toString();
-    else if (hour < 100) attn='0'+hour.toString();
-    else attn=hour.toString();
-    times2.push(
-        {time: attn, timeValue: hour}
-       );
-    }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -177,7 +151,7 @@ export default function MiniDrawer() {
       {/* Top line, could be removed */}
       <ThemeProvider theme={dayTheme}>
       <AppBar position="fixed" open={open} 
-        sx={{borderBottom: 3, 
+        sx={{borderBottom: 1, 
           borderColor: 'black', color: "primary", }}>
         <Toolbar>
           <IconButton
@@ -209,7 +183,7 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List sx={{mt:1}}>
-          {['Model1', 'Model2', 'Model3'].map((text) => (
+          {['EC-AIFS', 'Model2(GFS?)', 'Model3(TBD)'].map((text) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' ,}}>
               <ListItemButton href= {"#/"+text}
                 sx={[ {minHeight: 48, px: 2.5},
