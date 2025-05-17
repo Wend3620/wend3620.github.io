@@ -25,3 +25,4 @@ flask
 *.sw?
 src/unused/*
 old
+src/compo
