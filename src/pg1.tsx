@@ -1,4 +1,4 @@
-import MiniDrawer from "./mainDrawer.tsx";
+import MiniDrawer from "./newDrawer.tsx";
 import Box from '@mui/material/Box';
 
 // import Typography from '@mui/material/Typography';
@@ -27,13 +27,13 @@ export default function Page1(){
             <button className='fool' onClick={() => setIsOpen(!isOpen)}>Log in?</button> 
               </Box> */}
 
-            <Box display="flex" justifyContent="center"
-                alignContent="center" height="100vh">
+            {/* <Box display="flex" justifyContent="center"
+                alignContent="center" height="100vh"> */}
                {/* <Typography paragraph>
                 Text
             </Typography> */}
                
-            </Box>
+            {/* </Box> */}
 
             {/* <img src={test1} width='1400px' 
             style={{top:'15%', left:'12%', position:'absolute',zIndex:-2}} className='img'/> */}

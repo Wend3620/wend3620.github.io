@@ -44,10 +44,10 @@ const dayTheme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 800,
-      md: 1000,
-      lg: 1200,
-      xl: 1536,
+      sm: 720,
+      md: 1280,
+      lg: 1640,
+      xl: 1836,
     },
   },
 });
@@ -495,7 +495,8 @@ export const PressureControl: React.FC<SliderControlProps> = ({
           borderRadius: '0px',
           width:0.8,
           height: 0.02
-        },ml:0, mt:0,width: 7,height: isTablet ? 240: 300}}
+        },ml:0, mt:0,width: 7,height: isTablet ? 240: 300, 
+      fontsize:'10%'}}
     />
     
 
@@ -654,7 +655,6 @@ export const Puller = styled('div')(({ theme }) => ({
   '&:hover': {bgcolor: 'white'}
   }),
 }));
-
 export default function SwipeableEdgeDrawer(props: Props) {
   const { window } = props;
   const [open, setOpen] = React.useState(false);

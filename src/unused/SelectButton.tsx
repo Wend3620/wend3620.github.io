@@ -98,7 +98,7 @@
 //     layer3: true
 //   });
   
-//   // Debug information to see current state
+
 //   const [debugInfo, setDebugInfo] = useState("");
   
 //   // Toggle function with logging
@@ -156,7 +156,7 @@
 //     <div className="p-6 bg-white rounded-lg shadow-lg">
 //       <h1 className="text-2xl font-bold mb-4">Layer Visibility Toggle Demo</h1>
       
-//       {/* Debug Panel */}
+
 //       <div className="bg-gray-100 p-3 mb-4 rounded">
 //         <h3 className="font-bold">Debug Info:</h3>
 //         <pre>{JSON.stringify(layersVisible, null, 2)}</pre>
