@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, Theme, CSSObject,createTheme, ThemeProvider, useTheme} from '@mui/material/styles';
+import { styled, Theme, CSSObject,createTheme, ThemeProvider} from '@mui/material/styles';
 import {Toolbar, Button, Box, FormControlLabel, FormGroup,
   Checkbox, Stack, useMediaQuery,
   SwipeableDrawer, 
@@ -42,7 +42,7 @@ import blankSvg from './compo/blank.svg'
 import Collapse from '@mui/material/Collapse';
 
 import {PanelBar, SliderControl, LayerSelect, LocationSelect, PressureControl, 
-  Puller, StyledBox, PressureControlH} from './panelbar.tsx'
+  Puller, PressureControlH} from './panelbar.tsx'
 // import test1 from './compo/testing1.svg' 
 // Standard drawer width for desktop
 const drawerWidth = 240;
@@ -181,7 +181,6 @@ export default function MiniDrawer() {
     const initialValue = 0;
     const initVal = 500;
     const drawerBleeding = 56;
-    const [numCmap, setNumCmap] = React.useState(2);
     const theme = dayTheme; //Should be the same with day theme
     const [open, setOpen] = React.useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -274,8 +273,6 @@ export default function MiniDrawer() {
         {time: attn, timeValue: hour}
        );
     }
-  // Different drawer variant based on screen size
-  const drawerVariant = isMobile ? "temporary" : "permanent";
 
   return (
     <Box sx={{ display: 'flex'}}>

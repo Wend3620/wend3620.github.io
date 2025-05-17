@@ -529,7 +529,6 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
     max = 1000,
     sx
   }) => {
-  const [open, setOpen] = React.useState(true);
   const handleSliderChange = (event:any) => {
     setValue(Number(event.target.value));
   }; 
