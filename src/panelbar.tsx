@@ -51,10 +51,12 @@ const dayTheme = createTheme({
     },
   },
 });
-let panelWidth = 300;
+const panelWidth = 260;
 export const PanelBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
+    
     })<AppBarProps>(({ theme }) => ({
+      
       marginLeft: `calc(${theme.spacing(7)} + 6px)`,
       [theme.breakpoints.down('sm')]: {
         marginLeft: 0,
@@ -251,8 +253,9 @@ export function LayerSelect ({children}: {children?: React.ReactNode}){
     const [open, setOpen] = React.useState(true);
     const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
     const isMobile = useMediaQuery(dayTheme.breakpoints.down('sm'));
-    let panelWidth = isTablet?200:300;
+    const panelWidth = isTablet?200:260;
     // Animation
+    
     const underlining = {
       link: {
         color: 'primary.main',
@@ -332,7 +335,7 @@ export function LocationSelect() {
     // Animation
     const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
     const isMobile = useMediaQuery(dayTheme.breakpoints.down('sm'));
-    let panelWidth = isTablet ? 200 : 300;
+    const panelWidth = isTablet?200:260;
     const underlining = {
       link: {
         color: 'primary.main',
@@ -421,6 +424,7 @@ export const PressureControl: React.FC<SliderControlProps> = ({
   }) => {
   const [open, setOpen] = React.useState(true);
   const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+  const panelWidth = isTablet?200:260;
   const handleToggle = (): void => {
     setOpen((prev) => !prev);
   };
@@ -470,9 +474,9 @@ export const PressureControl: React.FC<SliderControlProps> = ({
     }
     return ( 
   <Stack direction="column"
-          sx={[{ ml: 37, height: 460, width:80, mt: 10,
+          sx={[{ ml: 41, height: 460, width:80, mt: 9,
           zIndex:10,backgroundColor:'transparent',},
-          isTablet&& {ml:25, height: 460,}]}> 
+          isTablet&& {ml:33, height: 460,}]}> 
           {/* borderRadius: '50%' */}
     <Collapse in={open} timeout={300}>
     <Stack direction="column" sx = {{maxHeight: 400, width: 80,
@@ -495,7 +499,7 @@ export const PressureControl: React.FC<SliderControlProps> = ({
           borderRadius: '0px',
           width:0.8,
           height: 0.02
-        },ml:0, mt:0,width: 7,height: isTablet ? 240: 300, 
+        },ml:0, mt:0,width: 7,height: panelWidth, 
       fontsize:'10%'}}
     />
     

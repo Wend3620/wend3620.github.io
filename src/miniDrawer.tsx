@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled, Theme, CSSObject,createTheme, ThemeProvider} from '@mui/material/styles';
-import {Toolbar, Box} from '@mui/material';
+import {Toolbar, Box,useMediaQuery,} from '@mui/material';
 import MuiDrawer  from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 // useTheme,
@@ -16,22 +16,26 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
-import ArticleIcon from '@mui/icons-material/Article';
+// import ArticleIcon from '@mui/icons-material/Article';
 import ScienceIcon from '@mui/icons-material/Science';
 import ComputerIcon from '@mui/icons-material/Computer';
 
 
-const drawerWidth = 240;
 
+const drawerWidth = 240;
+// Smaller drawer width for tablet
+const tabletDrawerWidth = 200;
+// const mobileappbar = 180;
+const appBarHeight = 70;
 const dayTheme = createTheme({
   palette: {
     primary: {
       main: '#FFFFFF',
       light: '#F1F1F1',
     },
-    secondary:{
+    secondary: {
       main: "#111111",
     },
   },
@@ -41,15 +45,28 @@ const dayTheme = createTheme({
         disableElevation: true
       }
     }
-
-  }
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 720,
+      md: 1280,
+      lg: 1640,
+      xl: 1836,
+    },
+  },
 });
 
 // const pageTheme = dayTheme;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
-  // borderRight: 'solid gray', //Change the border appearance
+  [theme.breakpoints.between('sm', 'md')]: {
+    width: tabletDrawerWidth,
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+  },
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -63,9 +80,11 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  // borderRight: 'solid gray', //Change the border appearance
-  // width: `calc(${theme.spacing(7)} + 1px)`,
-  width: `calc(${theme.spacing(8)} + 1px)`
+  width: `calc(${theme.spacing(8)} + 1px)`,
+  [theme.breakpoints.down('sm')]: {
+    width: 0,
+    padding: 0,
+  },
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -83,56 +102,55 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-  })<AppBarProps>(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    left: 0,
-    width:240,
-    height: 70,
-    boxShadow: "none",
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  left: 0,
+  width: 1000,
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+  height: appBarHeight,
+  boxShadow: "none",
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    variants: [
-      {props: ({ open }) => open,
-        style: {
-          // marginLeft: drawerWidth,
-          // width:  `calc(800px - 60px)`,
-          transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-        },
-      },
-    ],
-  }));
+  }),
+}));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme }) => ({
-    width: drawerWidth,
+  ({ theme, open }) => ({
+    
+    // width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
-    variants: [
-      {
-        props: ({ open }) => open,
-        style: {
-          // ...openedMixin(theme), Controlling a weird right border
-          '& .MuiDrawer-paper': openedMixin(theme),
+    ...(open && {
+      '& .MuiDrawer-paper': {
+        ...openedMixin(theme),
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',  // On small screens, drawer takes up most of the screen
+          position: 'fixed',
         },
       },
-      {
-        props: ({ open }) => !open,
-        style: {
-          // ...closedMixin(theme),
-          '& .MuiDrawer-paper': closedMixin(theme),
-        },
+    }),
+    ...(!open && {
+      '& .MuiDrawer-paper': {
+        ...closedMixin(theme),
       },
-    ],
+    }),
   }),
 );
-
 export default function MiniDrawer() {
+
+  const isMobile = useMediaQuery(dayTheme.breakpoints.down('sm'));
+  //const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
+  // let panelWidth = isTablet? 200 :260 
   // const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -151,30 +169,30 @@ export default function MiniDrawer() {
       {/* Top line, could be removed */}
       <ThemeProvider theme={dayTheme}>
       <AppBar position="fixed" open={open} 
-        sx={{borderBottom: 1, 
-          borderColor: 'black', color: "primary", }}>
-        <Toolbar>
-          <IconButton
-            //"inherit"
-            aria-label="open drawer"
-            onClick={open ? handleDrawerClose :handleDrawerOpen}
-            edge="start"
-            sx={[{ marginRight: 5,},{transition: '0.5s', },
-              open ? {  transform: 'rotate(-180deg)',}
-                : { transform: 'rotate(0)', }
-              // open && { display: 'none' },
-            ]}
-          >
-            {open ? <ChevronRightIcon/>: <MenuIcon/> }
+          sx={[{ borderBottom: 1,  borderColor: 'black',  color: "primary",}
+          ]}>
+          <Toolbar sx= {[isMobile&&{display: 'flex', flexWrap: 'wrap',alignContent: 'space-evenly'
+            , justifyContent:'space-evenly'}]}>
+            <IconButton
+              aria-label="open drawer"
+              onClick={open ? handleDrawerClose : handleDrawerOpen}
+              edge="start"
+              sx={[
+                { marginRight: 5 },
+                { transition: '0.5s' },
+                open && !isMobile ? { transform: 'rotate(-180deg)' } : { transform: 'rotate(0)' }
+              ]}>
+              {open && isMobile ? <CloseIcon /> : open ? <ChevronRightIcon /> : <MenuIcon />}
+            </IconButton>
+            <Typography variant="h5" sx={[{flexGrow: 0, pl:3, pr: 10},
+              isMobile && {flexGrow: 0, mx: 'auto'},
+            ]}>
+              Sample
+            </Typography>
             
-          </IconButton>
-          {/*  */}
-          <Typography variant="h5" sx={{width: 40}}>
-            Sample
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      </ThemeProvider>
+          </Toolbar>
+        </AppBar>
+      
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           {/* <IconButton onClick={handleDrawerClose}>
@@ -182,9 +200,11 @@ export default function MiniDrawer() {
           </IconButton> */}
         </DrawerHeader>
         <Divider />
-        <List sx={{mt:1}}>
+        <List sx={{mt:1, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           {['EC-AIFS', 'Model2(GFS?)', 'Model3(TBD)'].map((text) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' ,}}>
+            <ListItem key={text} disablePadding sx={{
+            flexGrow: 0, width: '100%', display: 'flex', flexDirection: 'row'
+            }}>
               <ListItemButton href= {"#/"+text}
                 sx={[ {minHeight: 48, px: 2.5},
                 open ? { justifyContent: 'initial',  }: {  justifyContent: 'center', },]}
@@ -197,7 +217,7 @@ export default function MiniDrawer() {
                 </ListItemIcon>
                 <ListItemText
                   primary={text}
-                  sx={[open ? { opacity: 1, }: { opacity: 0,},]}
+                  sx={[{ opacity: open? 1 : 0,},]}
                 />
               </ListItemButton>
             </ListItem>
@@ -205,7 +225,7 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List >
-            <ListItem key={"Otherwork"} disablePadding sx={{ display: 'block' }}>
+            {/* <ListItem key={"Otherwork"} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={[{ minHeight: 48, px: 2.5,},
                   open ? {justifyContent: 'initial',}: {justifyContent: 'center',},]}
@@ -215,15 +235,16 @@ export default function MiniDrawer() {
                     open? { mr: 3,}: { mr: 'auto', },
                   ]}
                 >
-                <ScienceIcon />
+                
+                <ArticleIcon/>
                 </ListItemIcon>
                 <ListItemText
                   primary={"Otherwork"}
                   sx={[open ? { opacity: 1, } : {  opacity: 0,},]}
                 />
               </ListItemButton>
-            </ListItem>
-          {['Blogs', 'About'].map((text, index) => (
+            </ListItem> */}
+          {['Other Tools', 'About'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton href= {"#/"+text}
                 sx={[{ minHeight: 48, px: 2.5,},
@@ -234,7 +255,7 @@ export default function MiniDrawer() {
                     open? { mr: 3,}: { mr: 'auto', },
                   ]}
                 >
-                  {index % 2 === 0 ? <ArticleIcon/> : <InfoIcon />}
+                  {index % 2 === 0 ? <ScienceIcon />: <InfoIcon />}
                 </ListItemIcon>
                 <ListItemText
                   primary={text}
@@ -245,7 +266,9 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
+     
       
+      </ThemeProvider>
     </Box>
   );
 }

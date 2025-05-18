@@ -1,7 +1,6 @@
 import MiniDrawer from "./newDrawer.tsx";
 import Box from '@mui/material/Box';
-
-// import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 
 // import './decor/helper.css' 
 
@@ -20,9 +19,12 @@ export default function Page1(){
     return (
         <>
             <MiniDrawer/>
-            <Box component="main" sx={{}}>
-            
-            </Box>
+            <Box sx={{position: 'absolute', bottom: 0, right: 0,}}>
+              <Typography variant="body2" color="text.secondary" align="center">
+                <span className="mr-1">Copyright © </span>
+              <span>2025 Tropoview. All Rights Reserved.</span>
+              </Typography>
+          </Box>
             {/* <Box sx={{position: 'relative', pointerEvents:'auto', mt:20, mx: '75%', zIndex: 0}}>
             <button className='fool' onClick={() => setIsOpen(!isOpen)}>Log in?</button> 
               </Box> */}

@@ -7,7 +7,9 @@ import Page1 from "./pg1.tsx";
 import Buggy from './buggy.tsx';
 import About from './about.tsx';
 import Minidrawer from './miniDrawer.tsx'
-import Blogs from './blog.tsx';
+import OtherTools from './others.tsx';
+
+
 function App() {  
     return (
         <>
@@ -20,7 +22,7 @@ function App() {
                 <Route path="/Model2" element={<Minidrawer/>}/>
                 <Route path="/Model3" element={<Minidrawer/>}/>
                 <Route path="/About" element={<About/>}/>
-                <Route path="/Blogs" element={<Blogs/>}/>
+                <Route path="/Other Tools" element={<OtherTools/>}/>
                 {/* <Route path="/action/3.4" element={<a href='http://34.162.230.12:8000/'/>}/> */}
                 {/* ['EC-AIFS', 'Model2(GFS?)', 'Model3(TBD)'] */}
                 {/* If any route mismatches the upper 

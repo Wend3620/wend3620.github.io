@@ -23,7 +23,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // import './decor/helper.css' 
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import InfoIcon from '@mui/icons-material/Info';
-import ArticleIcon from '@mui/icons-material/Article';
+// import ArticleIcon from '@mui/icons-material/Article';
 import ScienceIcon from '@mui/icons-material/Science';
 import ComputerIcon from '@mui/icons-material/Computer';
 import { Global } from '@emotion/react';
@@ -181,10 +181,12 @@ export default function MiniDrawer() {
     const initialValue = 0;
     const initVal = 500;
     const drawerBleeding = 56;
+    
     const theme = dayTheme; //Should be the same with day theme
     const [open, setOpen] = React.useState(false);
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+    let panelWidth = isTablet? 200 :260 
     const [value, setValue] = React.useState(initialValue);
     const [pValue, setPValue] = React.useState(initVal);
     const [drag, setDrag] = React.useState(false);
@@ -205,7 +207,7 @@ export default function MiniDrawer() {
         layer5: false,
     });
     const filledSelected = visibleLayers.layer2 || visibleLayers.layer3;
-    let panelWidth = isTablet? 200 :300 
+   
     let layerSelectors: Array<{id: LayerName, key: number, name: string, plot:string, type:string, cmap:string, seqCmap: number}> = [
       {id: 'layer1', key: 0,name: 'GPH(Dam, Black)', plot: tres1, type: 'None', cmap: blankSvg, seqCmap: -1},
       {id: 'layer2', key: 1, name:'Vorticity(Filled)', plot: tres2, type: 'Filled', cmap: cmap1, seqCmap: 1},
@@ -273,7 +275,9 @@ export default function MiniDrawer() {
         {time: attn, timeValue: hour}
        );
     }
-
+  const buttonSx = [{my:0.5, maxHeight:32, 
+    width:56,minWidth:52, mx:'auto', p:1},
+     isTablet &&{minWidth:46, width:46, p:0}]
   return (
     <Box sx={{ display: 'flex'}}>
       <CssBaseline />
@@ -358,50 +362,42 @@ export default function MiniDrawer() {
         </List>
         <Divider sx = {[isMobile && { mt:6}]}/>
         <List>
-          {[ "Otherwork", 'Blogs', 'About'].map((text, index) => (
+          {['Other Tools', 'About'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton 
-                href={`#/${text}`}
-                onClick={isMobile ? handleDrawerClose : undefined}
-                sx={[
-                  { minHeight: 48, px: 2.5 },
-                  open ? { justifyContent: 'initial' } : { justifyContent: 'center' },
-                  isMobile && { justifyContent: 'initial' }
-                ]}>
+              <ListItemButton href= {"#/"+text}
+                sx={[{ minHeight: 48, px: 2.5,},
+                  open ? {justifyContent: 'initial',}: {justifyContent: 'center',},]}
+              >
                 <ListItemIcon
-                  sx={[
-                    { minWidth: 0, justifyContent: 'center' },
-                    open ? { mr: 3 } : { mr: 'auto' },
-                    isMobile && { mr: 3 }
-                  ]}>
-                  {index % 3 === 2 ? <InfoIcon />: 
-                  ( index % 2 === 0 ? <ScienceIcon /> : <ArticleIcon />) }
+                  sx={[ {minWidth: 0, justifyContent: 'center', },
+                    open? { mr: 3,}: { mr: 'auto', },
+                  ]}
+                >
+                  {index % 2 === 0 ? <ScienceIcon />: <InfoIcon />}
                 </ListItemIcon>
                 <ListItemText
                   primary={text}
-                  sx={[open ? { opacity: 1 } : { opacity: 0 },
-                    isMobile && { opacity: 1 }
-                    ]}/>
+                  sx={[open ? { opacity: 1, } : {  opacity: 0,},]}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
-      {!isMobile&&<>
-      <Box sx={[{ display: 'flex', flexDirection: 'column', ml:6.5, mt:-2, zorder: 20,}, 
-        isTablet && {ml:6.5},]}>
-      <PressureControl value={pValue} setValue={setPValue}/>
-      </Box>
+      {!isMobile&&
+      <Box sx={[{ display: 'flex', flexDirection: 'row'}, ]}>
       <PanelBar position='fixed' open={open} sx={[{left:0, mt: 0, zorder: 10,
         maxWidth:panelWidth}]} >
-        <Box sx={[{mt:-12, pt: 22,pb:1 , width:'100%', maxWidth: panelWidth},
+        <Box sx={[{mt:-12, pt: 22,pb:1 , width:'100%', maxWidth: panelWidth,
+        },
         { '&:hover': {bgcolor: 'primary.light', }, }]}>
-        <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly', 
-             }, {height:'100%',maxHeight:210, pb:-50}]}   > 
+        <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly',  
+        alignContent: 'space-around',
+             }, {height:'100%',maxHeight:220, mb:0}]}   > 
         {/**/}
         {times0.map((item, index) => (
           <Button variant="contained" size="small" 
-          key={index} sx={[{maxHeight: 35, my:0.5}, isTablet &&{minWidth:46, width:46}]} 
+          key={index} sx={buttonSx} 
           onClick={() => setValue(-24+(index)*6)}>
             <ListItemText primary={item.time}/>
           </Button>
@@ -416,8 +412,7 @@ export default function MiniDrawer() {
         
         {times1.map((item, index) => (
           <Button variant="contained" 
-          key={index} sx={[{maxHeight: 35, my:0.5}, 
-          isTablet &&{minWidth:46, width:46, p:0}]} onClick={() => setValue((index+1)*6)}>
+          key={index} sx={buttonSx} onClick={() => setValue((index+1)*6)}>
             <ListItemText primary={item.time}/>
           </Button>
         ))}
@@ -428,13 +423,14 @@ export default function MiniDrawer() {
         </Box>
         <Collapse in={drag}>
         {/* Time buttons */}
-        <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly',  
-        alignContent: 'space-around',height: 120, mb:1,
+        {/* justifyContent: 'space-evenly',  
+        alignContent: 'space-around', */}
+        <Box sx={[{display: 'flex', flexWrap: 'wrap',  mt:-0, height: 122, mb:2.5,
         transition: '0.8s'}]} >
         
           { times2.map((item, index) => (
           <Button variant="contained"
-          key={index} sx={[{maxHeight: 35, my:0.5}, isTablet &&{minWidth:46, width:46, p:0}]} 
+          key={index} sx={buttonSx} 
           onClick={() => setValue((index+13)*6)}>
             <ListItemText primary={item.time} />
           </Button>
@@ -448,19 +444,21 @@ export default function MiniDrawer() {
             '&:hover': {bgcolor: 'primary.light', }, }]}> */}
           
         {/* </Box> */}
-        <IconButton  sx={[{mx:'auto', mt:-2, right:selectorWidth/2},
-          isTablet && {mx:'auto', mt:-2, right:selectorWidth/2}
-        ]} 
+        
+        <Box sx={{bgcolor: 'primary.light', mt: 0, height:8, 
+          width:'100%'}} onClick={() => setDrag(!drag)}>
+
+          <IconButton  sx={[{ mt:-2, left:'42%',},
+          isTablet && {mx:'auto', mt:-2, right:selectorWidth/2}]} 
         onClick={() => setDrag(!drag)}>
           <ExpandCircleDownIcon sx={[{transition: '0.5s', },
               drag ? {  transform: 'rotate(-180deg)',}
                 : { transform: 'rotate(0)', }]}/>
         </IconButton>
-        <Box sx={{bgcolor: 'primary.light', my: -3, height:8, 
-          width:panelWidth}} onClick={() => setDrag(!drag)}/>
-        <Box sx={{position:'flex', mt:4, overflowY:'auto', 
+        </Box>
+        <Box sx={{position:'flex', mt:1, overflowY:'auto', 
           '&::-webkit-scrollbar': {display: 'none'}, scrollbarWidth: 'none'}}>
-        <LocationSelect />
+        <LocationSelect/>
         {
         // TODO This changes the layers
         }
@@ -481,10 +479,12 @@ export default function MiniDrawer() {
         {/* <Typography variant="h6" >
           False
         </Typography> */}
-      </PanelBar></>}
+      </PanelBar>
+       <PressureControl value={pValue} setValue={setPValue}/>
+      </Box>}
       
-      <Box sx={[{ml:0, pt:6, width:1200,
-        position: 'relative',}, isMobile && {ml:0, mt:16, width:'100%'},]}>
+      <Box sx={[{ml:0, mt:8, width:1200,
+        position: 'relative',}, isMobile && {ml:0, mt:22, width:'98%'},]}>
       <img src={pLayers[0].back} alt="first image" 
           style = {{position: 'absolute', width: '100%', height: 'auto',zIndex:0}}/>
           
@@ -598,6 +598,7 @@ export default function MiniDrawer() {
         {/* Your page content here */}
       {/* </Box> */}
       </ThemeProvider>
+  
     </Box>
   );
 }
