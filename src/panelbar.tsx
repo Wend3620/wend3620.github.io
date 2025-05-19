@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, createTheme} from '@mui/material/styles';
+import { styled} from '@mui/material/styles';
 import { Slider, Stack,  Button, Box, Collapse, useMediaQuery, Skeleton,
   SwipeableDrawer, CssBaseline,} from '@mui/material';
 import { Global } from '@emotion/react';
@@ -17,40 +17,16 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
+import {dayTheme} from './theme';
 const drawerWidth = 240;
 
 const tabletDrawerWidth = 200;
+// const isMobile = useMediaQuery(dayTheme.breakpoints.down('sm'));
+// const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
-const dayTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#FFFFFF',
-      light: '#F1F1F1',
-    },
-    secondary: {
-      main: "#111111",
-    },
-  },
-  components: {
-    MuiButton: {
-      defaultProps: {
-        disableElevation: true
-      }
-    }
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 720,
-      md: 1280,
-      lg: 1640,
-      xl: 1836,
-    },
-  },
-});
+
 const panelWidth = 260;
 export const PanelBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -407,7 +383,7 @@ export function LocationSelect() {
             >
               <ListItemText
                 primary={item.label}
-                primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
+                primaryTypographyProps={{fontSize: isTablet? 14 :16, fontWeight: 'medium' }}
               />
             </ListItemButton>
           ))
@@ -474,12 +450,12 @@ export const PressureControl: React.FC<SliderControlProps> = ({
     }
     return ( 
   <Stack direction="column"
-          sx={[{ ml: 41, height: 460, width:80, mt: 9,
+          sx={[{ ml: 41, height: 460, width: isTablet?60:80, mt: 9,
           zIndex:10,backgroundColor:'transparent',},
           isTablet&& {ml:33, height: 460,}]}> 
           {/* borderRadius: '50%' */}
     <Collapse in={open} timeout={300}>
-    <Stack direction="column" sx = {{maxHeight: 400, width: 80,
+    <Stack direction="column" sx = {{maxHeight: 400,
     pr: 4,borderLeft:3, pt:2,borderColor:'secondary', backgroundColor:'white'}}>
     
     <Slider
@@ -497,10 +473,15 @@ export const PressureControl: React.FC<SliderControlProps> = ({
       onChange={handleSliderChange}
       sx={{'& .MuiSlider-thumb': {
           borderRadius: '0px',
-          width:0.8,
+          width:isTablet? 0.4:0.8,
           height: 0.02
-        },ml:0, mt:0,width: 7,height: panelWidth, 
-      fontsize:'10%'}}
+        },ml:0, mt:0,width: isTablet?4:7,height: panelWidth, 
+        '& .MuiSlider-markLabel': {
+          fontSize: isTablet?'60%':'80%',
+          color: 'black',
+          ml:-1.2,
+          transform: 'translateY(10px)',
+        }}}
     />
     
 
@@ -514,7 +495,7 @@ export const PressureControl: React.FC<SliderControlProps> = ({
     sx={{ml: 1, height: 30, minWidth:10}}></Button>
     </Stack>
     </Collapse>
-    <Box sx = {[{fontSize:15, maxWidth:90, pl:1, 
+    <Box sx = {[{fontSize:isTablet? 10:15, maxWidth:90, pl:1, 
         display: '-webkit-box', backgroundColor:'white',
         WebkitLineClamp: 2,         // Exactly 2 lines
         WebkitBoxOrient: 'vertical',borderLeft:3, borderColor:'secondary' }, { 

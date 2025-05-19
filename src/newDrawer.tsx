@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { styled, Theme, CSSObject,createTheme, ThemeProvider} from '@mui/material/styles';
+import { styled, Theme, CSSObject, ThemeProvider} from '@mui/material/styles';
 import {Toolbar, Button, Box, FormControlLabel, FormGroup,
   Checkbox, Stack, useMediaQuery,
-  SwipeableDrawer, 
+  SwipeableDrawer,
+  Tooltip, 
 } from '@mui/material';
 import MuiDrawer  from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -40,7 +41,7 @@ import cmap1 from './compo/vo_cmap.svg'
 import cmap2 from './compo/w_cmap.svg'
 import blankSvg from './compo/blank.svg'
 import Collapse from '@mui/material/Collapse';
-
+import { dayTheme } from './theme.tsx';
 import {PanelBar, SliderControl, LayerSelect, LocationSelect, PressureControl, 
   Puller, PressureControlH} from './panelbar.tsx'
 // import test1 from './compo/testing1.svg' 
@@ -51,33 +52,7 @@ const tabletDrawerWidth = 200;
 const selectorWidth = 0;
 const mobileappbar = 180;
 
-const dayTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#FFFFFF',
-      light: '#F1F1F1',
-    },
-    secondary: {
-      main: "#111111",
-    },
-  },
-  components: {
-    MuiButton: {
-      defaultProps: {
-        disableElevation: true
-      }
-    }
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 720,
-      md: 1280,
-      lg: 1640,
-      xl: 1836,
-    },
-  },
-});
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -103,7 +78,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   width: `calc(${theme.spacing(8)} + 1px)`,
   [theme.breakpoints.down('sm')]: {
     width: 0,
-    padding: 0,
+    height: '100vh'
   },
 });
 
@@ -157,12 +132,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         [theme.breakpoints.down('sm')]: {
           width: '100%',  // On small screens, drawer takes up most of the screen
           position: 'fixed',
+          height:'100%'
         },
       },
     }),
     ...(!open && {
       '& .MuiDrawer-paper': {
         ...closedMixin(theme),
+
       },
     }),
   }),
@@ -176,6 +153,15 @@ export default function MiniDrawer() {
     layer4: boolean;
     layer5: boolean;
 
+  }
+    interface Coordinates {
+      lat: number;
+      lon: number;
+  }
+  
+  interface MouseMoveEvent {
+      clientX: number;
+      clientY: number;
   }
   type LayerName = keyof LayerState;
     const initialValue = 0;
@@ -236,6 +222,54 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  //Cursor section starts
+  const [coordinates, setCoordinates] = React.useState({ lat: 0, lon: 0 });
+  const [showTooltip, setShowTooltip] = React.useState(false);
+  const mapRef = React.useRef<HTMLDivElement>(null);
+    
+  // These would be your actual map boundaries in lat/lon
+  const mapBounds = {
+    minLat: 16.7,
+    maxLat: 56.4,
+    minLon: -134.2,
+    maxLon: -58.8
+  };
+  
+  // Convert SVG coordinates to lat/lon
+  const svgToLatLon = (svgX:number, svgY:number, 
+                        svgWidth:number, svgHeight:number) => {
+    // Calculate the percentage across the SVG
+    const percentX = svgX / svgWidth;
+    const percentY = svgY / svgHeight;
+    
+    // Convert to lat/lon based on map bounds
+    // Note: Y is inverted in SVG (0 is top)
+    const lon = mapBounds.minLon + percentX * (mapBounds.maxLon - mapBounds.minLon);
+    const lat = mapBounds.maxLat - percentY * (mapBounds.maxLat - mapBounds.minLat);
+    
+    return { lat, lon };
+    };
+    
+  const handleMouseMove = (event: MouseMoveEvent): void => {
+        if (mapRef.current) {
+            const rect = mapRef.current.getBoundingClientRect();
+            const svgX: number = event.clientX - rect.left;
+            const svgY: number = event.clientY - rect.top;
+            
+            const { lat, lon }: Coordinates = svgToLatLon(svgX, svgY, rect.width, rect.height);
+            
+            setCoordinates({
+                lat: parseFloat(lat.toFixed(6)),
+                lon: parseFloat(lon.toFixed(6))
+            });
+            setShowTooltip(true);
+        }
+    };
+  
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
+  //Cursor section ends
 
   // Setting up time for buttons
   const times0 = [];
@@ -275,9 +309,10 @@ export default function MiniDrawer() {
         {time: attn, timeValue: hour}
        );
     }
-  const buttonSx = [{my:0.5, maxHeight:32, 
-    width:56,minWidth:52, mx:'auto', p:1},
-     isTablet &&{minWidth:46, width:46, p:0}]
+  const buttonSx = [{my:0.3, maxHeight:32, 
+    width:56,minWidth:53, mx:'auto', py:1,fontSize: isTablet? 14 :16,},
+     isTablet &&{minWidth:46, width:46, p:0, fontsize:10}
+    , ]
   return (
     <Box sx={{ display: 'flex'}}>
       <CssBaseline />
@@ -299,15 +334,16 @@ export default function MiniDrawer() {
               {open && isMobile ? <CloseIcon /> : open ? <ChevronRightIcon /> : <MenuIcon />}
             </IconButton>
             <Typography variant="h5" sx={[{flexGrow: 0, pl:3, pr: 10},
+              isTablet && {flexGrow: 0, ml:-3},
               isMobile && {flexGrow: 0, mx: 'auto'},
             ]}>
               Sample
             </Typography>
             <SliderControl value={value} setValue={setValue} 
             sx ={[
-              isTablet ? { ml:-2, mt:1.5, py: 1.5, pr:0, width: 600} :
+              isTablet ? { ml:-5, mt:1.5, py: 1.5, pr:0, width: 600} :
             (  isMobile ? {mt:2,width: 600}:
-              { ml:16, mt:1.5, p: 1.5, pr:-30, width: 1000})
+              { ml:8, mt:1.5, p: 1.5, pr:0, width: 1000})
             ]}/>
             {isMobile && <PressureControlH value={pValue} setValue={setPValue} sx={{width: 600,
                height: 80,zIndex:10,backgroundColor:'transparent', ml:2
@@ -331,7 +367,7 @@ export default function MiniDrawer() {
           )}
         </DrawerHeader>
         <Divider />
-        <List sx = {[isMobile && { top:1 + mobileappbar-70}]}>
+        <List sx = {[isMobile && { top:1 + mobileappbar-70, height: 220,}]}>
           {['EC-AIFS', 'Model2(GFS?)', 'Model3(TBD)'].map((text) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton 
@@ -365,19 +401,25 @@ export default function MiniDrawer() {
           {['Other Tools', 'About'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton href= {"#/"+text}
+                onClick={isMobile ? handleDrawerClose : undefined}
                 sx={[{ minHeight: 48, px: 2.5,},
-                  open ? {justifyContent: 'initial',}: {justifyContent: 'center',},]}
+                  open ? {justifyContent: 'initial',}: {justifyContent: 'center',},
+                isMobile && { justifyContent: 'initial' }]}
               >
                 <ListItemIcon
                   sx={[ {minWidth: 0, justifyContent: 'center', },
                     open? { mr: 3,}: { mr: 'auto', },
+                    isMobile && { mr: 3 }
                   ]}
                 >
                   {index % 2 === 0 ? <ScienceIcon />: <InfoIcon />}
                 </ListItemIcon>
                 <ListItemText
                   primary={text}
-                  sx={[open ? { opacity: 1, } : {  opacity: 0,},]}
+                  sx={[{opacity: open? 1 :0},
+                    isMobile && { opacity: 1 }
+                    
+                  ]}
                 />
               </ListItemButton>
             </ListItem>
@@ -387,33 +429,36 @@ export default function MiniDrawer() {
       {!isMobile&&
       <Box sx={[{ display: 'flex', flexDirection: 'row'}, ]}>
       <PanelBar position='fixed' open={open} sx={[{left:0, mt: 0, zorder: 10,
-        maxWidth:panelWidth}]} >
+        maxWidth:panelWidth,overflowY:'auto', 
+          '&::-webkit-scrollbar': {display: 'none'}, scrollbarWidth: 'none'}]} >
         <Box sx={[{mt:-12, pt: 22,pb:1 , width:'100%', maxWidth: panelWidth,
         },
         { '&:hover': {bgcolor: 'primary.light', }, }]}>
         <Box sx={[{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly',  
         alignContent: 'space-around',
-             }, {height:'100%',maxHeight:220, mb:0}]}   > 
+             }, {height:isTablet? 150: 180,maxHeight:220, mb:0}]}   > 
         {/**/}
         {times0.map((item, index) => (
           <Button variant="contained" size="small" 
           key={index} sx={buttonSx} 
           onClick={() => setValue(-24+(index)*6)}>
-            <ListItemText primary={item.time}/>
+            {item.time}
           </Button>
         ))}
 
         <Button variant="contained"
-        sx={{height: 35, width: '100%', maxWidth: panelWidth}} 
+        sx={{height: 32, my:0.3,width: '100%', maxWidth: panelWidth-10}} 
         onClick={() => setValue(0)} >
-        <ListItemText primary = 'Initialization time' /></Button>
-        
-        
+        <ListItemText sx={{
+          textTransform: 'capitalize'
+        }}primary = {isTablet? 'Init. Time':'Initialization time'} />
+        </Button>
+
         
         {times1.map((item, index) => (
           <Button variant="contained" 
           key={index} sx={buttonSx} onClick={() => setValue((index+1)*6)}>
-            <ListItemText primary={item.time}/>
+            {item.time}
           </Button>
         ))}
           {/* <Button variant="contained" size="small" onClick={() => setValue(10)} >
@@ -425,14 +470,15 @@ export default function MiniDrawer() {
         {/* Time buttons */}
         {/* justifyContent: 'space-evenly',  
         alignContent: 'space-around', */}
-        <Box sx={[{display: 'flex', flexWrap: 'wrap',  mt:-0, height: 122, mb:2.5,
+        <Box sx={[{display: 'flex', flexWrap: 'wrap',  mt:0.5, 
+        height: isTablet?60: 90, mb:2.5,
         transition: '0.8s'}]} >
         
           { times2.map((item, index) => (
           <Button variant="contained"
           key={index} sx={buttonSx} 
           onClick={() => setValue((index+13)*6)}>
-            <ListItemText primary={item.time} />
+            {item.time}
           </Button>
         ))}
 
@@ -456,22 +502,24 @@ export default function MiniDrawer() {
                 : { transform: 'rotate(0)', }]}/>
         </IconButton>
         </Box>
-        <Box sx={{position:'flex', mt:1, overflowY:'auto', 
-          '&::-webkit-scrollbar': {display: 'none'}, scrollbarWidth: 'none'}}>
+        <Box sx={{position:'flex', mt:1}}>
         <LocationSelect/>
         {
         // TODO This changes the layers
         }
         <LayerSelect>
-          <FormGroup sx={{flexDirection: 'row', ml: 2}}>
+          <FormGroup sx={{flexDirection: 'row', ml: 2,}}>
             {layerSelectors.map(layer=> (
                 <FormControlLabel
                   disabled = {filledSelected && !visibleLayers[layer.id] && layer.type === 'Filled'}
                   checked={visibleLayers[layer.id]}
                   key={layer.name}
-                  control={<Checkbox color='secondary'/>}
+                  control={<Checkbox color='secondary' size={isTablet?'small': 'medium'}/>}
                   onClick={() => toggleLayer(layer.id)}
-                  label={layer.name}  />
+                  label={layer.name}  
+                  slotProps={{typography: {fontSize: isTablet?12 : 16}}}
+                  // sx={{fontSize: isTablet? 14 :16}}
+                  />
             ))}
           </FormGroup>
         </LayerSelect>
@@ -482,42 +530,64 @@ export default function MiniDrawer() {
       </PanelBar>
        <PressureControl value={pValue} setValue={setPValue}/>
       </Box>}
-      
-      <Box sx={[{ml:0, mt:8, width:1200,
-        position: 'relative',}, isMobile && {ml:0, mt:22, width:'98%'},]}>
-      <img src={pLayers[0].back} alt="first image" 
-          style = {{position: 'absolute', width: '100%', height: 'auto',zIndex:0}}/>
+      <Tooltip
+        open={showTooltip}
+        title={`Lat: ${coordinates.lat.toFixed(2)}, 
+                  Lon: ${coordinates.lon.toFixed(2)}`}
+        placement="top-start"
+        arrow
+        followCursor>
+      <Box ref={mapRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave} sx={[{position: 'absolute',
+            ml:52, mt:10, width:'64vw', aspectRatio: '19/10',
+        cursor: 'crosshair', 
+
+        }, isTablet && { ml:34, mt:10, width:'60vw'},
+        isMobile && {ml:0, mt:25, width:'95%'},]}>
+      <Box component='img' src={pLayers[0].back} alt="first image" 
+          sx = {{position: 'absolute', width: '100%',
+          zIndex:0}}/>
           
       {layerSelectors.map(layer => (
             visibleLayers[layer.id] && (
-              <Stack direction = 'column' sx = {{ width: '100%', maxWidth: 20000}}>
+              <Stack direction = 'column' sx = {{ position: 'absolute', zIndex:1, 
+              width: '100%', }}>
+              <Box component = 'img' src={layer.plot} alt="image" 
+                sx={{width: '100%', position: 'relative'}}/>
+              <Box component = 'img' src={layer.cmap} 
+              sx={{ 
+                position: 'relative', zIndex:1, 
+                ml: '4%', mt: '-1%',
+                width: '60%',
+                left: '1%',
+              }}/>
+              </Stack>
+              )))}
+      {/* <Stack direction = 'column' sx = {{ width: '100%'}}>
               <Box component = 'img' src={layer.plot} alt="image" 
                 sx={{position: 'absolute', zIndex:1, width: '100%'}}/>
               <Box component = 'img' src={layer.cmap} 
               sx={{ 
-                position: 'absolute',
-                mt: '53%', zIndex:1, 
+                position: 'fixed', zIndex:1, 
                 ml: '8%',
-                maxHeight: 500, 
-                width: '80%',
-                maxWidth:900,
+                height: 40, 
+                width: '70%',
+                left: '15%',
               }}/>
-              </Stack>
-              )))}
+              </Stack> */}
        {isMobile && 
-        
         <Button variant="contained"
         sx={[{position: 'fixed', bottom:40, width: '100%', zIndex: 90, 
           bgcolor: 'white', height: 50, left: 0, right:0} , 
           {'&:hover': {bgcolor: 'primary.light', }, }]}
         onClick={handleSwipeClose}>Other Options</Button>}
-      </Box>
+          </Box>  
+      </Tooltip>
      
       {isMobile &&
       <>
-       
-      <Global
-        styles={{
+      <Global styles={{
           '.MuiDrawer-root > .MuiPaper-root': {
             height: `calc(50% - ${drawerBleeding}px)`,
             overflow: 'visible',
@@ -552,7 +622,7 @@ export default function MiniDrawer() {
                 {/* onClick={handleSwipeClose} 
                 What
               </StyledBox> */}
-        <Box sx={{position:'relative', mt:0, overflowY:'auto', width: '100%',
+        <Box sx={{position:'relative', mt:2, overflowY:'auto', width: '100%',
                 '&::-webkit-scrollbar': {display: 'none'}, scrollbarWidth: 'none',}}>
         <LocationSelect />
         {
