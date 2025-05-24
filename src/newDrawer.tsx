@@ -3,7 +3,7 @@ import { styled, Theme, CSSObject, ThemeProvider} from '@mui/material/styles';
 import {Toolbar, Button, Box, FormControlLabel, FormGroup,
   Checkbox, Stack, useMediaQuery,
   SwipeableDrawer,
-  Tooltip, 
+  Tooltip,
 } from '@mui/material';
 import MuiDrawer  from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -16,6 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 // import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -176,9 +177,9 @@ export default function MiniDrawer() {
     const [value, setValue] = React.useState(initialValue);
     const [pValue, setPValue] = React.useState(initVal);
     const [drag, setDrag] = React.useState(false);
-
+    const [toolbar, setToolbar] = React.useState(false);
     const [openSwipe, setOpenSwipe] = React.useState(false);
-    
+
     const toggleDrawer = (newOpen: boolean) => () => {
       setOpenSwipe(newOpen);
     };
@@ -194,12 +195,12 @@ export default function MiniDrawer() {
     });
     const filledSelected = visibleLayers.layer2 || visibleLayers.layer3;
    
-    let layerSelectors: Array<{id: LayerName, key: number, name: string, plot:string, type:string, cmap:string, seqCmap: number}> = [
-      {id: 'layer1', key: 0,name: 'GPH(Dam, Black)', plot: tres1, type: 'None', cmap: blankSvg, seqCmap: -1},
-      {id: 'layer2', key: 1, name:'Vorticity(Filled)', plot: tres2, type: 'Filled', cmap: cmap1, seqCmap: 1},
-      {id: 'layer3', key: 2, name:'W(Filled)', plot: tres3, type: 'Filled', cmap: cmap2, seqCmap: 1},
-      {id: 'layer4', key: 3, name:'Pot. Temp(K, Red)', plot: tres4, type: 'None', cmap: blankSvg, seqCmap: -1},
-      {id: 'layer5', key: 4, name:'Thickness(Dam, Dark Orange)', plot: tres5, type: 'None', cmap: blankSvg, seqCmap: -1},
+    let layerSelectors: Array<{id: LayerName, key: number, name: string, plot:string, type:string, cmap:string}> = [
+      {id: 'layer1', key: 0,name: 'GPH(Dam, Black)', plot: tres1, type: 'None', cmap: blankSvg},
+      {id: 'layer2', key: 1, name:'Vorticity(Filled)', plot: tres2, type: 'Filled', cmap: cmap1, },
+      {id: 'layer3', key: 2, name:'W(Filled)', plot: tres3, type: 'Filled', cmap: cmap2, },
+      {id: 'layer4', key: 3, name:'Pot. Temp(K, Red)', plot: tres4, type: 'None', cmap: blankSvg, },
+      {id: 'layer5', key: 4, name:'Thickness(Dam, Dark Orange)', plot: tres5, type: 'None', cmap: blankSvg, },
     ];
   
   
@@ -353,6 +354,7 @@ export default function MiniDrawer() {
       
       
       <Drawer 
+      
         variant='permanent' //{drawerVariant}
         open={open}
         onClose={isMobile ? handleDrawerClose : undefined}
@@ -427,9 +429,12 @@ export default function MiniDrawer() {
         </List>
       </Drawer>
       {!isMobile&&
-      <Box sx={[{ display: 'flex', flexDirection: 'row'}, ]}>
-      <PanelBar position='fixed' open={open} sx={[{left:0, mt: 0, zorder: 10,
-        maxWidth:panelWidth,overflowY:'auto', 
+      <Box sx={[{ display: 'flex', flexWrap: 'wrap',flexDirection: 'row', 
+        alignContent: 'space-around',justifyContent: 'space-evenly',}, ]}>
+
+      <PanelBar position='relative' open={open} sx={[{left:0, right:0, mt: 0, zIndex: 30,
+        maxWidth:panelWidth,overflowY:'auto',
+        borderRight:1, borderRightColor: toolbar? 'black': 'white',
           '&::-webkit-scrollbar': {display: 'none'}, scrollbarWidth: 'none'}]} >
         <Box sx={[{mt:-12, pt: 22,pb:1 , width:'100%', maxWidth: panelWidth,
         },
@@ -528,7 +533,33 @@ export default function MiniDrawer() {
           False
         </Typography> */}
       </PanelBar>
-       <PressureControl value={pValue} setValue={setPValue}/>
+      <Stack position='relative' direction='row'
+       sx={{ml:0,zIndex:toolbar?12:0}}>
+      <Collapse in={toolbar} orientation='horizontal'>
+          {/* <Box sx = {{width: isTablet?60:80, bgcolor: 'black'}}></Box> */}
+         <PressureControl value={pValue} setValue={setPValue} 
+         sx={[{height: 460, width: isTablet?70:90, marginTop: 9,
+                   zIndex:6,},
+                isTablet&& {ml:0, height: 460,}]}/>
+      </Collapse>
+      <Box  onClick={() => setToolbar(!toolbar)} 
+      sx = {{height:10, mt: 10, zIndex: 10, bgcolor: 'black',
+            width:2, maxWidth:10}} >
+      <svg>
+        <IconButton component="polygon"
+          points="0,100 20, 90 20,10 0, 00 "
+          sx={(theme) => ({fill: theme.palette.primary.light, 
+          zIndex:toolbar?20:0})}>
+              {/* 
+          stroke: theme.palette.secondary.main, strokeWidth: 1, */}
+          </IconButton>
+      </svg>
+      <ArrowForwardIosIcon sx={[{position:'fixed',  zIndex:100, width: 15,
+         height: 20, mt:-14, ml:0.2, },
+          {transition: '0.5s', },toolbar ? {  transform: 'rotate(-180deg)',}
+                : { transform: 'rotate(0)', }]}/>
+      </Box>
+      </Stack>
       </Box>}
       <Tooltip
         open={showTooltip}
@@ -551,13 +582,13 @@ export default function MiniDrawer() {
           
       {layerSelectors.map(layer => (
             visibleLayers[layer.id] && (
-              <Stack direction = 'column' sx = {{ position: 'absolute', zIndex:1, 
+              <Stack direction = 'column' sx = {{ position: 'absolute', zIndex:2, 
               width: '100%', }}>
               <Box component = 'img' src={layer.plot} alt="image" 
                 sx={{width: '100%', position: 'relative'}}/>
               <Box component = 'img' src={layer.cmap} 
               sx={{ 
-                position: 'relative', zIndex:1, 
+                position: 'relative', zIndex:2, 
                 ml: '4%', mt: '-1%',
                 width: '60%',
                 left: '1%',
@@ -578,7 +609,7 @@ export default function MiniDrawer() {
               </Stack> */}
        {isMobile && 
         <Button variant="contained"
-        sx={[{position: 'fixed', bottom:40, width: '100%', zIndex: 90, 
+        sx={[{position: 'fixed', bottom:40, width: '100%', zIndex: 10, 
           bgcolor: 'white', height: 50, left: 0, right:0} , 
           {'&:hover': {bgcolor: 'primary.light', }, }]}
         onClick={handleSwipeClose}>Other Options</Button>}

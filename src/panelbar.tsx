@@ -37,7 +37,7 @@ export const PanelBar = styled(MuiAppBar, {
       [theme.breakpoints.down('sm')]: {
         marginLeft: 0,
       },
-      maxWidth: panelWidth,
+      width: panelWidth,
       height: '100vh',
       boxShadow: "none",
       flexShrink: 0,
@@ -397,13 +397,12 @@ export const PressureControl: React.FC<SliderControlProps> = ({
     setValue,
     min = 100,
     max = 1000,
+    sx
   }) => {
-  const [open, setOpen] = React.useState(true);
+  const [pres, setPres] = React.useState(true);
   const isTablet = useMediaQuery(dayTheme.breakpoints.between('sm', 'md'));
   const panelWidth = isTablet?200:260;
-  const handleToggle = (): void => {
-    setOpen((prev) => !prev);
-  };
+  const tabletMargin = isTablet? -0.7: 0;
   const handleSliderChange = (event:any) => {
     setValue(Number(event.target.value));
   }; 
@@ -450,13 +449,12 @@ export const PressureControl: React.FC<SliderControlProps> = ({
     }
     return ( 
   <Stack direction="column"
-          sx={[{ ml: 41, height: 460, width: isTablet?60:80, mt: 9,
-          zIndex:10,backgroundColor:'transparent',},
-          isTablet&& {ml:33, height: 460,}]}> 
+          sx={sx}> 
           {/* borderRadius: '50%' */}
-    <Collapse in={open} timeout={300}>
+    <Collapse in={pres} timeout={300}>
     <Stack direction="column" sx = {{maxHeight: 400,
-    pr: 4,borderLeft:3, pt:2,borderColor:'secondary', backgroundColor:'white'}}>
+    pr: 0,borderRight:isTablet?2:3, pt:2,borderColor:'secondary', 
+    bgcolor:'white', opacity: 1}}>
     
     <Slider
       aria-label="Time"
@@ -474,32 +472,32 @@ export const PressureControl: React.FC<SliderControlProps> = ({
       sx={{'& .MuiSlider-thumb': {
           borderRadius: '0px',
           width:isTablet? 0.4:0.8,
-          height: 0.02
-        },ml:0, mt:0,width: isTablet?4:7,height: panelWidth, 
+          height: 0.02,
+        },ml:2+tabletMargin, mt:0,width: isTablet?4:7,height: panelWidth, 
         '& .MuiSlider-markLabel': {
           fontSize: isTablet?'60%':'80%',
           color: 'black',
-          ml:-1.2,
+          ml:-0.5+tabletMargin,
           transform: 'translateY(10px)',
         }}}
     />
     
 
     <Button variant="contained" size="small" 
-    startIcon={<ArrowForwardIosIcon sx={{ml:1, width: 20,transform: 'rotate(-90deg)'}}/>} 
+    startIcon={<ArrowForwardIosIcon sx={{ml:1.5 +tabletMargin, width: 20,transform: 'rotate(-90deg)'}}/>} 
     onClick={() => increment1(value)}
-    sx={{ml: 1, height:30, minWidth:10, mt:2}}> </Button>
+    sx={{ml: 1, height:30, minWidth:10, mt:1, bgcolor: 'transparent'}}/>
     <Button variant="contained" size="small" 
-    endIcon={<ArrowBackIosNewIcon sx={{ml:-1.5, width: 20, transform: 'rotate(-90deg)'}}/>} 
+    endIcon={<ArrowBackIosNewIcon sx={{ml:-1+tabletMargin, width: 20, transform: 'rotate(-90deg)'}}/>} 
     onClick={() => decrement1(value)}
-    sx={{ml: 1, height: 30, minWidth:10}}></Button>
+    sx={{ml: 1, height: 30, minWidth:10, bgcolor: 'transparent'}}/>
     </Stack>
     </Collapse>
-    <Box sx = {[{fontSize:isTablet? 10:15, maxWidth:90, pl:1, 
+    <Box sx = {[{fontSize:isTablet? 10:15, maxWidth:100, pl:2.5+tabletMargin, 
         display: '-webkit-box', backgroundColor:'white',
         WebkitLineClamp: 2,         // Exactly 2 lines
-        WebkitBoxOrient: 'vertical',borderLeft:3, borderColor:'secondary' }, { 
-          '&:hover': {bgcolor: 'primary.light'}, }]} onClick = {handleToggle}>
+        WebkitBoxOrient: 'vertical',borderRight:isTablet?2:3, borderRightColor:'secondary' }, { 
+          '&:hover': {bgcolor: 'primary.light'}, }]} onClick = {() => setPres(!pres)}>
       {/* <Divider /> */}
       Pressure <br/>Control</Box>
 
