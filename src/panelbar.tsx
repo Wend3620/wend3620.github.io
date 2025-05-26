@@ -218,12 +218,7 @@ export const SliderControl: React.FC<SliderControlProps> = ({
   </Stack>
   )};
 
-const data = [
-    {label: 'CONUS' },
-    {label: 'Midwest' },
-    {label: 'Northeast' },
-    ];
-    
+
 
 export function LayerSelect ({children}: {children?: React.ReactNode}){
     const [open, setOpen] = React.useState(true);
@@ -281,7 +276,7 @@ export function LayerSelect ({children}: {children?: React.ReactNode}){
                 : { transform: 'rotate(-90deg) '},
             ]}/>       
           <ListItemText
-            primary="Sample Layer"
+            primary="Layers"
             primaryTypographyProps={{
               fontSize: 18,
               fontWeight: 'medium',
@@ -305,7 +300,14 @@ export function LayerSelect ({children}: {children?: React.ReactNode}){
       </Box>
     );
   }
-
+const data = [
+    {label: 'CONUS' },
+    {label: 'Europe' },
+    {label: 'Western Pacific' },
+    {label: 'Oceania' },
+    {label: 'South America' },
+    ];
+    
 export function LocationSelect() {
     const [open, setOpen] = React.useState(true);
     // Animation
@@ -362,7 +364,7 @@ export function LocationSelect() {
                 : { transform: 'rotate(-90deg) '},
             ]}/>       
           <ListItemText
-            primary="Region (Sample)"
+            primary="Regions"
             primaryTypographyProps={{
               fontSize: 18,
               fontWeight: 'medium',
@@ -378,6 +380,7 @@ export function LocationSelect() {
         {open &&
           data.map((item) => (
             <ListItemButton
+              disabled={item.label!='CONUS'}
               key={item.label}
               sx={{ mt:1 ,py: 0, minHeight: 32 }} //, color: 'rgba(255,255,255,.8)'
             >
@@ -395,8 +398,8 @@ export function LocationSelect() {
 export const PressureControl: React.FC<SliderControlProps> = ({
     value,
     setValue,
-    min = 100,
-    max = 1000,
+    min = -1000,
+    max = -100,
     sx
   }) => {
   const [pres, setPres] = React.useState(true);
@@ -408,41 +411,41 @@ export const PressureControl: React.FC<SliderControlProps> = ({
   }; 
 
 
-  const increment1 = (value: any) => {
-    if (value > 700)
+  const decrement1 = (value: any) => {
+    if (value < -800)
     setValue((value: number) => Math.min(value + 50, max));
-    else if (value == 250)
+    else if (value == -400)
       setValue((value: number) => Math.min(value + 150, max));
-    else if (value < 250)
+    else if (value > -300)
       setValue((value: number) => Math.min(value + 75, max));
     else
       setValue((value: number) => Math.min(value + 100, max));
     };
 
-    const decrement1 = (value: any) => {
-      if (value > 800)
+    const increment1 = (value: any) => {
+      if (value < -700)
       setValue((value: number) => Math.min(value - 50, max));
-      else if (value == 400)
+      else if (value == -250)
         setValue((value: number) => Math.min(value - 150, max));
-      else if (value < 300)
+      else if (value > -200)
         setValue((value: number) => Math.min(value - 75, max));
       else
         setValue((value: number) => Math.min(value - 100, max));
       };
 
     // For the Slider module ---------------------------
-    const marks = [{value: 100, label: '1000',},
-    {value: 175, label: '925',},
-    {value: 250, label: '850',},
-    {value: 400, label: '700',},
-    {value: 500, label: '600',},
-    {value: 600, label: '500',},
-    {value: 700, label: '400',},
-    {value: 800, label: '300',},
-    {value: 850, label: '250',},
-    {value: 900, label: '200',},
-    {value: 950, label: '150',},
-    {value: 1000, label: '100',},];
+    const marks = [{value: -100, label: '100',},
+    {value: -175, label: '175',},
+    {value: -250, label: '250',},
+    {value: -400, label: '400',},
+    {value: -500, label: '500',},
+    {value: -600, label: '600',},
+    {value: -700, label: '700',},
+    {value: -800, label: '800',},
+    {value: -850, label: '850',},
+    {value: -900, label: '900',},
+    {value: -950, label: '950',},
+    {value: -1000, label: '1000',},];
 
     function valuetext(label: number) {
       return `${label}h`;
@@ -485,11 +488,11 @@ export const PressureControl: React.FC<SliderControlProps> = ({
 
     <Button variant="contained" size="small" 
     startIcon={<ArrowForwardIosIcon sx={{ml:1.5 +tabletMargin, width: 20,transform: 'rotate(-90deg)'}}/>} 
-    onClick={() => increment1(value)}
+    onClick={() => decrement1(value)}
     sx={{ml: 1, height:30, minWidth:10, mt:1, bgcolor: 'transparent'}}/>
     <Button variant="contained" size="small" 
     endIcon={<ArrowBackIosNewIcon sx={{ml:-1+tabletMargin, width: 20, transform: 'rotate(-90deg)'}}/>} 
-    onClick={() => decrement1(value)}
+    onClick={() => increment1(value)}
     sx={{ml: 1, height: 30, minWidth:10, bgcolor: 'transparent'}}/>
     </Stack>
     </Collapse>
@@ -508,8 +511,8 @@ export const PressureControl: React.FC<SliderControlProps> = ({
 export const PressureControlH: React.FC<SliderControlProps> = ({
     value,
     setValue,
-    min = 100,
-    max = 1000,
+    min = -1000,
+    max = -100,
     sx
   }) => {
   const handleSliderChange = (event:any) => {
@@ -517,41 +520,41 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
   }; 
 
 
-  const increment1 = (value: any) => {
-    if (value > 700)
+  const decrement1 = (value: any) => {
+    if (value < -800)
     setValue((value: number) => Math.min(value + 50, max));
-    else if (value == 250)
+    else if (value == -400)
       setValue((value: number) => Math.min(value + 150, max));
-    else if (value < 250)
+    else if (value > -300)
       setValue((value: number) => Math.min(value + 75, max));
     else
       setValue((value: number) => Math.min(value + 100, max));
     };
 
-    const decrement1 = (value: any) => {
-      if (value > 800)
+    const increment1 = (value: any) => {
+      if (value < -700)
       setValue((value: number) => Math.min(value - 50, max));
-      else if (value == 400)
+      else if (value == -250)
         setValue((value: number) => Math.min(value - 150, max));
-      else if (value < 300)
+      else if (value > -200)
         setValue((value: number) => Math.min(value - 75, max));
       else
         setValue((value: number) => Math.min(value - 100, max));
       };
 
     // For the Slider module ---------------------------
-    const marks = [{value: 100, label: '1000',},
-    {value: 175, label: '',},
-    {value: 250, label: '850',},
-    {value: 400, label: '700',},
-    {value: 500, label: '600',},
-    {value: 600, label: '500',},
-    {value: 700, label: '400',},
-    {value: 800, label: '300',},
-    {value: 850, label: '',},
-    {value: 900, label: '200',},
-    {value: 950, label: '',},
-    {value: 1000, label: '100',},];
+    const marks = [{value: -100, label: '100',},
+    {value: -175, label: '175',},
+    {value: -250, label: '250',},
+    {value: -400, label: '400',},
+    {value: -500, label: '500',},
+    {value: -600, label: '600',},
+    {value: -700, label: '700',},
+    {value: -800, label: '800',},
+    {value: -850, label: '',},
+    {value: -900, label: '900',},
+    {value: -950, label: '',},
+    {value: -1000, label: '1000',},];
 
     function valuetext(label: number) {
       return `${label}h`;

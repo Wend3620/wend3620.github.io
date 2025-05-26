@@ -1,4 +1,4 @@
-import MiniDrawer from "./newDrawer.tsx";
+import MiniDrawer from "./blueDrawer.tsx";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
