@@ -187,7 +187,7 @@ export default function MiniDrawer() {
             <Typography variant="h5" sx={[{flexGrow: 0, pl:3, pr: 10},
               isMobile && {flexGrow: 0, mx: 'auto'},
             ]}>
-              Sample
+              Tropoview
             </Typography>
             
           </Toolbar>

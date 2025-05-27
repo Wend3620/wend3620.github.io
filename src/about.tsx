@@ -13,17 +13,18 @@ export default function About() {
     <Box sx={{mt:10, ml: 10}}>
         <p></p>
         <h1>Hello!</h1>
-        <p>This is still an experiment!</p>
-        <p>Please wait for more features!</p>
+        <p>This is a website that I have spent about three folds of planned time to finish.</p>
+        <p>As you may see, many options are still unavailable. They will be gradually available in future days. Stay tuned!</p>
+        <p>---- 5-26-2025</p>
         {/* <a href="https://wend3620.github.io/">Home</a>
         */}
-        <Box>Practice Zone
+        {/* <Box>Practice Zone
           <Divider/>
           <Box sx={{mt:10}}>
         <Component/> 
         <PhotoGallery/>
         </Box>
-        </Box>
+        </Box> */}
         <div className="absolute right-0 bottom-0 w-64 h-48 z-0">
         
         </div>
