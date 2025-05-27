@@ -668,14 +668,16 @@ export default function MiniDrawer() {
           sx = {{position: 'absolute', width: '100%',
           zIndex:0}} key={`${coordinates.lat}-${pValue}-${tValue}`} />
       {loading && 
-          <Box sx={{ width: '100%', position: 'absolute', top: '50%', }}>
+          <Box sx={[{ width: '100%', position: 'absolute', top: '50%', },
+            isMobile && {top: '40%', left: '5%', width: '90%' },
+          ]}>
           <LinearProgressWithLabel value={progress} />
           Loading...
           </Box>}
       {!loading && visibleLayers.map(layer => (
           layer.state && (
             <Stack direction = 'column' key={`${coordinates.lat}-${pValue}-${tValue}-${layer.id}Stack`} 
-            sx = {{ position: 'absolute', zIndex:2, width: '100%', }}>
+            sx = {{ position: 'absolute', zIndex:2, width: '100%',}}>
             <Box component = 'img' key={`${coordinates.lat}-${pValue}-${tValue}-${layer.id}`}  
             src={layer.plot} alt="image" 
               sx={{width: '100%', position: 'relative'}}/>

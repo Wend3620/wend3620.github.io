@@ -412,26 +412,26 @@ export const PressureControl: React.FC<SliderControlProps> = ({
 
 
   const decrement1 = (value: any) => {
-    if (value < -900)
+    if (value < -900 )
     setValue((value: number) => Math.min(value + 75, max));
     else if (value == -850)
       setValue((value: number) => Math.min(value + 150, max));
-    else if (value > -350)
+    else if (value > -350 && value < -100)
       setValue((value: number) => Math.min(value + 50, max));
     else if (value > -800 && value < -300)
       setValue((value: number) => Math.min(value + 100, max));
     };
 
     const increment1 = (value: any) => {
-      if (value < -700)
-      setValue((value: number) => Math.min(value - 75, max));
+      if (value < -700 && value > -1000)
+      setValue((value: number) => Math.max(value - 75, min));
       else if (value == -700)
-        setValue((value: number) => Math.min(value - 150, max));
-      else if (value > -300)
-        setValue((value: number) => Math.min(value - 50, max));
+        setValue((value: number) => Math.max(value - 150, min));
+      else if (value > -300 && value < -50)
+        setValue((value: number) => Math.max(value - 50, min));
       else if (value > -700 && value < -250)
-        setValue((value: number) => Math.min(value - 100, max));
-      };
+        setValue((value: number) => Math.max(value - 100, min));
+    };
 
     // For the Slider module ---------------------------
     const marks = [{value: -100, label: '100',},
@@ -521,22 +521,22 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
 
 
   const decrement1 = (value: any) => {
-    if (value < -900)
+    if (value < -900 )
     setValue((value: number) => Math.min(value + 75, max));
     else if (value == -850)
       setValue((value: number) => Math.min(value + 150, max));
-    else if (value > -350)
+    else if (value > -350 && value < -100)
       setValue((value: number) => Math.min(value + 50, max));
     else if (value > -800 && value < -300)
       setValue((value: number) => Math.min(value + 100, max));
     };
 
     const increment1 = (value: any) => {
-      if (value < -700)
+      if (value < -700 && value > -1000)
       setValue((value: number) => Math.min(value - 75, max));
       else if (value == -700)
         setValue((value: number) => Math.min(value - 150, max));
-      else if (value > -300)
+      else if (value > -300 && value < -50)
         setValue((value: number) => Math.min(value - 50, max));
       else if (value > -700 && value < -250)
         setValue((value: number) => Math.min(value - 100, max));
@@ -553,7 +553,7 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
     {value: -600, label: '600',},
     {value: -700, label: '700',},
     {value: -850, label: '850',},
-    {value: -925, label: '925',},
+    {value: -925, label: '',},
     {value: -1000, label: '1000',},];
 
     function valuetext(label: number) {
@@ -570,7 +570,7 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
       Pressure <br/>Control(hPa)</Box>
     <Button variant="contained" size="small" 
     endIcon={<ArrowBackIosNewIcon  sx={{mr: -0.5}}/>} 
-    onClick={() => decrement1(value)}
+    onClick={() => increment1(value)}
     sx={{mt: 0.2, height: 30, px:3, ml:0}}>Lower</Button>
 
     <Slider
@@ -589,13 +589,13 @@ export const PressureControlH: React.FC<SliderControlProps> = ({
       sx={{'& .MuiSlider-thumb': {
           borderRadius: '0px',
           width:0.02,
-          height: 0.1
+          height: 0.6
       },ml:1}}
     />
     
     <Button variant="contained" size="small" 
     startIcon={<ArrowForwardIosIcon sx={{mx: -0.5}}/>} 
-    onClick={() => increment1(value)}
+    onClick={() => decrement1(value)}
     sx={{mt: 0.2, height: 30, px:3, ml:1}}> Higher</Button>
 
 
