@@ -25,4 +25,5 @@ flask
 *.sw?
 src/unused/*
 old
-src/compo
+src/compo/test
+src/compo/old
