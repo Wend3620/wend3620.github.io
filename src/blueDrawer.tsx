@@ -658,11 +658,11 @@ export default function MiniDrawer() {
       <Box ref={mapRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave} sx={[{position: 'absolute',
-            ml:52, mt:10, width:'64vw', aspectRatio: '19/10',
+            ml:52, mt:12, width:'64vw', aspectRatio: '19/10',
         cursor: 'crosshair', 
 
-        }, isTablet && { ml:34, mt:10, width:'60vw'},
-        isMobile && {ml:0, mt:25, width:'95%'}]}>
+        }, isTablet && { ml:36,mt:12, width:'66vw'},
+        isMobile && {ml:1, mt:25, width:'94%'}]}>
       
       <Box component='img' src={weatherData[(-1*pValue).toString()]?.[tValue.toString()]['bg'].plot} 
           sx = {{position: 'absolute', width: '100%',
