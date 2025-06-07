@@ -25,50 +25,23 @@
     <!-- meta -->
 
 
-<title>Comparison of metpy, xarray, and numpy in differentiation | Stratolog</title>
+<title>Tags | Stratolog</title>
 
-
-    <meta name="keywords" content="Programming">
 
 
 
 
     <!-- OpenGraph -->
  
-    <meta name="description" content="TLDR: Use any of them.I don’t want to say a lot at this moment, and I would rather provide all the pictures and related links below for you to interpret. The solo reason is that I am lazy… metpy.calc.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Comparison of metpy, xarray, and numpy in differentiation">
-<meta property="og:url" content="http://wend3620.github.io/2025/06/06/test2/index.html">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Tags">
+<meta property="og:url" content="http://wend3620.github.io/tags/index.html">
 <meta property="og:site_name" content="Stratolog">
-<meta property="og:description" content="TLDR: Use any of them.I don’t want to say a lot at this moment, and I would rather provide all the pictures and related links below for you to interpret. The solo reason is that I am lazy… metpy.calc.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/temperature1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/xarray1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy-xarray1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy-numpy1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy-xarray1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/xarray1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy-xarray1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy-numpy1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy-xarray1.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/xarray2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy-xarray2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy-xarray2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/xarray2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/metpy-xarray2.png">
-<meta property="og:image" content="http://wend3620.github.io/2025/06/06/test2/numpy-xarray2.png">
-<meta property="article:published_time" content="2025-06-06T05:00:00.000Z">
-<meta property="article:modified_time" content="2025-06-07T06:45:30.034Z">
+<meta property="article:published_time" content="2025-06-07T21:41:22.000Z">
+<meta property="article:modified_time" content="2025-06-07T21:52:52.407Z">
 <meta property="article:author" content="Wend3620">
-<meta property="article:tag" content="Programming">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://wend3620.github.io/2025/06/06/test2/temperature1.png">
 
 
     
@@ -144,97 +117,41 @@
 </header>
 
 
-            <main class="main">
-    
-
-<div class="post-title">
-    <h1 class="post-title__text">
-        Comparison of metpy, xarray, and numpy in differentiation
-    </h1>
-    <div class="post-title__meta">
-        <a href="/archives/2025/06/" class="post-meta__date button">2025-06-06</a>
-        
- 
-        
-     
-    <span id="leancloud_container_page_pv" hidden>
-        <span class="separate-dot"></span>
-        <span></span>
-        <span id="leancloud_value_page_pv"></span>
-        <span>Views</span>
-    </span>
-
-    
-
-
- 
-
- 
-    </div>
-</div>
-
-
-
-<article class="post content-card">
-    <div class="post__header"></div>
-    <div class="post__content">
-        <h1 id="TLDR-Use-any-of-them"><a href="#TLDR-Use-any-of-them" class="headerlink" title="TLDR: Use any of them."></a>TLDR: Use any of them.</h1><p>I don’t want to say a lot at this moment, and I would rather provide all the pictures and related links below for you to interpret. The solo reason is that I am lazy…</p>
-<p><a target="_blank" rel="noopener" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative()</a><br><a target="_blank" rel="noopener" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.differentiate.html">xarray.DataArray.differentiate()</a><br><a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/generated/numpy.gradient.html">numpy.gradient()</a></p>
-<p>Wait! Another think I have to emphize is that one difference between <code>xarray.differentiate</code> and <code>numpy.gradient</code> is that <code>xarray.differentiate</code> takes the sequency of the dimension into account. one example is that if your latitude start with -90 and end with 90, then the result of <code>xarray.differentiate</code> will have the opposite sign from that of <code>numpy.gradient</code>, which does not take the sequency into account. Be careful when you are differentiating!</p>
-<p>Here is the base plot I use to calculate the derivative.<br><img src="/2025/06/06/test2/temperature1.png" alt="base plot" title="metpy1"></p>
-<p>Plots:<br><img src="/2025/06/06/test2/metpy1.png" alt="metpy1" title="metpy1"><br><img src="/2025/06/06/test2/xarray1.png" alt="xarray1" title="xarray1"><br><img src="/2025/06/06/test2/numpy1.png" alt="numpy1" title="numpy1"><br><img src="/2025/06/06/test2/metpy-xarray1.png" alt="metpy-xarray1" title="metpy-xarray1"><br><img src="/2025/06/06/test2/metpy-numpy1.png" alt="metpy-numpy1" title="metpy-numpy1"><br><img src="/2025/06/06/test2/numpy-xarray1.png" alt="numpy-xarray1" title="numpy-xarray1"></p>
-<!-- <img src="/2025/06/06/test2/metpy1.png" class="" title="metpy1">
-<img src="/2025/06/06/test2/xarray1.png" class="" title="xarray1">
-<img src="/2025/06/06/test2/numpy1.png" class="" title="numpy1">
-<img src="/2025/06/06/test2/metpy-xarray1.png" class="" title="metpy-xarray1">
-<img src="/2025/06/06/test2/metpy-numpy1.png" class="" title="metpy-numpy1">
-<img src="/2025/06/06/test2/numpy-xarray1.png" class="" title="numpy-xarray1"> -->
-
-<p>As you can see, I also tried to compare the result of applying different numbers in the <code>edge order</code> option. It turns out that the difference between xarray and numpy results is farther minimized in this case, but the result from metpy is still more different from the other two. Given these discrepancy, The level of discrepancy is limited to the order of about or below 10^-3 between any of the three methods, so in actual case, it should be ok to use any of them.  </p>
-<p><img src="/2025/06/06/test2/xarray2.png" alt="xarray2" title="xarray2"><br><img src="/2025/06/06/test2/numpy2.png" alt="numpy2" title="numpy2"><br><img src="/2025/06/06/test2/metpy-xarray2.png" alt="metpy-xarray2" title="metpy-xarray2"><br><img src="/2025/06/06/test2/numpy-xarray2.png" alt="numpy-xarray2" title="numpy-xarray2"></p>
-<!-- 
-<img src="/2025/06/06/test2/xarray2.png" class="" title="xarray2">
-<img src="/2025/06/06/test2/numpy2.png" class="" title="numpy2">
-<img src="/2025/06/06/test2/metpy-xarray2.png" class="" title="metpy-xarray2">
-<img src="/2025/06/06/test2/numpy-xarray2.png" class="" title="numpy-xarray2"> -->
-
-<p>I am so lazy that this post is schedules to be published three days earlier, but I have it done today…<br>End</p>
-
-    </div>
-     
-    <div class="post-footer__meta"><p>updated at 2025-06-07</p></div> 
-    <div class="post-entry__tags"><a href="/tags/Programming/" class="post-tags__link button"># Programming</a></div> 
-</article>
-
-
-    <div class="nav">
-        <div class="nav__prev">
+    <div class="cover">
+        <div class="cover__logo">
+            
+                <h1>Stratolog</h1>
             
         </div>
-        <div class="nav__next">
-            
-                <a href="/2023/02/05/hello-world/" class="nav__link">
-                    <div>
-                        <div class="nav__label">
-                            Next Post
-                        </div>
-                        <div class="nav__title">
-                            写在开始.../At the beginning
-                        </div>
-                    </div>
-                    <div>
-                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
-                    </div>
-                </a>
-            
-        </div>
+        
+        
+            <div class="cover__intro">
+                <p>What brings you here…?</p>
+ 
+            </div>
+        
     </div>
 
+            
 
+    
+        <main class="main tagscloud">
+            <a href="/tags/First-Post/" style="font-size: 16px; color: #acb3c2">First Post</a> <a href="/tags/Programming/" style="font-size: 16px; color: #acb3c2">Programming</a>
+        </main>
+        <style>
+            .tagscloud a {
+                margin-right: 1em;
+                border-bottom: 1px solid #ACB3C2;
+                line-height: 65px;
+                white-space: nowrap;
+            }
+            .tagscloud a:hover {
+                border-bottom: 2px solid #454D5D;
+                text-decoration: none;
+            }
+        </style>
+    
 
-
-
-</main>
 
             <footer class="footer">
     
@@ -400,10 +317,10 @@
                     });
                     getterArr.push(uvGetter);
                 }
-                if ('true' === 'true') {
+                if ('false' === 'true') {
                     var viewCtn = document.querySelector('#leancloud_container_page_pv');
                     if (viewCtn || enableIncr) {
-                        var target = decodeURI('/2025/06/06/test2/');
+                        var target = decodeURI('/tags/index.html');
                         var viewGetter = getRecord(Counter, target).then((record) => {
                             incrArr.push(buildIncrement(record.objectId))
                             if (viewCtn) {
