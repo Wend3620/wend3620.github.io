@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>Comparison of metpy, xarray, and numpy in differentiation | Stratolog</title>
+
+
+    <meta name="keywords" content="Programming">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="Comparison of metpy, xarray, and numpy in differentiation.I don’t want to say a lot at this moment, and I would rather provide all the pictures and related links below for you to interpret. The solo r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Comparison of metpy, xarray, and numpy in differentiation">
+<meta property="og:url" content="http://wend3620.github.io/2025/06/06/comparison/index.html">
+<meta property="og:site_name" content="Stratolog">
+<meta property="og:description" content="Comparison of metpy, xarray, and numpy in differentiation.I don’t want to say a lot at this moment, and I would rather provide all the pictures and related links below for you to interpret. The solo r">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://wend3620.github.io/metpy1.png">
+<meta property="og:image" content="http://wend3620.github.io/xarray1.png">
+<meta property="og:image" content="http://wend3620.github.io/numpy1.png">
+<meta property="og:image" content="http://wend3620.github.io/metpy-xarray1.png">
+<meta property="og:image" content="http://wend3620.github.io/metpy-numpy1.png">
+<meta property="og:image" content="http://wend3620.github.io/numpy-xarray1.png">
+<meta property="og:image" content="http://wend3620.github.io/metpy2.png">
+<meta property="og:image" content="http://wend3620.github.io/xarray2.png">
+<meta property="og:image" content="http://wend3620.github.io/numpy2.png">
+<meta property="og:image" content="http://wend3620.github.io/metpy-xarray2.png">
+<meta property="og:image" content="http://wend3620.github.io/numpy-xarray2.png">
+<meta property="article:published_time" content="2025-06-06T05:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-07T05:52:36.136Z">
+<meta property="article:author" content="Wend3620">
+<meta property="article:tag" content="Programming">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wend3620.github.io/metpy1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+    
+
+    
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Stratolog</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">Home</a>
+                
+                    <a href="/tags/" class="navbar-menu button">Tags</a>
+                
+                    <a href="/archives/" class="navbar-menu button">Archives</a>
+                
+                    <a target="_blank" rel="noopener" href="https://tropoview.com" class="navbar-menu button">External</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">Home</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">Tags</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">Archives</a>
+                
+                    <a target="_blank" rel="noopener" href="https://tropoview.com" class="dropdown-menu button">External</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        Comparison of metpy, xarray, and numpy in differentiation
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2025/06/" class="post-meta__date button">2025-06-06</a>
+        
+ 
+        
+    
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <h1 id="Comparison-of-metpy-xarray-and-numpy-in-differentiation"><a href="#Comparison-of-metpy-xarray-and-numpy-in-differentiation" class="headerlink" title="Comparison of metpy, xarray, and numpy in differentiation."></a>Comparison of metpy, xarray, and numpy in differentiation.</h1><p>I don’t want to say a lot at this moment, and I would rather provide all the pictures and related links below for you to interpret. The solo reason is that I am lazy…</p>
+<p><a target="_blank" rel="noopener" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a><br><a target="_blank" rel="noopener" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.differentiate.html">xarray.DataArray.differentiate</a><br><a target="_blank" rel="noopener" href="https://numpy.org/doc/stable/reference/generated/numpy.gradient.html">numpy.gradient</a></p>
+<p>Wait! Another think I have to emphize is that one difference between <code>xarray.differentiate</code> and <code>numpy.gradient</code> is that <code>xarray.differentiate</code> takes the sequency of the dimension into account. one example is that if your latitude start with -90 and end with 90, then the result of <code>xarray.differentiate</code> will have the opposite sign from that of <code>numpy.gradient</code>, which does not take the sequency into account. Be careful when you are differentiating!</p>
+<p>Plots:<br><img src="/./metpy1.png" alt="metpy1" title="metpy1"><br><img src="/./xarray1.png" alt="xarray1" title="xarray1"><br><img src="/./numpy1.png" alt="numpy1" title="numpy1"><br><img src="/./metpy-xarray1.png" alt="metpy-xarray1" title="metpy-xarray1"><br><img src="/./metpy-numpy1.png" alt="metpy-numpy1" title="metpy-numpy1"><br><img src="/./numpy-xarray1.png" alt="numpy-xarray1" title="numpy-xarray1"></p>
+<!-- 
+
+
+
+
+ -->
+
+<p>As you can see, I also tried to compare the result of applying different numbers in the <code>edge order</code> option. It turns out that the difference between xarray and numpy results is farther minimized in this case, but the result from metpy is still more different from the other two. Given these discrepancy, The level of discrepancy is limited to the order of about or below 10^-3 between any of the three methods, so in actual case, it should be ok to use any of them.  </p>
+<p><img src="/./metpy2.png" alt="metpy2" title="metpy2"><br><img src="/./xarray2.png" alt="xarray2" title="xarray2"><br><img src="/./numpy2.png" alt="numpy2" title="numpy2"><br><img src="/./metpy-xarray2.png" alt="metpy-xarray2" title="metpy-xarray2"><br><img src="/./numpy-xarray2.png" alt="numpy-xarray2" title="numpy-xarray2"></p>
+<!-- 
+
+
+
+ -->
+
+<p>I am so lazy that this post is schedules to be published three days earlier, but I have it done today…</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2025-06-07</p></div> 
+    <div class="post-entry__tags"><a href="/tags/Programming/" class="post-tags__link button"># Programming</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2023/02/05/hello-world/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            写在开始.../At the beginning
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+    
+
+
+    
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2025 <a href="/">Stratolog</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+    
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
