@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+
+    
+
+    <!-- 渲染优化 -->
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="HandheldFriendly" content="True" >
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!--icon-->
+
+    
+    
+    
+    
+    
+
+
+    <!-- meta -->
+
+
+<title>Comparison of divergence algorithms | Stratolog</title>
+
+
+    <meta name="keywords" content="Programming">
+
+
+
+
+    <!-- OpenGraph -->
+ 
+    <meta name="description" content="I have seen two common algorithms for calculating divergence from wind. One is from Windspharm: 1234##Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Comparison of divergence algorithms">
+<meta property="og:url" content="http://wend3620.github.io/2026/01/23/Divergence/index.html">
+<meta property="og:site_name" content="Stratolog">
+<meta property="og:description" content="I have seen two common algorithms for calculating divergence from wind. One is from Windspharm: 1234##Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longit">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://wend3620.github.io/2023/02/05/hello-world/uarter1.png">
+<meta property="og:image" content="http://wend3620.github.io/2023/02/05/hello-world/uarter_diff1.png">
+<meta property="og:image" content="http://wend3620.github.io/2023/02/05/hello-world/iv_avg_diff1.png">
+<meta property="og:image" content="http://wend3620.github.io/2023/02/05/hello-world/ne1.png">
+<meta property="og:image" content="http://wend3620.github.io/2023/02/05/hello-world/ne_diff1.png">
+<meta property="og:image" content="http://wend3620.github.io/2023/02/05/hello-world/iv_avg_diff2.png">
+<meta property="article:published_time" content="2026-01-23T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-23T23:17:27.087Z">
+<meta property="article:author" content="Wend3620">
+<meta property="article:tag" content="Programming">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://wend3620.github.io/2023/02/05/hello-world/uarter1.png">
+
+
+    
+<link rel="stylesheet" href="/css/style/main.css">
+ 
+
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.4/dist/css/style/dark.min.css">
+
+    
+<script src="https://cdn.jsdelivr.net/npm/hexo-theme-cards@1.4/dist/js/darkmode.min.js"></script>
+
+
+
+     
+
+    <!-- custom head -->
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+    <body>
+        <div id="app" tabindex="-1">
+            <header class="header">
+    <div class="header__left">
+        <a href="/" class="button">
+            <span class="logo__text">Stratolog</span>
+        </a>
+    </div>
+    <div class="header__right">
+        
+            <div class="navbar__menus">
+                
+                    <a href="/" class="navbar-menu button">Home</a>
+                
+                    <a href="/tags/" class="navbar-menu button">Tags</a>
+                
+                    <a href="/archives/" class="navbar-menu button">Archives</a>
+                
+                    <a target="_blank" rel="noopener" href="https://tropoview.com" class="navbar-menu button">External</a>
+                
+            </div>
+        
+        
+        
+
+        
+        
+    <a href="javaScript:void(0);" id="btn-toggle-dark">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </a>
+
+
+        
+            <a class="dropdown-icon button" id="btn-dropdown" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width='24' height='24' fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"><path fill="currentColor" d="M3.314,4.8h13.372c0.41,0,0.743-0.333,0.743-0.743c0-0.41-0.333-0.743-0.743-0.743H3.314c-0.41,0-0.743,0.333-0.743,0.743C2.571,4.467,2.904,4.8,3.314,4.8z M16.686,15.2H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,15.2,16.686,15.2z M16.686,9.257H3.314c-0.41,0-0.743,0.333-0.743,0.743s0.333,0.743,0.743,0.743h13.372c0.41,0,0.743-0.333,0.743-0.743S17.096,9.257,16.686,9.257z"></path></svg></a>
+            <div class="dropdown-menus" id="dropdown-menus">
+                
+                    <a href="/" class="dropdown-menu button">Home</a>
+                
+                    <a href="/tags/" class="dropdown-menu button">Tags</a>
+                
+                    <a href="/archives/" class="dropdown-menu button">Archives</a>
+                
+                    <a target="_blank" rel="noopener" href="https://tropoview.com" class="dropdown-menu button">External</a>
+                
+            </div>
+        
+    </div>
+</header>
+
+
+            <main class="main">
+    
+
+<div class="post-title">
+    <h1 class="post-title__text">
+        Comparison of divergence algorithms
+    </h1>
+    <div class="post-title__meta">
+        <a href="/archives/2026/01/" class="post-meta__date button">2026-01-23</a>
+        
+ 
+        
+     
+    <span id="leancloud_container_page_pv" hidden>
+        <span class="separate-dot"></span>
+        <span></span>
+        <span id="leancloud_value_page_pv"></span>
+        <span>Views</span>
+    </span>
+
+    
+
+
+ 
+
+ 
+    </div>
+</div>
+
+
+
+<article class="post content-card">
+    <div class="post__header"></div>
+    <div class="post__content">
+        <p>I have seen two common algorithms for calculating divergence from wind.<br>
+One is from <a target="_blank" rel="noopener" href="https://ajdawson.github.io/windspharm/">Windspharm</a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longitude)</span></span><br><span class="line">w = VectorWind(u, v)</span><br><span class="line">divergence = w.divergence()</span><br><span class="line">divergence <span class="comment">#This is the variable for divergence</span></span><br></pre></td></tr></table></figure>
+<p>another is from <a target="_blank" rel="noopener" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.divergence.html">Metpy</a>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Again, Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longitude)</span></span><br><span class="line">divergence = mpcalc.divergence(u, v)</span><br><span class="line">divergence <span class="comment">#This is the variable for divergence</span></span><br></pre></td></tr></table></figure>
+<p>I also tried to calculate it myself.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">6378000</span></span><br><span class="line">cphi = np.cos(data.lat*np.pi/<span class="number">180</span>)</span><br><span class="line">dx = np.gradient(data.lon, axis=<span class="number">0</span>, edge_order=<span class="number">2</span>)/<span class="number">180</span>*np.pi</span><br><span class="line">dx = np.outer(cphi.values, dx)</span><br><span class="line">dx = xr.DataArray(dx*a, dims = [<span class="string">&#x27;lat&#x27;</span>,<span class="string">&#x27;lon&#x27;</span>],</span><br><span class="line">                    coords=<span class="built_in">dict</span>(lon = data.lon, lat = data.lat))</span><br><span class="line">div_u = (u.differentiate(<span class="string">&#x27;lon&#x27;</span>, edge_order=<span class="number">2</span>)/dx/<span class="number">4</span>) <span class="comment">#/4 is important</span></span><br><span class="line">div_v = (v.differentiate(<span class="string">&#x27;lat&#x27;</span>, edge_order=<span class="number">2</span>)/(np.pi/<span class="number">180</span>*a))</span><br><span class="line">div4 = div_u + div_v</span><br></pre></td></tr></table></figure>
+<p>(It worth to mention why <code>/4</code> is important there. We do that since u.differentiate will have the results with the unit in 1/deg, but out dx is calculated to have the unit in meters/0.25 degrees, so <code>/4</code> is required to complete the conversion)</p>
+<p>For the sake of making the results comparable to each other and have a good referee, I, again, use the ERA5 data from <a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels?tab=download">the data store</a>, and I am treating the divergence data from the dataset as the referee. I guess I have a faith on the ERA5 maintainers… By the way, the divergence variable from the dataset should be used as dataset.d (instead of dataset.divergence, and I wonder if this is a result a laziness)…</p>
+<p>Here are some results:<br>
+<img src="/2023/02/05/hello-world/uarter1.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
+It appears like they are all similar in the midlatitudes, but metpy seems to have extreme values in the tropics, and both windspharm and my native method have issues in the polar region.<br>
+To make the difference more obvious, I made the plot below to compare the results from different methods. Please note the upper-left one is the reference plots, so it is not a result of subtraction.<br>
+<img src="/2023/02/05/hello-world/uarter_diff1.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
+It seems like the midlatitudes are vary similar across all 4 subplots, is that true?<br>
+To answer that, I draw another bar plot to compare the average difference in the midlatitudes.<br>
+<img src="/2023/02/05/hello-world/iv_avg_diff1.png" alt="Bar plot 1 for ERA5 - 0.25" title="Bar plot 1 for ERA5 - 0.25"><br>
+Windspharm looks like having the best performence among the three. However, using any of them are okay, as the averaged difference is just 1/1000 of the original magnitude of the diveregence values (1x10^-5).</p>
+<p>Also, the typical ERA5 dataset is quaterly gridded, and sometimes people (including myself) don’t really want to have the resolution as fine as this level. So I also tried a more crude resolution (every degree).</p>
+<p><img src="/2023/02/05/hello-world/ne1.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
+<img src="/2023/02/05/hello-world/ne_diff1.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
+<img src="/2023/02/05/hello-world/iv_avg_diff2.png" alt="Bar plot 1 for ERA5 - 0.25" title="Bar plot 1 for ERA5 - 0.25"><br>
+Wow! Windspharm is not outstanding this time! And we can easily see that all the methods have more disagreements with the reference values as the resolution goes poorer.</p>
+<p>In terms of conclusion? I cannot think about any, but we probably should recommand people to use the ERA5 data directly if possible. I probably should write more about the algorithm behind each method, but I don’t have that much energy to do that at this moment. Let here be the end then.</p>
+
+    </div>
+     
+    <div class="post-footer__meta"><p>updated at 2026-01-23</p></div> 
+    <div class="post-entry__tags"><a href="/tags/Programming/" class="post-tags__link button"># Programming</a></div> 
+</article>
+
+
+    <div class="nav">
+        <div class="nav__prev">
+            
+        </div>
+        <div class="nav__next">
+            
+                <a href="/2025/06/06/test2/" class="nav__link">
+                    <div>
+                        <div class="nav__label">
+                            Next Post
+                        </div>
+                        <div class="nav__title">
+                            Comparison of metpy, xarray, and numpy in differentiation
+                        </div>
+                    </div>
+                    <div>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#808080"></path></svg>
+                    </div>
+                </a>
+            
+        </div>
+    </div>
+
+
+
+
+
+</main>
+
+            <footer class="footer">
+    
+    
+
+
+    
+    
+        <span id="leancloud_container_site_uv" hidden>
+            <span></span>
+            <span id="leancloud_value_site_uv"></span>
+            <span>Viewers</span>
+            
+                <span>&nbsp;&nbsp; |</span>
+            
+        </span>
+    
+    
+        <span id="leancloud_container_site_pv" hidden>
+            <span></span>
+            <span id="leancloud_value_site_pv"></span>
+            <span>Views</span>
+            
+        </span>
+    
+
+     
+ 
+
+ 
+    
+        
+        <p class="footer-copyright">
+            Copyright © 2026 <a href="/">Stratolog</a>
+        </p>
+    
+    
+    <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme - <a href="https://github.com/ChrAlpha/hexo-theme-cards" target="_blank">Cards</a></p>
+</footer>
+
+        </div>
+         
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+        data-cf-beacon='{"token": "bc74939833c946ac97441f7a779ab80b"}'></script>
+    </script>
+    
+
+ 
+
+
+
+ 
+
+
+    
+    <script>
+        (function () {
+            function getRecord(Counter, target) {
+                return new Promise(function (resolve, reject) {
+                    Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({target})))
+                        .then(response => response.json())
+                        .then(({results}) => {
+                            if (results && results.length > 0) {
+                                var record = results[0];
+                                resolve(record);
+                            } else {
+                                Counter('post', '/classes/Counter', {
+                                        target, time: 0
+                                    })
+                                    .then(response => response.json())
+                                    .then(record => {
+                                        resolve(record);
+                                    }).catch(error => {
+                                        console.error('Failed to create', error);
+                                        reject(error);
+                                    });
+                            }
+                        }).catch(error => {
+                            console.error('LeanCloud Counter Error', error);
+                            reject(error);
+                        });
+                })
+            }
+        
+            function buildIncrement(objectId) {
+                return {
+                    "method": "PUT",
+                    "path": `/1.1/classes/Counter/${ objectId }`,
+                    "body": {
+                        "time": {
+                            '__op': 'Increment',
+                            'amount': 1
+                        }
+                    }
+                }
+            }
+        
+            function increment(Counter, incrArr) {
+                return new Promise(function (resolve, reject) {
+                    Counter('post', '/batch', {
+                        "requests": incrArr
+                    }).then((res) => {
+                        resolve(res);
+                    }).catch(error => {
+                        console.error('Failed to save visitor count', error);
+                        reject(error);
+                    });
+                });
+            }
+        
+            function validUV() {
+                var key = 'LeanCloud_UV_Flag';
+                var flag = localStorage.getItem(key);
+                if (flag) {
+                    if (new Date().getTime() - parseInt(flag) <= 86400000) {
+                        return false;
+                    }
+                }
+                localStorage.setItem(key, new Date().getTime().toString());
+                return true;
+            }
+        
+            function addCount(Counter) {
+                var enableIncr = 'leancloud' === 'leancloud';
+                var getterArr = [];
+                var incrArr = [];
+                var pvCtn = document.querySelector('#leancloud_container_site_pv');
+                if (pvCtn || enableIncr) {
+                    var pvGetter = getRecord(Counter, 'site-pv').then((record) => {
+                        incrArr.push(buildIncrement(record.objectId))
+                        var ele = document.querySelector('#leancloud_value_site_pv');
+                        if (ele) {
+                            ele.innerText = record.time + 1;
+                            if (pvCtn) {
+                                pvCtn.style.display = 'inline';
+                            }
+                        }
+                    });
+                    getterArr.push(pvGetter);
+                }
+                var uvCtn = document.querySelector('#leancloud_container_site_uv');
+                if (uvCtn || enableIncr) {
+                    var uvGetter = getRecord(Counter, 'site-uv').then((record) => {
+                        var vuv = validUV();
+                        vuv && incrArr.push(buildIncrement(record.objectId))
+                        var ele = document.querySelector('#leancloud_value_site_uv');
+                        if (ele) {
+                            ele.innerText = record.time + (vuv ? 1 : 0);
+                            if (uvCtn) {
+                                uvCtn.style.display = 'inline';
+                            }
+                        }
+                    });
+                    getterArr.push(uvGetter);
+                }
+                if ('true' === 'true') {
+                    var viewCtn = document.querySelector('#leancloud_container_page_pv');
+                    if (viewCtn || enableIncr) {
+                        var target = decodeURI('/2026/01/23/Divergence/');
+                        var viewGetter = getRecord(Counter, target).then((record) => {
+                            incrArr.push(buildIncrement(record.objectId))
+                            if (viewCtn) {
+                                var ele = document.querySelector('#leancloud_value_page_pv');
+                                if (ele) {
+                                    ele.innerText = (record.time || 0) + 1;
+                                    viewCtn.style.display = 'inline';
+                                }
+                            }
+                        });
+                        getterArr.push(viewGetter);
+                    }
+                }
+                if (enableIncr) {
+                    Promise.all(getterArr).then(() => {
+                        incrArr.length > 0 && increment(Counter, incrArr);
+                    })
+                }
+            }
+        
+            var app_id = 'FrgXghLSJKgaLaxF0KoM9GaL-MdYXbMMI';
+            var app_key = 'KrJ3oScRs8DnNVVdN4ukRawY';
+            var server_url = '';
+        
+            function fetchData(api_server) {
+                var Counter = (method, url, data) => {
+                    return fetch(`${ api_server }/1.1${ url }`, {
+                        method,
+                        headers: {
+                                'X-LC-Id': app_id,
+                                'X-LC-Key': app_key,
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data)
+                    });
+                };
+                addCount(Counter);
+            }
+            var api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${ app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+            if (api_server) {
+                fetchData(api_server);
+            } else {
+                fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+                    .then(response => response.json())
+                    .then(({api_server}) => {
+                        fetchData('https://' + api_server);
+                    });
+            }
+        })();
+    </script>
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+
+    </body>
+</html>
