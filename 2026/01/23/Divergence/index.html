@@ -49,7 +49,7 @@
 <meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/one_diff1.png">
 <meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/div_avg_diff2.png">
 <meta property="article:published_time" content="2026-01-23T06:00:00.000Z">
-<meta property="article:modified_time" content="2026-01-24T01:44:00.165Z">
+<meta property="article:modified_time" content="2026-01-30T15:54:23.695Z">
 <meta property="article:author" content="Wend3620">
 <meta property="article:tag" content="Programming">
 <meta name="twitter:card" content="summary_large_image">
@@ -173,26 +173,26 @@ One is from <a target="_blank" rel="noopener" href="https://ajdawson.github.io/w
 <p>I also tried to calculate it myself.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">6378000</span></span><br><span class="line">cphi = np.cos(data.lat*np.pi/<span class="number">180</span>)</span><br><span class="line">dx = np.gradient(data.lon, axis=<span class="number">0</span>, edge_order=<span class="number">2</span>)/<span class="number">180</span>*np.pi</span><br><span class="line">dx = np.outer(cphi.values, dx)</span><br><span class="line">dx = xr.DataArray(dx*a, dims = [<span class="string">&#x27;lat&#x27;</span>,<span class="string">&#x27;lon&#x27;</span>],</span><br><span class="line">                    coords=<span class="built_in">dict</span>(lon = data.lon, lat = data.lat))</span><br><span class="line">div_u = (u.differentiate(<span class="string">&#x27;lon&#x27;</span>, edge_order=<span class="number">2</span>)/dx/<span class="number">4</span>) <span class="comment">#/4 is important</span></span><br><span class="line">div_v = (v.differentiate(<span class="string">&#x27;lat&#x27;</span>, edge_order=<span class="number">2</span>)/(np.pi/<span class="number">180</span>*a))</span><br><span class="line">div4 = div_u + div_v</span><br></pre></td></tr></table></figure>
 <p>(It worth to mention why <code>/4</code> is important there. We do that since u.differentiate will have the results with the unit in 1/deg, but out dx is calculated to have the unit in meters/0.25 degrees, so <code>/4</code> is required to complete the conversion)</p>
-<p>For the sake of making the results comparable to each other and have a good referee, I, again, use the ERA5 data from <a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels?tab=download">the data store</a>, and I am treating the divergence data from the dataset as the referee. I guess I have a faith on the ERA5 maintainers… By the way, the divergence variable from the dataset should be used as dataset.d (instead of dataset.divergence, and I wonder if this is a result a laziness)…</p>
+<p>For the sake of making the results comparable to each other and have a good referee, I, again, use the ERA5 data from <a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels?tab=download">the data store</a>, and I am treating the divergence data from the dataset as the referee. I guess I have faith on the ERA5 maintainers… By the way, the divergence variable from the dataset should be used as dataset.d (instead of dataset.divergence, and I wonder if this is as a result of a laziness)…</p>
 <p>Here are some results:<br>
 <img src="/2026/01/23/Divergence/quarter1.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
 It appears like they are all similar in the midlatitudes, but metpy seems to have extreme values in the tropics, and both windspharm and my native method have issues in the polar region.<br>
-To make the difference more obvious, I made the plot below to compare the results from different methods. Please note the upper-left one is the reference plots, so it is not a result of subtraction.<br>
+To make the difference more obvious, I made the plots below to compare the results from different methods. Please note that the upper-left one is the reference plot, so it is not a result of subtraction.<br>
 <img src="/2026/01/23/Divergence/quarter_diff1.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
 It seems like the midlatitudes are vary similar across all 4 subplots, is that true?<br>
-To answer that, I draw another bar plot to compare the average difference in the midlatitudes.<br>
+To answer that, I drew another bar plot to compare the average difference in the midlatitudes.<br>
 <img src="/2026/01/23/Divergence/div_avg_diff1.png" alt="Bar plot 1 for ERA5 - 0.25" title="Bar plot 1 for ERA5 - 0.25"><br>
-Windspharm looks like having the best performence among the three. However, using any of them are okay, as the averaged difference is just 1/1000 of the original magnitude of the diveregence values (1x10^-5).</p>
-<p>Also, a typical ERA5 dataset is quaterly gridded, and sometimes people (including myself) don’t really want to have the resolution as fine as this level. So I also tried a more crude resolution (every degree).</p>
+Windspharm looks like having the best performence among the three. However, using any of them is okay, as the averaged difference is just 1/1000 of the original magnitude of the diveregence values (1x10^-5).</p>
+<p>Also, a typical ERA5 dataset is quarterly gridded, and sometimes people (including myself) don’t really want to have the resolution as fine as this level. So, I also tried a cruder resolution (every degree).</p>
 <p><img src="/2026/01/23/Divergence/one1.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
 <img src="/2026/01/23/Divergence/one_diff1.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
 <img src="/2026/01/23/Divergence/div_avg_diff2.png" alt="Bar plot 1 for ERA5 - 0.25" title="Bar plot 1 for ERA5 - 0.25"><br>
-Wow! Windspharm is not outstanding this time! And we can easily see that all the methods have more disagreements with the reference values as the resolution goes poorer.</p>
-<p>In terms of conclusion? I cannot think about any, but we probably should recommand people to use the ERA5 data directly if possible. I probably should write more about the algorithm behind each method, but I don’t have that much energy to do that at this moment. Let here be the end then.</p>
+Wow! Windspharm is not outstanding this time! And we can easily see that all the methods have more disagreements with reference values as the resolution goes poorer.</p>
+<p>In terms of conclusion? I cannot think about any, but we probably should recommend people to use the ERA5 data directly if possible. I probably should write more about the algorithm behind each method, but I don’t have that much energy to do that at this moment. Let here be the end then.</p>
 
     </div>
      
-    <div class="post-footer__meta"><p>updated at 2026-01-23</p></div> 
+    <div class="post-footer__meta"><p>updated at 2026-01-30</p></div> 
     <div class="post-entry__tags"><a href="/tags/Programming/" class="post-tags__link button"># Programming</a></div> 
 </article>
 
@@ -239,7 +239,7 @@ Wow! Windspharm is not outstanding this time! And we can easily see that all the
             <span id="busuanzi_value_site_uv"></span>
             <span>Viewers</span>
             
-                <span> |</span>
+                <span>|</span>
             
         </span>
     
