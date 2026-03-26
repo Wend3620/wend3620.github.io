@@ -45,7 +45,7 @@
 <meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_full.png">
 <meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_diff_full2.png">
 <meta property="article:published_time" content="2026-01-23T06:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-26T05:12:15.649Z">
+<meta property="article:modified_time" content="2026-03-26T05:13:53.033Z">
 <meta property="article:author" content="Wend3620">
 <meta property="article:tag" content="Programming">
 <meta name="twitter:card" content="summary_large_image">
@@ -181,12 +181,12 @@ A cautious way to calculate spatial derivatives would be from the original defin
 <p>a: Radius of Earth,<br>
 ϕ: Latitude,<br>
 λ: Longitude.</p>
-<p>However, it is also required to correct the result by multiplying them with the cosines, and the equation becomes.<br>
-$$Div(V)=\frac{1}{cos(\phi)}\left(\frac{\partial (cos(\phi)u)}{a<em>cos(\phi) \partial \lambda}+\frac{\partial (cos(\phi)v)}{a</em>\partial \phi}\right)$$<br>
-And you can derivative the equation into:<br>
-$$Div(V)=\frac{1}{a<em>cos(\phi)}\left( cos(\phi)\frac{\partial u}{cos(\phi) \partial \lambda} + u\frac{\partial cos(\phi)}{cos(\phi) \partial \lambda} +\frac{\partial (cos(\phi)v)}{\partial \phi}\right)$$<br>
-After simple simplifications, it becomes the classic equation for computing divergence on the spherical coordinate.<br>
-$$Div(V)=\frac{1}{a</em>cos(\phi)}\left(\frac{\partial u}{\partial \lambda}+\frac{\partial (cos(\phi)v)}{\partial \phi}\right)$$</p>
+<p>However, it is also required to correct the result by multiplying them with the cosines, and the equation becomes.</p>
+<p>$$Div(V)=\frac{1}{cos(\phi)}\left(\frac{\partial (cos(\phi)u)}{a<em>cos(\phi) \partial \lambda}+\frac{\partial (cos(\phi)v)}{a</em>\partial \phi}\right)$$</p>
+<p>And you can derivative the equation into:</p>
+<p>$$Div(V)=\frac{1}{a*cos(\phi)}\left( cos(\phi)\frac{\partial u}{cos(\phi) \partial \lambda} + u\frac{\partial cos(\phi)}{cos(\phi) \partial \lambda} +\frac{\partial (cos(\phi)v)}{\partial \phi}\right)$$</p>
+<p>After simple simplifications, it becomes the classic equation for computing divergence on the spherical coordinate.</p>
+<p>$$Div(V)=\frac{1}{a*cos(\phi)}\left(\frac{\partial u}{\partial \lambda}+\frac{\partial (cos(\phi)v)}{\partial \phi}\right)$$</p>
 <p>I also tried other ways, one way is to calculate without adding the cosines, which means instead of calculating by:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">div4 = mpcalc.divergence(u, v)</span><br></pre></td></tr></table></figure>
 <p>The calculation is rather done as:</p>
