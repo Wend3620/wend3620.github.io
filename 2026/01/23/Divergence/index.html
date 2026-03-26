@@ -35,27 +35,21 @@
 
     <!-- OpenGraph -->
  
-    <meta name="description" content="TLDR Use metpy and the full wind to calculate I have seen two common algorithms for calculating divergence from wind. One is from Windspharm: 1234##Suppose u, v are variables for u wind and v wind and">
+    <meta name="description" content="TL;DR: Be careful when calculating spatial derivatives. Remember to include cosine weighting, convert the unit into radians, and use the full wind instead of the ageostrophic wind only. I have seen tw">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Comparison of divergence algorithms">
 <meta property="og:url" content="http://wend3620.github.io/2026/01/23/Divergence/index.html">
 <meta property="og:site_name" content="Stratolog">
-<meta property="og:description" content="TLDR Use metpy and the full wind to calculate I have seen two common algorithms for calculating divergence from wind. One is from Windspharm: 1234##Suppose u, v are variables for u wind and v wind and">
+<meta property="og:description" content="TL;DR: Be careful when calculating spatial derivatives. Remember to include cosine weighting, convert the unit into radians, and use the full wind instead of the ageostrophic wind only. I have seen tw">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter1.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_diff1.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter2.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_diff2.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/div_avg_diff1.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/one1.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/one_diff1.png">
-<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/div_avg_diff2.png">
+<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_full.png">
+<meta property="og:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_diff_full2.png">
 <meta property="article:published_time" content="2026-01-23T06:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-25T06:38:08.479Z">
+<meta property="article:modified_time" content="2026-03-26T05:06:31.184Z">
 <meta property="article:author" content="Wend3620">
 <meta property="article:tag" content="Programming">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter1.png">
+<meta name="twitter:image" content="http://wend3620.github.io/2026/01/23/Divergence/quarter_full.png">
 
 
     
@@ -167,39 +161,51 @@
 <article class="post content-card">
     <div class="post__header"></div>
     <div class="post__content">
-        <h5 id="TLDR-Use-metpy-and-the-full-wind-to-calculate">TLDR Use metpy and the full wind to calculate</h5>
+        <h5 id="TL-DR-Be-careful-when-calculating-spatial-derivatives-Remember-to-include-cosine-weighting-convert-the-unit-into-radians-and-use-the-full-wind-instead-of-the-ageostrophic-wind-only">TL;DR: Be careful when calculating spatial derivatives. Remember to include cosine weighting, convert the unit into radians, and use the full wind instead of the ageostrophic wind only.</h5>
 <p>I have seen two common algorithms for calculating divergence from wind.<br>
 One is from <a target="_blank" rel="noopener" href="https://ajdawson.github.io/windspharm/">Windspharm</a>:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longitude)</span></span><br><span class="line">w = VectorWind(u, v)</span><br><span class="line">divergence = w.divergence()</span><br><span class="line">divergence <span class="comment">#This is the variable for divergence</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longitude)</span></span><br><span class="line">w = VectorWind(u, v)</span><br><span class="line">div3 = w.divergence()</span><br><span class="line">div3 <span class="comment">#This is the variable for divergence</span></span><br></pre></td></tr></table></figure>
 <p>another is from <a target="_blank" rel="noopener" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.divergence.html">Metpy</a>.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Again, Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longitude)</span></span><br><span class="line">divergence = mpcalc.divergence(u, v)</span><br><span class="line">divergence <span class="comment">#This is the variable for divergence</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Again, Suppose u, v are variables for u wind and v wind and have only two dimensions (latitude and longitude)</span></span><br><span class="line">div4 = mpcalc.divergence(u, v)</span><br><span class="line">div4 <span class="comment">#This is the variable for divergence</span></span><br></pre></td></tr></table></figure>
 <p>I also tried to calculate it myself.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">6378000</span></span><br><span class="line">cphi = np.cos(data.lat*np.pi/<span class="number">180</span>)</span><br><span class="line">dx = np.gradient(data.lon, axis=<span class="number">0</span>, edge_order=<span class="number">2</span>)/<span class="number">180</span>*np.pi</span><br><span class="line">dx = np.outer(cphi.values, dx)</span><br><span class="line">dx = xr.DataArray(dx*a, dims = [<span class="string">&#x27;lat&#x27;</span>,<span class="string">&#x27;lon&#x27;</span>],</span><br><span class="line">                    coords=<span class="built_in">dict</span>(lon = data.lon, lat = data.lat))</span><br><span class="line">div_u = (u.differentiate(<span class="string">&#x27;lon&#x27;</span>, edge_order=<span class="number">2</span>)/dx/<span class="number">4</span>) <span class="comment">#/4 is important</span></span><br><span class="line">div_v = (v.differentiate(<span class="string">&#x27;lat&#x27;</span>, edge_order=<span class="number">2</span>)/(np.pi/<span class="number">180</span>*a))</span><br><span class="line">div4 = div_u + div_v</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">6378000</span></span><br><span class="line">cphi = np.cos(data.lat*np.pi/<span class="number">180</span>)</span><br><span class="line">dx = np.gradient(data.lon, axis=<span class="number">0</span>, edge_order=<span class="number">2</span>)/<span class="number">180</span>*np.pi</span><br><span class="line">dx = np.outer(cphi.values, dx)</span><br><span class="line">dx = xr.DataArray(dx*a, dims = [<span class="string">&#x27;lat&#x27;</span>,<span class="string">&#x27;lon&#x27;</span>],</span><br><span class="line">                    coords=<span class="built_in">dict</span>(lon = data.lon, lat = data.lat))</span><br><span class="line">dy = np.pi/<span class="number">180</span>*a</span><br><span class="line">div_u = ((u*cphi).differentiate(<span class="string">&#x27;lon&#x27;</span>, edge_order=<span class="number">2</span>)/(dx*cphi*<span class="number">4</span>)) <span class="comment">#/4 is important</span></span><br><span class="line">div_v = ((v*cphi).differentiate(<span class="string">&#x27;lat&#x27;</span>, edge_order=<span class="number">2</span>)/(dy*cphi))</span><br><span class="line">div2 = div_u + div_v</span><br></pre></td></tr></table></figure>
 <p>(It worth to mention why <code>/4</code> is important there. We do that since u.differentiate will have the results with the unit in 1/deg, but out dx is calculated to have the unit in meters/0.25 degrees, so <code>/4</code> is required to complete the conversion)</p>
+<p>However, the mothod above is quite stupid and redundant. The better way is shown below:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">6378000</span></span><br><span class="line">cphi = np.cos(sample.lat*np.pi/<span class="number">180</span>)</span><br><span class="line">div_u = (test_u).differentiate(<span class="string">&#x27;lon&#x27;</span>, edge_order=<span class="number">2</span>)</span><br><span class="line">div_v = (test_v*cphi).differentiate(<span class="string">&#x27;lat&#x27;</span>, edge_order=<span class="number">2</span>)</span><br><span class="line">div2 = (div_u + div_v)/cphi/(a*units(<span class="string">&#x27;meter&#x27;</span>))*(<span class="number">180</span>/np.pi)</span><br></pre></td></tr></table></figure>
+<p>Here is the reason:<br>
+A cautious way to calculate spatial derivatives would be from the original definition from the Cartesian coordinate:</p>
+<p>$$Div(V)=\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}$$</p>
+<p>Where:</p>
+<p>δx=a∗cosϕ∗δλ,<br>
+δy=a∗δϕ</p>
+<p>a: Radius of Earth,<br>
+ϕ: Latitude,<br>
+λ: Longitude.</p>
+<p>However, it is also required to correct the result by multiplying them with the cosines, and the equation becomes.<br>
+$$Div(V)=\frac{1}{cos(\phi)}\left(\frac{\partial (cos(\phi)u)}{a<em>cos(\phi) \partial \lambda}+\frac{\partial (cos(\phi)v)}{a</em>\partial \phi}\right)$$<br>
+And you can derivative the equation into:<br>
+$$Div(V)=\frac{1}{a<em>cos(\phi)}\left( cos(\phi)\frac{\partial u}{cos(\phi) \partial \lambda} + u\frac{\partial cos(\phi)}{cos(\phi) \partial \lambda} +\frac{\partial (cos(\phi)v)}{\partial \phi}\right)$$<br>
+After simple simplifications, it becomes the classic equation for computing divergence on the spherical coordinate.<br>
+$$Div(V)=\frac{1}{a</em>cos(\phi)}\left(\frac{\partial u}{\partial \lambda}+\frac{\partial (cos(\phi)v)}{\partial \phi}\right)$$</p>
+<p>I also tried other ways, one way is to calculate without adding the cosines, which means instead of calculating by:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">div4 = mpcalc.divergence(u, v)</span><br></pre></td></tr></table></figure>
+<p>The calculation is rather done as:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">div5 = mpcalc.first_derivative(u, axis=<span class="string">&#x27;lon&#x27;</span>) + mpcalc.first_derivative(v, axis=<span class="string">&#x27;lat&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>The other is to compute the divergence by ageostrophic wind. However, ERA5 does not have native geostrophic wind variables, so I have to calculate from the geopotential height.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ug, vg = mpcalc.geostrophic_wind(z)</span><br><span class="line">div_u = u - ug</span><br><span class="line">div_v = v - vg</span><br><span class="line">div6 = mpcalc.divergence(div_u, div_v)</span><br></pre></td></tr></table></figure>
 <p>For the sake of making the results comparable to each other and have a good referee, I, again, use the ERA5 data from <a target="_blank" rel="noopener" href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels?tab=download">the data store</a>, and I am treating the divergence data from the dataset as the referee. I guess I have faith on the ERA5 maintainers… By the way, the divergence variable from the dataset should be used as dataset.d (instead of dataset.divergence, and I wonder if this is as a result of a laziness)…</p>
 <p>Here are some results:<br>
-<img src="/2026/01/23/Divergence/quarter1.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
-It appears like they are all similar in the midlatitudes, but metpy seems to have extreme values in the tropics. Windspharm and my native method, respectively, have issues near the poles.<br>
+<img src="/2026/01/23/Divergence/quarter_full.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
+It appears like they are all similar in the midlatitudes, but the ageostrophic version seems to have extreme values in the tropics. Windspharm and the method without cosine weighting, respectively, have issues near the poles.<br>
 To make the difference more obvious, I made the plots below to compare the results from different methods. Please note that the upper-left one is the reference plot, so it is not a result of subtraction.<br>
-<img src="/2026/01/23/Divergence/quarter_diff1.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
-However, if we change our resource for calculating the wind from the ageostrophic(divergent) wind to the full wind, the tropical issue is very much resolved.<br>
-<img src="/2026/01/23/Divergence/quarter2.png" alt="ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
-<img src="/2026/01/23/Divergence/quarter_diff2.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
-This means that the issue could be from calculation of ageostrophic wind in the tropics. This is not hard to underastand but unintuitive to me. In short, the low coriolis wind in the tropics causes wind flow not under geostrophic balance. The low geopotential gradient also leads to poor evaluation accuracy of geostrophic wind. These two issues combined causes the extreme values in the tropics.<br>
-It seems like the midlatitudes are vary similar across all 4 subplots, is that true?<br>
-To answer that, I drew another bar plot to compare the average difference in the midlatitudes.<br>
-<img src="/2026/01/23/Divergence/div_avg_diff1.png" alt="Bar plot 1 for ERA5 - 0.25" title="Bar plot 1 for ERA5 - 0.25"><br>
-Windspharm looks like having the best performence among the three. However, using any of them is okay, as the averaged difference is just 1/1000 of the original magnitude of the diveregence values (1x10^-5).</p>
-<p>Also, a typical ERA5 dataset is quarterly gridded, and sometimes people (including myself) don’t really want to have the resolution as fine as this level. So, I also tried a cruder resolution (every degree).</p>
-<p><img src="/2026/01/23/Divergence/one1.png" alt="ERA5 - 0.25" title="ERA5 - 0.25"><br>
-<img src="/2026/01/23/Divergence/one_diff1.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"><br>
-<img src="/2026/01/23/Divergence/div_avg_diff2.png" alt="Bar plot 1 for ERA5 - 0.25" title="Bar plot 1 for ERA5 - 0.25"><br>
-Wow! Windspharm is not outstanding this time! And we can easily see that all the methods have more disagreements with reference values as the resolution goes poorer.</p>
+<img src="/2026/01/23/Divergence/quarter_diff_full2.png" alt="Difference of ERA5 - 0.25" title="Difference of ERA5 - 0.25"></p>
+<p>The issue in the ageostrophic version should be from calculation of ageostrophic wind in the tropics. This is not hard to understand but unintuitive to me. In short, the low Coriolis wind in the tropics causes wind flow not under geostrophic balance. The low geopotential gradient also leads to poor evaluation accuracy of geostrophic wind. These two issues combined causes the extreme values in the tropics.</p>
+<p>Also, the computation time for each method is displayed at the upper right of each figure. Windspharm has not only the worst performance, among all the regularly working methods, but also the slowest computation speed. The native method is the quickest, and the metpy function spends 10x time than the native method. Since both methods are similarly accurate, the suggestion is to calculate natively.</p>
 <p>In terms of conclusion? I cannot think about any, but we probably should recommend people to use the ERA5 data directly if possible. I probably should write more about the algorithm behind each method, but I don’t have that much energy to do that at this moment. Let here be the end then.</p>
 
     </div>
      
-    <div class="post-footer__meta"><p>updated at 2026-02-25</p></div> 
+    <div class="post-footer__meta"><p>updated at 2026-03-26</p></div> 
     <div class="post-entry__tags"><a href="/tags/Programming/" class="post-tags__link button"># Programming</a></div> 
 </article>
 
